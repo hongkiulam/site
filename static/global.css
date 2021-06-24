@@ -1,14 +1,14 @@
 :root {
-	--primary: #E88A46;
-	--light-1: #FAFAFA;
-	--light-2: #D4D4D4;
-	--dark-1: #2F2F2F;
+	--primary: #e88a46;
+	--light-1: #fafafa;
+	--light-2: #d4d4d4;
+	--dark-1: #2f2f2f;
 	--dark-2: #545454;
 
 	--bg-1: var(--dark-1);
 	--bg-2: var(--dark-2);
-	--copy-1: var(--light-2);
-	--copy-2:var(--light-2);
+	--copy-1: var(--light-1);
+	--copy-2: var(--light-2);
 }
 
 * {
@@ -29,6 +29,6 @@ body {
 body.light {
 	--bg-1: var(--light-1);
 	--bg-2: var(--light-2);
-	--copy-1: var(--dark-2);
-	--copy-2:var(--dark-2);
+	--copy-1: var(--dark-1);
+	--copy-2: var(--dark-2);
 }
