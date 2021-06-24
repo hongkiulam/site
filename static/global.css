@@ -1,0 +1,34 @@
+:root {
+	--primary: #E88A46;
+	--light-1: #FAFAFA;
+	--light-2: #D4D4D4;
+	--dark-1: #2F2F2F;
+	--dark-2: #545454;
+
+	--bg-1: var(--dark-1);
+	--bg-2: var(--dark-2);
+	--copy-1: var(--light-2);
+	--copy-2:var(--light-2);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	width: 100vw;
+	min-height: 100vh;
+}
+
+body {
+	width: 100%;
+}
+
+body.light {
+	--bg-1: var(--light-1);
+	--bg-2: var(--light-2);
+	--copy-1: var(--dark-2);
+	--copy-2:var(--dark-2);
+}
