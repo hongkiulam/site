@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@sveltejs/kit': next
+  '@types/simple-icons': ^5.0.0
   '@typescript-eslint/eslint-plugin': ^4.19.0
   '@typescript-eslint/parser': ^4.19.0
   eslint: ^7.22.0
@@ -10,14 +11,17 @@ specifiers:
   prettier: ~2.2.1
   prettier-plugin-svelte: ^2.2.0
   sass: ^1.35.1
+  simple-icons: ^5.3.0
   svelte: ^3.34.0
   svelte-check: ^2.0.0
+  svelte-feather-icons: ^3.5.0
   svelte-preprocess: ^4.0.0
   tslib: ^2.0.0
   typescript: ^4.0.0
 
 devDependencies:
   '@sveltejs/kit': 1.0.0-next.116_svelte@3.38.3
+  '@types/simple-icons': 5.0.0
   '@typescript-eslint/eslint-plugin': 4.28.0_4ec1e0eca7c6e4115e1e7a13008fdec2
   '@typescript-eslint/parser': 4.28.0_eslint@7.29.0+typescript@4.3.4
   eslint: 7.29.0
@@ -26,8 +30,10 @@ devDependencies:
   prettier: 2.2.1
   prettier-plugin-svelte: 2.3.1_prettier@2.2.1+svelte@3.38.3
   sass: 1.35.1
+  simple-icons: 5.3.0
   svelte: 3.38.3
   svelte-check: 2.2.0_sass@1.35.1+svelte@3.38.3
+  svelte-feather-icons: 3.5.0
   svelte-preprocess: 4.7.3_2d5f263990c5139020806e45d480381b
   tslib: 2.3.0
   typescript: 4.3.4
@@ -154,6 +160,10 @@ packages:
     resolution: {integrity: sha512-2XZovu4NwcqmtZtsBR5XYLw18T8cBCnU2USFHTnYLLHz9fkhnoEMoDsqShJIOFsFhn5aJHjweiUUdTrDGujegA==}
     dependencies:
       '@types/node': 15.12.4
+    dev: true
+
+  /@types/simple-icons/5.0.0:
+    resolution: {integrity: sha512-IYUA5DPdIs+LoptVS1NNGXnBTtqctYR9t4MHQ9Xb38WCC4lJtsmYkFnOYSidKBrg+2C/Ll1NW1TmLX1sMPQuCA==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/4.28.0_4ec1e0eca7c6e4115e1e7a13008fdec2:
@@ -1161,6 +1171,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /simple-icons/5.3.0:
+    resolution: {integrity: sha512-PXtQTAqYjF04jSLQAQ1O2u63Uz0lB75g9+DuR6xyS8cRs4NLterHcbC/HDQ9QGexmymfJDMip1ptrkanrOvjYw==}
+    dev: true
+
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
@@ -1258,6 +1272,12 @@ packages:
       - sass
       - stylus
       - sugarss
+    dev: true
+
+  /svelte-feather-icons/3.5.0:
+    resolution: {integrity: sha512-AO6vwbI+WH8xouZRIxyenUV2olSAjp0QFgBa4esyS9ZxvBmKkRu9VTfgbMW0F1N7QTOWbMpgaForsnOcFGfXeg==}
+    dependencies:
+      svelte: 3.38.3
     dev: true
 
   /svelte-hmr/0.14.4_svelte@3.38.3:
