@@ -54,6 +54,7 @@ button {
 	border: none;
 	display: block;
 	cursor: pointer;
+	font: inherit;
 }
 
 a,
