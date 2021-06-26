@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+	import { variables } from '$lib/variables';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
@@ -7,7 +8,7 @@
 
 		const reposRes = await fetch(url, {
 			headers: {
-				Authorization: 'token ' + import.meta.env.VITE_GITHUB_TOKEN
+				Authorization: 'token ' + variables.github_token
 			}
 		});
 
@@ -24,7 +25,7 @@
 			(repo) =>
 				fetch(repo.languages_url, {
 					headers: {
-						Authorization: 'token ' + import.meta.env.VITE_GITHUB_TOKEN
+						Authorization: 'token ' + variables.github_token
 					}
 				}) as Promise<Response>
 		);

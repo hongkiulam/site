@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
 	import GithubIcon from 'svelte-feather-icons/src/icons/GithubIcon.svelte';
-	import VscodeIcon from 'simple-icons/icons/visualstudiocode';
+	import VscodeIcon from 'simple-icons/icons/visualstudiocode.js';
 	import type { GithubRepo } from '$types/github';
 
 	export let repo: GithubRepo;
