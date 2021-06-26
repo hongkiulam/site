@@ -27,6 +27,7 @@
 html {
 	width: 100vw;
 	min-height: 100vh;
+	overflow: overlay;
 }
 
 body {
@@ -67,4 +68,13 @@ a:visited {
 
 a:hover {
 	color: var(--primary);
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+	background: var(--copy-2);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--bg-2);
 }

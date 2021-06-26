@@ -2,13 +2,18 @@
 	import Nav from '$lib/components/Nav.svelte';
 </script>
 
-<main>
+<div>
 	<Nav />
-	<slot />
-</main>
+	<main>
+		<slot />
+	</main>
+</div>
 
 <style>
-	main {
+	div {
 		padding: 0 var(--space-xxl);
+	}
+	main {
+		padding: var(--space-xxl) 0;
 	}
 </style>

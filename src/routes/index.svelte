@@ -1,3 +1,7 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
 	import Me from '$lib/components/Me.svelte';
 </script>
@@ -12,7 +16,7 @@
 <style>
 	.home-container {
 		width: 100%;
-		height: calc(100vh - var(--space-xxxl));
+		height: calc(100vh - var(--space-xxxl) - (var(--space-xxl) * 2));
 		display: grid;
 		place-items: center;
 	}

@@ -1,4 +1,4 @@
 <svelte:head>
 	<title>code | haydon lam</title>
 </svelte:head>
-<h2>code</h2>
+<h2>coding projects coming soon...</h2>
