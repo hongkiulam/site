@@ -17,6 +17,7 @@
     "format": "prettier --write --plugin-search-dir=. ."
   },
   "devDependencies": {
+    "@sveltejs/adapter-netlify": "next",
     "@sveltejs/kit": "next",
     "@types/simple-icons": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
