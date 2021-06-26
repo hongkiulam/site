@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import SunIcon from 'svelte-feather-icons/src/icons/SunIcon.svelte';
 	import MoonIcon from 'svelte-feather-icons/src/icons/MoonIcon.svelte';
 	import MenuIcon from 'svelte-feather-icons/src/icons/MenuIcon.svelte';
@@ -8,6 +10,12 @@
 	let mobileshow = false;
 
 	const closeMobileMenu = () => (mobileshow = false);
+
+	const navRoutes = [
+		{ href: '/code', label: 'code' },
+		{ href: '/photos', label: 'photos' },
+		{ href: '/about', label: 'about' }
+	];
 </script>
 
 <nav>
@@ -22,9 +30,11 @@
 		>
 			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
 		</button>
-		<a href="/code" on:click={closeMobileMenu}><h2>code</h2></a>
-		<a href="/photos" on:click={closeMobileMenu}><h2>photos</h2></a>
-		<a href="/about" on:click={closeMobileMenu}><h2>about</h2></a>
+		{#each navRoutes as route}
+			<a class:active={$page.path === route.href} href={route.href} on:click={closeMobileMenu}
+				><h2>{route.label}</h2></a
+			>
+		{/each}
 		<button class="menu-close" on:click={closeMobileMenu}><h2>close</h2></button>
 	</menu>
 	<button
@@ -49,6 +59,9 @@
 		grid-auto-flow: column;
 		align-items: center;
 		gap: var(--space-l);
+		a.active {
+        color: var(--primary);
+		}
 	}
 
 	.theme-toggle {
@@ -56,6 +69,7 @@
 	}
 	.menu-open {
 		display: none;
+		line-height: 0px;
 	}
 	.menu-close {
 		display: none;
