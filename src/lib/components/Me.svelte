@@ -42,6 +42,28 @@
 	};
 </script>
 
+<svelte:window on:mousemove={mouseMoveHandler} />
+
+<div class="me {region}" style="--width: {size}px" bind:this={meElement}>
+	<div class="window">
+		<div class="sun_moon" />
+	</div>
+	<div class="head" />
+	<div class="hair">
+		<div class="parting_left" />
+		<div class="parting_right" />
+	</div>
+	<div class="eyebrows">
+		<div class="brow_left" />
+		<div class="brow_right" />
+	</div>
+	<div class="eyes">
+		<div class="eye_left" />
+		<div class="eye_right" />
+	</div>
+	<div class="monitor" />
+</div>
+
 <style lang="scss">
 	/**
   Inspired by this codepen https://codepen.io/maaarj/pen/vmYPqm,
@@ -402,25 +424,3 @@
 		}
 	}
 </style>
-
-<svelte:window on:mousemove={mouseMoveHandler} />
-
-<div class="me {region}" style="--width: {size}px" bind:this={meElement}>
-	<div class="window">
-		<div class="sun_moon" />
-	</div>
-	<div class="head" />
-	<div class="hair">
-		<div class="parting_left" />
-		<div class="parting_right" />
-	</div>
-	<div class="eyebrows">
-		<div class="brow_left" />
-		<div class="brow_right" />
-	</div>
-	<div class="eyes">
-		<div class="eye_left" />
-		<div class="eye_right" />
-	</div>
-	<div class="monitor" />
-</div>

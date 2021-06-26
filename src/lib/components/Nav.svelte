@@ -10,6 +10,33 @@
 	const closeMobileMenu = () => (mobileshow = false);
 </script>
 
+<nav>
+	<a href="/"><h2>haydon lam</h2></a>
+	<menu class:mobileshow>
+		<button
+			class="theme-toggle"
+			on:click={() => {
+				document.body.classList.toggle('light');
+				isDarkTheme = !isDarkTheme;
+			}}
+		>
+			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
+		</button>
+		<a href="/code" on:click={closeMobileMenu}><h2>code</h2></a>
+		<a href="/photos" on:click={closeMobileMenu}><h2>photos</h2></a>
+		<a href="/about" on:click={closeMobileMenu}><h2>about</h2></a>
+		<button class="menu-close" on:click={closeMobileMenu}><h2>close</h2></button>
+	</menu>
+	<button
+		class="menu-open"
+		on:click={() => {
+			mobileshow = true;
+		}}
+	>
+		<Icon featherIcon={MenuIcon} hoverColor="var(--primary)" />
+	</button>
+</nav>
+
 <style lang="scss">
 	nav {
 		height: var(--space-xxxl);
@@ -66,30 +93,3 @@
 		}
 	}
 </style>
-
-<nav>
-	<a href="/"><h2>haydon lam</h2></a>
-	<menu class:mobileshow>
-		<button
-			class="theme-toggle"
-			on:click={() => {
-				document.body.classList.toggle('light');
-				isDarkTheme = !isDarkTheme;
-			}}
-		>
-			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
-		</button>
-		<a href="/code" on:click={closeMobileMenu}><h2>code</h2></a>
-		<a href="/photos" on:click={closeMobileMenu}><h2>photos</h2></a>
-		<a href="/about" on:click={closeMobileMenu}><h2>about</h2></a>
-		<button class="menu-close" on:click={closeMobileMenu}><h2>close</h2></button>
-	</menu>
-	<button
-		class="menu-open"
-		on:click={() => {
-			mobileshow = true;
-		}}
-	>
-		<Icon featherIcon={MenuIcon} hoverColor="var(--primary)" />
-	</button>
-</nav>

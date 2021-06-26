@@ -5,6 +5,20 @@
 	export let hoverColor: string = undefined;
 </script>
 
+<div
+	class="icon-styler"
+	class:feather={!!featherIcon}
+	class:simple={!!simpleIcon}
+	style="--size: {size}px;{hoverColor ? `--hover-color: ${hoverColor}` : ''}"
+>
+	{#if featherIcon}
+		<svelte:component this={featherIcon} />
+	{/if}
+	{#if simpleIcon}
+		{@html simpleIcon.svg}
+	{/if}
+</div>
+
 <style lang="scss">
 	.icon-styler {
 		display: contents;
@@ -26,17 +40,3 @@
 		}
 	}
 </style>
-
-<div
-	class="icon-styler"
-	class:feather={!!featherIcon}
-	class:simple={!!simpleIcon}
-	style="--size: {size}px;{hoverColor ? `--hover-color: ${hoverColor}` : ''}"
->
-	{#if featherIcon}
-		<svelte:component this={featherIcon} />
-	{/if}
-	{#if simpleIcon}
-		{@html simpleIcon.svg}
-	{/if}
-</div>
