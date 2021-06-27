@@ -30,7 +30,7 @@
 	.icon-styler.feather :global(svg) {
 		stroke: var(--copy-1);
 		&:hover {
-			stroke: var(--hover-color);
+			stroke: var(--hover-color, var(--copy-1));
 		}
 	}
 	.icon-styler.simple :global(svg) {
