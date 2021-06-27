@@ -23,20 +23,21 @@
 		padding: var(--space-xxl) 0;
 	}
 	.navigating {
-		opacity: 0.2;
+		opacity: 0.1;
 		pointer-events: none;
 	}
 	.loader {
 		position: fixed;
-		bottom: var(--space-xxl);
-		right: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		display: grid;
 		place-items: center;
-		animation: spin 1s linear infinite;
+		animation: spin 1s infinite;
 	}
 	@keyframes spin {
 		to {
-			transform: rotate(360deg);
+			transform: translate(-50%, -50%) rotate(360deg);
 		}
 	}
 </style>

@@ -60,7 +60,7 @@
 		align-items: center;
 		gap: var(--space-l);
 		a.active {
-        color: var(--primary);
+			color: var(--primary);
 		}
 	}
 
