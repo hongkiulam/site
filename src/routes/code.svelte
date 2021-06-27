@@ -1,64 +1,30 @@
 <script context="module" lang="ts">
-	import { variables } from '$lib/variables';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ page, fetch, session, context }) {
-		const url = 'https://api.github.com/users/hongkiulam/repos?sort=updated';
+		const url = '/api/github.json';
 
-		const reposRes = await fetch(url, {
-			headers: {
-				Authorization: 'token ' + variables.github_token
-			}
-		});
+		const res = await fetch(url);
 
-		if (!reposRes.ok) {
+		if (!res.ok) {
 			return {
-				status: reposRes.status,
+				status: res.status,
 				error: new Error(`Could not load ${url}`)
 			};
 		}
 
-		const repos: GithubRepo[] = await reposRes.json();
+		const repos: EnhancedGithubRepo[] = await res.json();
 
-		const repoLanguagePromises = repos.map(
-			(repo) =>
-				fetch(repo.languages_url, {
-					headers: {
-						Authorization: 'token ' + variables.github_token
-					}
-				}) as Promise<Response>
-		);
-
-		const languagesRes = await Promise.all(repoLanguagePromises);
-		const languages = await Promise.all(
-			languagesRes.map((res) => {
-				if (res.ok) {
-					return res.json();
-				} else {
-					return {};
-				}
-			})
-		);
-		const languagesByRepoId = {};
-		languages.map((language, index) => {
-			languagesByRepoId[repos[index].id] = Object.keys(language);
-		});
-		return {
-			props: {
-				repos,
-				languagesByRepoId
-			}
-		};
+		return { props: { repos } };
 	}
 </script>
 
 <script lang="ts">
-	import type { GithubRepo } from '$types/github';
+	import type { EnhancedGithubRepo } from '$types/github';
 	import GithubCard from '$lib/components/GithubCard.svelte';
 
-	export let repos: GithubRepo[];
-	export let languagesByRepoId: any;
+	export let repos: EnhancedGithubRepo[];
 	let selectedRepoUrl: string;
 </script>
 
@@ -68,7 +34,7 @@
 
 <section>
 	{#each repos as repo}
-		<GithubCard {repo} languages={languagesByRepoId[repo.id]} />
+		<GithubCard {repo} />
 	{/each}
 </section>
 

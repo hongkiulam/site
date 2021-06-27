@@ -2,15 +2,14 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import GithubIcon from 'svelte-feather-icons/src/icons/GithubIcon.svelte';
 	import VscodeIcon from 'simple-icons/icons/visualstudiocode.js';
-	import type { GithubRepo } from '$types/github';
+	import type { EnhancedGithubRepo } from '$types/github';
 
-	export let repo: GithubRepo;
-	export let languages: string[];
+	export let repo: EnhancedGithubRepo;
 </script>
 
 <article>
 	<header>
-		<h2>{repo.name}</h2>
+		<h2>{repo.name} <small>{repo.pinned ? '✨' : ''}</small></h2>
 		<div class="icons">
 			<a href={repo.html_url} target="_blank">
 				<Icon featherIcon={GithubIcon} hoverColor="var(--primary)" />
@@ -22,7 +21,7 @@
 	</header>
 	<p class="description">{repo.description || '-no description-'}</p>
 	<footer>
-		{#each languages.slice(0, 5).map((l) => l.toLowerCase()) as language}
+		{#each repo.languages.slice(0, 5).map((l) => l.toLowerCase()) as language}
 			<span
 				><svg
 					class="color-{language}"

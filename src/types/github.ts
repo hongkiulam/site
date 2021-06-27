@@ -1,3 +1,7 @@
+export interface EnhancedGithubRepo extends GithubRepo {
+	languages: string[];
+	pinned: boolean;
+}
 // generated with json2ts, may not be 100% accurate
 export interface Owner {
 	login: string;
