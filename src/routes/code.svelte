@@ -23,9 +23,10 @@
 <script lang="ts">
 	import type { EnhancedGithubRepo } from '$types/github';
 	import GithubCard from '$lib/components/GithubCard.svelte';
+	import Github1sWindow from '$lib/components/Github1sWindow.svelte';
 
 	export let repos: EnhancedGithubRepo[];
-	let selectedRepoUrl: string;
+	let selectedRepo: EnhancedGithubRepo;
 </script>
 
 <svelte:head>
@@ -34,9 +35,12 @@
 
 <section>
 	{#each repos as repo}
-		<GithubCard {repo} />
+		<GithubCard {repo} on:click={() => (selectedRepo = repo)} />
 	{/each}
 </section>
+{#if selectedRepo}
+	<Github1sWindow bind:repo={selectedRepo} />
+{/if}
 
 <style lang="scss">
 	section {

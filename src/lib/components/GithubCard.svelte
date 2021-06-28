@@ -73,6 +73,7 @@
 		[class*='color'] {
 			fill: currentColor;
 			vertical-align: middle;
+			stroke: var(--copy-2);
 		}
 		span + span {
 			margin-left: var(--space-s);
