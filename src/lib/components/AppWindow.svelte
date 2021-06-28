@@ -17,6 +17,8 @@
 			startX = 0,
 			startY = 0;
 
+		appWindowEl.classList.add('dragging');
+
 		const _drag = (e: MouseEvent) => {
 			currentX = startX - e.clientX;
 			currentY = startY - e.clientY;
@@ -37,6 +39,7 @@
 			if (endRight < 0 || endLeft > window.innerWidth) {
 				appWindowEl.style.left = '50%';
 			}
+			appWindowEl.classList.remove('dragging');
 		};
 
 		startX = e.clientX;
@@ -96,6 +99,9 @@
 			max-height: initial;
 			top: var(--space) !important;
 			left: var(--space) !important;
+		}
+		&:global(.dragging .content) {
+			pointer-events: none;
 		}
 	}
 	.title-bar {
