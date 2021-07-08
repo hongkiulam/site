@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { onDestroy } from 'svelte';
 
-	export let title: string;
-	export let show: boolean = false;
-	export let minimised: boolean = false;
+	export let entity: { id: number | string; name: string } | undefined;
 
-	const dispatch = createEventDispatcher();
-
+	let prevEntity = entity;
+	let minimised: boolean = false;
 	let appWindowEl: HTMLElement;
 	let fullscreen: boolean = false;
 	let needsCentering: boolean = true;
@@ -48,6 +46,8 @@
 		document.addEventListener('mouseup', _stopDragging);
 	};
 
+	$: show = !!entity;
+
 	$: isVisible = show && !minimised;
 	$: if (isVisible && needsCentering && appWindowEl) {
 		const { width, height } = appWindowEl.getBoundingClientRect();
@@ -58,23 +58,35 @@
 	$: if (!isVisible) {
 		needsCentering = true;
 	}
+
+	$: document.documentElement.classList[isVisible ? 'add' : 'remove']('noscroll');
+
+	$: if (entity?.id !== prevEntity?.id) {
+		minimised = false;
+		prevEntity = entity;
+	}
+	onDestroy(() => {
+		document.documentElement.classList.remove('noscroll');
+	});
 </script>
 
 {#if show && !minimised}
 	<div class="app-window" class:fullscreen bind:this={appWindowEl}>
 		<div class="title-bar" on:mousedown={startDraggingElement}>
 			<div class="buttons">
-				<button class="close" on:click={() => dispatch('hide')} />
-				<button class="minimise" on:click={() => dispatch('minimise')} />
+				<button class="close" on:click={() => (entity = undefined)} />
+				<button class="minimise" on:click={() => (minimised = true)} />
 				<button class="maximise" on:click={() => (fullscreen = !fullscreen)} />
 			</div>
-			<p class="title">{title || ''}</p>
+			<p class="title">{entity.name || ''}</p>
 		</div>
 		<div class="content"><slot /></div>
 	</div>
 {/if}
 {#if minimised}
-	<aside on:click={() => dispatch('maximise')}><slot name="minimise-icon" />{title || ''}</aside>
+	<aside on:click={() => (minimised = false)}>
+		<slot name="minimise-icon" />{entity.name || ''}
+	</aside>
 {/if}
 
 <style lang="scss">
@@ -147,6 +159,7 @@
 	}
 	.content {
 		flex: 1;
+		overflow: auto;
 	}
 
 	aside {
@@ -165,6 +178,7 @@
 		opacity: 0.8;
 		cursor: pointer;
 		border: 2px solid var(--bg-1);
+		z-index: 1;
 		&:hover {
 			opacity: 1;
 		}

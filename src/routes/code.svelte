@@ -24,6 +24,7 @@
 	import type { EnhancedGithubRepo } from '$types/github';
 	import GithubCard from '$lib/components/GithubCard.svelte';
 	import Github1sWindow from '$lib/components/Github1sWindow.svelte';
+	import CardContainer from '$lib/components/CardContainer.svelte';
 
 	export let repos: EnhancedGithubRepo[];
 	let selectedRepo: EnhancedGithubRepo;
@@ -33,24 +34,11 @@
 	<title>code | haydon lam</title>
 </svelte:head>
 
-<section>
+<CardContainer>
 	{#each repos as repo}
 		<GithubCard {repo} on:click={() => (selectedRepo = repo)} />
 	{/each}
-</section>
+</CardContainer>
 {#if selectedRepo}
 	<Github1sWindow bind:repo={selectedRepo} />
 {/if}
-
-<style lang="scss">
-	section {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(calc(var(--space) * 30), 1fr));
-		gap: var(--space);
-	}
-	@media only screen and (max-width: 500px) {
-		section {
-			grid-template-columns: 1fr;
-		}
-	}
-</style>

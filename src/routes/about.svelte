@@ -30,6 +30,7 @@
 			<li>docker (containerisation)</li>
 			<li>mongodb, firestore (database)</li>
 			<li>vscode (code editor)</li>
+			<li>figma (design)</li>
 			<li>pop os (operating system)</li>
 		</ul>
 	</article>
