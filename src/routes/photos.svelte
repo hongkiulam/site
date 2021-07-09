@@ -18,20 +18,8 @@
 		}
 
 		const projects = await res.json();
-		// create a promise for each project which fetches its images
-		const photoProjectPhotoPromises = projects.map(async (project) => {
-			const response = await fetch(
-				`./api/behance/project.json?projectId=${project.id}&projectSlug=${project.slug}`
-			);
-			const data = await response.json();
-			return data;
-		});
-		const photoProjectPhotos = await Promise.all(photoProjectPhotoPromises);
-		const photoProjectsWithImages: InternalBehanceProject[] = projects.map((project, index) => ({
-			...project,
-			images: photoProjectPhotos[index]
-		}));
-		return { props: { projects: photoProjectsWithImages } };
+
+		return { props: { projects } };
 	}
 </script>
 

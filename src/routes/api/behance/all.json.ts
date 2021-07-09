@@ -1,4 +1,6 @@
 import getBehanceStore from '$lib/utils/get-behance-store';
+import getProjectImages from '$lib/utils/get-project-images';
+import type { InternalBehanceProject } from '$types/behance';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
@@ -13,8 +15,19 @@ export async function get() {
 			proj.fields.some((field) => field.id === PHOTOGRAPHY_FIELD_ID)
 		);
 
+		const photoProjectImagesPromises = photoProjects.map((project) => {
+			return getProjectImages({ id: project.id, slug: project.slug });
+		});
+
+		const photoProjectImages = await Promise.all(photoProjectImagesPromises);
+
+		const photoProjectsWithImages: InternalBehanceProject[] = photoProjects.map(
+			(project, index) => {
+				return { ...project, images: photoProjectImages[index] };
+			}
+		);
 		return {
-			body: photoProjects,
+			body: photoProjectsWithImages,
 			status: 200
 		};
 	} catch {

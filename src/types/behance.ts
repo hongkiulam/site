@@ -37,12 +37,13 @@ interface ProjectModuleImage {
 	id: number;
 	type: 'image';
 	src: string;
+	sizes: Record<string, string>;
 	// the rest irrelevant
 }
 interface ProjectModuleMediaCollection {
 	id: number;
 	type: 'media_collection';
-	components: Array<{ src: string }>;
+	components: Array<{ src: string; sizes: Record<string, string> }>;
 	// the rest irrelevant
 }
 
