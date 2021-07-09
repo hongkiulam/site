@@ -1,5 +1,5 @@
-export interface InternalBehanceProject extends BehanceProjectOverview {
-	images: string[];
+export interface BehanceImagesByProjectId {
+	[id: number]: string[];
 }
 export interface BehanceProjectOverview {
 	created_on: number;

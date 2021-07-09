@@ -19,19 +19,21 @@
 
 		const projects = await res.json();
 		// create a promise for each project which fetches its images
-		const photoProjectPhotoPromises = projects.map(async (project) => {
-			const response = await fetch(
-				`./api/behance/project.json?projectId=${project.id}&projectSlug=${project.slug}`
-			);
-			const data = await response.json();
-			return data;
+		const photoProjectImagesPromises: { id: number; data: string[] }[] = projects.map(
+			async (project) => {
+				const response = await fetch(
+					`./api/behance/project.json?projectId=${project.id}&projectSlug=${project.slug}`
+				);
+				const data = await response.json();
+				return { id: project.id, data };
+			}
+		);
+		const photoProjectImages = await Promise.all(photoProjectImagesPromises);
+		const imagesByProjectId: BehanceImagesByProjectId = {};
+		photoProjectImages.forEach(({ id, data }) => {
+			imagesByProjectId[id] = data;
 		});
-		const photoProjectPhotos = await Promise.all(photoProjectPhotoPromises);
-		const photoProjectsWithImages: InternalBehanceProject[] = projects.map((project, index) => ({
-			...project,
-			images: photoProjectPhotos[index]
-		}));
-		return { props: { projects: photoProjectsWithImages } };
+		return { props: { projects, imagesByProjectId } };
 	}
 </script>
 
@@ -40,10 +42,11 @@
 	import BehanceCard from '$lib/components/BehanceCard.svelte';
 	import CardContainer from '$lib/components/CardContainer.svelte';
 
-	import type { InternalBehanceProject } from '$types/behance';
+	import type { BehanceProjectOverview, BehanceImagesByProjectId } from '$types/behance';
 
-	export let projects: InternalBehanceProject[];
-	let selectedProject: InternalBehanceProject;
+	export let projects: BehanceProjectOverview[];
+	export let imagesByProjectId: BehanceImagesByProjectId;
+	let selectedProject: BehanceProjectOverview;
 </script>
 
 <svelte:head>
@@ -61,5 +64,8 @@
 	{/each}
 </CardContainer>
 {#if selectedProject}
-	<BehanceWindow bind:project={selectedProject} />
+	<BehanceWindow
+		bind:project={selectedProject}
+		images={imagesByProjectId[selectedProject?.id] || []}
+	/>
 {/if}

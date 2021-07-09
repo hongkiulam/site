@@ -1,17 +1,17 @@
 <script lang="ts">
-	import type { InternalBehanceProject } from '$types/behance';
+	import type { BehanceProjectOverview } from '$types/behance';
 
 	import BehanceIcon from 'simple-icons/icons/behance.js';
 	import AppWindow from './AppWindow.svelte';
 	import Icon from './Icon.svelte';
 
-	export let project: InternalBehanceProject;
+	export let project: BehanceProjectOverview;
+	export let images: string[];
 	let prevProject = project;
 	let imageIndex = 0;
 
-	// const windowIsPortrait = window.innerHeight > window.innerWidth;
+	const windowIsPortrait = window.innerHeight > window.innerWidth;
 	// console.log(windowIsPortrait);
-	$: images = project.images;
 
 	$: if (project.id !== prevProject.id) {
 		prevProject = project;
