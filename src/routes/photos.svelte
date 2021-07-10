@@ -18,22 +18,8 @@
 		}
 
 		const projects = await res.json();
-		// create a promise for each project which fetches its images
-		const photoProjectImagesPromises: { id: number; data: string[] }[] = projects.map(
-			async (project) => {
-				const response = await fetch(
-					`./api/behance/project.json?projectId=${project.id}&projectSlug=${project.slug}`
-				);
-				const data = await response.json();
-				return { id: project.id, data };
-			}
-		);
-		const photoProjectImages = await Promise.all(photoProjectImagesPromises);
-		const imagesByProjectId: BehanceImagesByProjectId = {};
-		photoProjectImages.forEach(({ id, data }) => {
-			imagesByProjectId[id] = data;
-		});
-		return { props: { projects, imagesByProjectId } };
+
+		return { props: { projects } };
 	}
 </script>
 
@@ -42,11 +28,10 @@
 	import BehanceCard from '$lib/components/BehanceCard.svelte';
 	import CardContainer from '$lib/components/CardContainer.svelte';
 
-	import type { BehanceProjectOverview, BehanceImagesByProjectId } from '$types/behance';
+	import type { InternalBehanceProject } from '$types/behance';
 
-	export let projects: BehanceProjectOverview[];
-	export let imagesByProjectId: BehanceImagesByProjectId;
-	let selectedProject: BehanceProjectOverview;
+	export let projects: InternalBehanceProject[];
+	let selectedProject: InternalBehanceProject;
 </script>
 
 <svelte:head>
@@ -64,8 +49,5 @@
 	{/each}
 </CardContainer>
 {#if selectedProject}
-	<BehanceWindow
-		bind:project={selectedProject}
-		images={imagesByProjectId[selectedProject?.id] || []}
-	/>
+	<BehanceWindow bind:project={selectedProject} />
 {/if}

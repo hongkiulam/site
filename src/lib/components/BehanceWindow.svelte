@@ -1,17 +1,18 @@
 <script lang="ts">
-	import type { BehanceProjectOverview } from '$types/behance';
+	import type { InternalBehanceProject } from '$types/behance';
 
 	import BehanceIcon from 'simple-icons/icons/behance.js';
 	import AppWindow from './AppWindow.svelte';
 	import Icon from './Icon.svelte';
 
-	export let project: BehanceProjectOverview;
-	export let images: string[];
+	export let project: InternalBehanceProject;
 	let prevProject = project;
 	let imageIndex = 0;
 
 	const windowIsPortrait = window.innerHeight > window.innerWidth;
 	// console.log(windowIsPortrait);
+
+	$: images = project.images;
 
 	$: if (project.id !== prevProject.id) {
 		prevProject = project;
@@ -57,6 +58,7 @@
 			box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
 			height: 100%;
 			border-radius: var(--space);
+			background: var(--bg-2);
 		}
 	}
 	.carousel {
@@ -68,6 +70,8 @@
 		padding: var(--space);
 		img {
 			height: 100%;
+			min-width: $carouselHeight;
+			background: var(--bg-2);
 			cursor: pointer;
 			opacity: 0.8;
 			transition: opacity 0.1s ease;
