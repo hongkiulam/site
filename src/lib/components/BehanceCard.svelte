@@ -28,21 +28,20 @@
 </Card>
 
 <style lang="scss">
-	$coverWidth: 180px;
-	$coverHeight: calc(#{$coverWidth} * 18 / 23);
 	.behance-card {
+		--cover-width: 180px;
+		--cover-height: calc(var(--cover-width) * 18 / 23);
 		display: flex;
 		flex-direction: column;
 		padding: var(--space);
 		width: 100%;
-		height: 100%;
+		height: var(--cover-height);
 		position: relative;
-		height: $coverHeight;
 		border-radius: inherit;
 	}
 	.details {
 		z-index: 1;
-		width: calc(100% - #{$coverWidth});
+		width: calc(100% - var(--cover-width));
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -54,8 +53,8 @@
 		gap: var(--space);
 	}
 	.behance-card figure {
-		width: $coverWidth;
-		height: $coverHeight;
+		width: var(--cover-width);
+		height: var(--cover-height);
 		position: absolute;
 		right: 0;
 		top: 0;
@@ -76,11 +75,33 @@
 			width: 100%;
 			height: 100%;
 			background: var(--bg-2);
-			opacity: 0.2;
+			opacity: 0.3;
 			transition: opacity 0.3s;
 		}
 	}
 	.behance-card:hover figure::after {
 		opacity: 0;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.behance-card {
+			--cover-width: 100%;
+			--cover-height: auto;
+			height: auto;
+			overflow: hidden;
+			figure {
+				top: 50%;
+				transform: translateY(-50%);
+				&::after {
+					opacity: 0.9;
+				}
+			}
+		}
+		.behance-card:hover figure::after {
+			opacity: 0.5;
+		}
+		.details {
+			width: 100%;
+		}
 	}
 </style>

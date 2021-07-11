@@ -90,7 +90,7 @@
 			place-items: center;
 			background: var(--bg-1);
 			border-bottom: 2px solid var(--copy-1);
-			z-index: 1;
+			z-index: 2;
 			animation: mobile-menu-in 0.2s;
 			&.mobileshow {
 				display: grid;
