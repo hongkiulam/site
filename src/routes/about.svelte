@@ -39,7 +39,7 @@
 		<ul>
 			<li>sony alpha a7r (body)</li>
 			<li>sony 24-70mm f3.5-5.6, industar-50 50mm f3.5, hoya 28mm f2.8 (lens)</li>
-			<li>darktable (raw editor)</li>
+			<li>rawtherapee (raw editor)</li>
 		</ul>
 	</article>
 	<article>
