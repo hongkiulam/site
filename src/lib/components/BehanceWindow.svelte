@@ -63,10 +63,10 @@
 		});
 	};
 
-	// when project changes load first image
-	$: images = [project.images[0]];
-
 	$: if (project.id !== prevProject.id) {
+		// when project changes load first image
+		images = [project.images[0]];
+		// start lazy loading remaining images
 		loadingRemainingImages = true;
 		prevProject = project;
 		imageIndex = 0;
@@ -74,12 +74,14 @@
 	}
 
 	onMount(() => {
+		images = [project.images[0]];
 		lazyLoadImagesTimeout = window.setTimeout(loadRemainingImages, LAZY_LOAD_TIMEOUT);
 		imageBindingTick = window.setInterval(checkImageBounds, IMAGE_BINDING_INTERNAL);
 	});
 
 	onDestroy(() => {
 		window.clearInterval(imageBindingTick);
+		window.clearTimeout(lazyLoadImagesTimeout);
 	});
 </script>
 
