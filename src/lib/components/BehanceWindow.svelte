@@ -48,12 +48,16 @@
 	const onImageChange = (index: number) => (e: MouseEvent) => {
 		// change image
 		imageIndex = index;
-		// scroll image into view
 		const clickedImageEl = e.target as EventTarget & HTMLElement;
-		const carousel = clickedImageEl.parentNode as HTMLElement;
+		scrollImageIntoView(clickedImageEl);
+	};
 
-		const imagePositionInCarousel = clickedImageEl.offsetLeft;
-		const imageWidth = clickedImageEl.offsetWidth;
+	const scrollImageIntoView = (imageEl: HTMLElement) => {
+		// scroll image into view
+		const carousel = imageEl.parentNode as HTMLElement;
+
+		const imagePositionInCarousel = imageEl.offsetLeft;
+		const imageWidth = imageEl.offsetWidth;
 		const imageCenterPosition = imagePositionInCarousel + imageWidth / 2;
 		const carouselWidth = carousel.offsetWidth;
 		const imagePositionAtCarouselCenter = imageCenterPosition - carouselWidth / 2;
@@ -61,6 +65,22 @@
 			left: imagePositionAtCarouselCenter,
 			behavior: 'smooth'
 		});
+	};
+
+	const handleKeyDown = (e: KeyboardEvent) => {
+		switch (e.key) {
+			case 'ArrowLeft':
+			case 'ArrowDown':
+				imageIndex = imageIndex > 0 ? imageIndex - 1 : imageIndex;
+				break;
+			case 'ArrowUp':
+			case 'ArrowRight':
+				imageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : imageIndex;
+				break;
+		}
+		const nextImageSrc = images[imageIndex];
+		const nextImage = document.getElementById(nextImageSrc);
+		scrollImageIntoView(nextImage as HTMLElement);
 	};
 
 	$: if (project.id !== prevProject.id) {
@@ -85,6 +105,7 @@
 	});
 </script>
 
+<svelte:window on:keydown={handleKeyDown} />
 <AppWindow bind:entity={project}>
 	<section class="gallery">
 		<figure bind:this={mainImageContainer}>
@@ -102,6 +123,7 @@
 					class:active={imageIndex === index}
 					src={image}
 					alt={image}
+					id={image}
 					on:click={onImageChange(index)}
 				/>
 			{/each}
