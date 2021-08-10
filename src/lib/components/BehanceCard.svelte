@@ -4,6 +4,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import type { BehanceProjectOverview } from '$types/behance';
+	import tooltip from '$lib/utils/tooltip';
 
 	export let project: BehanceProjectOverview;
 </script>
@@ -13,10 +14,10 @@
 		<div class="details">
 			<header><p>{project.name}</p></header>
 			<footer>
-				<a href={project.url} target="_blank">
+				<a href={project.url} target="_blank" use:tooltip={{ message: 'Open in Behance' }}>
 					<Icon simpleIcon={BehanceIcon} hoverColor="var(--primary)" />
 				</a>
-				<button on:click>
+				<button on:click use:tooltip={{ message: 'View now in gallery' }}>
 					<Icon featherIcon={EyeIcon} hoverColor="var(--primary)" />
 				</button>
 			</footer>

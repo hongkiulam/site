@@ -4,6 +4,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import type { EnhancedGithubRepo } from '$types/github';
+	import tooltip from '$lib/utils/tooltip';
 
 	export let repo: EnhancedGithubRepo;
 </script>
@@ -13,10 +14,10 @@
 		<header>
 			<h2>{repo.name} <small>{repo.pinned ? '✨' : ''}</small></h2>
 			<div class="icons">
-				<a href={repo.html_url} target="_blank">
+				<a href={repo.html_url} target="_blank" use:tooltip={{ message: 'Open in Github' }}>
 					<Icon featherIcon={GithubIcon} hoverColor="var(--primary)" />
 				</a>
-				<button on:click>
+				<button on:click use:tooltip={{ message: 'Open in VS Code' }}>
 					<Icon simpleIcon={VscodeIcon} hoverColor="var(--primary)" />
 				</button>
 			</div>

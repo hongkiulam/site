@@ -5,6 +5,7 @@
 	import MoonIcon from 'svelte-feather-icons/src/icons/MoonIcon.svelte';
 	import MenuIcon from 'svelte-feather-icons/src/icons/MenuIcon.svelte';
 	import Icon from './Icon.svelte';
+	import tooltip from '$lib/utils/tooltip';
 
 	let isDarkTheme = true;
 	let mobileshow = false;
@@ -27,6 +28,7 @@
 				document.body.classList.toggle('light');
 				isDarkTheme = !isDarkTheme;
 			}}
+			use:tooltip={{ message: `Toggle theme`, position: 'left' }}
 		>
 			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
 		</button>
