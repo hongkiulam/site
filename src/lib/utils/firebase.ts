@@ -2,11 +2,13 @@ import { variables } from '$lib/variables';
 import admin from 'firebase-admin';
 
 export const initialiseApp = () => {
+	// replace /n with real line breaks
+	const pk = variables.firebase_service_account.private_key.replace(/\\n/g, '\n');
 	!admin.apps?.length
 		? admin.initializeApp({
 				credential: admin.credential.cert({
 					clientEmail: variables.firebase_service_account.client_email,
-					privateKey: variables.firebase_service_account.private_key,
+					privateKey: pk,
 					projectId: variables.firebase_service_account.project_id
 				}),
 				storageBucket: variables.firebase_bucket_name
