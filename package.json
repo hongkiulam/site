@@ -42,7 +42,6 @@
   "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
-    "firebase-admin": "^9.11.1",
     "node-html-parser": "^3.3.6"
   }
 }
