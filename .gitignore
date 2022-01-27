@@ -7,3 +7,4 @@ functions
 .env
 TODO.md
 firebaseServiceAccount.json
+.netlify

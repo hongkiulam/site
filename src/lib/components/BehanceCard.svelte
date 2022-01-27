@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BehanceIcon from 'simple-icons/icons/behance.js';
+	import { siBehance } from 'simple-icons/icons';
 	import EyeIcon from 'svelte-feather-icons/src/icons/EyeIcon.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Card from '$lib/components/Card.svelte';
@@ -15,7 +15,7 @@
 			<header><p>{project.name}</p></header>
 			<footer>
 				<a href={project.url} target="_blank" use:tooltip={{ message: 'Open in Behance' }}>
-					<Icon simpleIcon={BehanceIcon} hoverColor="var(--primary)" />
+					<Icon simpleIcon={siBehance} hoverColor="var(--primary)" />
 				</a>
 				<button on:click use:tooltip={{ message: 'View now in gallery' }}>
 					<Icon featherIcon={EyeIcon} hoverColor="var(--primary)" />

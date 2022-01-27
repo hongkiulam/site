@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { InternalBehanceProject } from '$types/behance';
+	import { siBehance } from 'simple-icons/icons';
 
-	import BehanceIcon from 'simple-icons/icons/behance.js';
 	import { onDestroy, onMount } from 'svelte';
 	import AppWindow from './AppWindow.svelte';
 	import Icon from './Icon.svelte';
@@ -132,7 +132,7 @@
 			{/if}
 		</div>
 	</section>
-	<div style="display:contents" slot="minimise-icon"><Icon simpleIcon={BehanceIcon} /></div>
+	<div style="display:contents" slot="minimise-icon"><Icon simpleIcon={siBehance} /></div>
 </AppWindow>
 
 <style lang="scss">

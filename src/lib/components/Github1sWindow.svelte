@@ -1,6 +1,6 @@
 <script lang="ts">
-	import VscodeIcon from 'simple-icons/icons/visualstudiocode.js';
 	import type { EnhancedGithubRepo } from '$types/github';
+	import { siVisualstudiocode } from 'simple-icons/icons';
 	import AppWindow from './AppWindow.svelte';
 	import Icon from './Icon.svelte';
 
@@ -9,7 +9,7 @@
 
 <AppWindow bind:entity={repo}>
 	<iframe src={repo.html_url.replace('github', 'github1s')} title={repo.name} frameborder="0" />
-	<div style="display:contents" slot="minimise-icon"><Icon simpleIcon={VscodeIcon} /></div>
+	<div style="display:contents" slot="minimise-icon"><Icon simpleIcon={siVisualstudiocode} /></div>
 </AppWindow>
 
 <style>

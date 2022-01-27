@@ -1,38 +1,64 @@
 <script context="module">
 	export const prerender = true;
-
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ page, fetch, session, context }) {
-		const aboutMarkdownReq = await fetch('/api/markdown/about.md');
-		const aboutMarkdownRes = await aboutMarkdownReq.text();
-
-		return { props: { markdown: aboutMarkdownRes } };
-	}
 </script>
 
-<script lang="ts">
-	import marked from 'marked';
-	export let markdown: string;
-	const html = marked(markdown);
-</script>
-
-<svelte:head>
-	<title>about | haydon lam</title>
-</svelte:head>
-<section class="about">
-	{@html html}
+<section>
+	<article>
+		<h2>
+			👋 hi, i’m haydon! i am a web developer from birmingham, uk 🇬🇧 and studied product design
+			engineering at loughborough.
+		</h2>
+	</article>
+	<article>
+		<h2>❤️ things i link...</h2>
+		<ul>
+			<li>bullet journalling</li>
+			<li>watching anime</li>
+			<li>lifting weights</li>
+			<li>saving the environment</li>
+		</ul>
+	</article>
+	<article>
+		<h2>👨‍💻 tech i use...</h2>
+		<ul>
+			<li>react, svelte (frontend)</li>
+			<li>git (version control)</li>
+			<li>node.js (backend)</li>
+			<li>docker (containerisation)</li>
+			<li>mongodb, firestore (database)</li>
+			<li>vscode (code editor)</li>
+			<li>figma (design)</li>
+			<li>pop os (operating system)</li>
+		</ul>
+	</article>
+	<article>
+		<h2>📷 photography gear i use...</h2>
+		<ul>
+			<li>sony alpha a6000 (body)</li>
+			<li>sony 16-50mm f3.5-5.6, industar-50 50mm f3.5, hoya 28mm f2.8 (lens)</li>
+			<li>rawtherapee (raw editor)</li>
+		</ul>
+	</article>
+	<article>
+		<h2>🦉 find me...</h2>
+		<ul>
+			<li><a href="https://github.com/hongkiulam" target="_blank">github</a></li>
+			<li><a href="https://linkedin.com/in/haydonlam" target="_blank">linkedin</a></li>
+			<li><a href="https://instagr.am/haydonlam" target="_blank">instagram</a></li>
+			<li><a href="https://behance.net/haydonlam" target="_blank">behance</a></li>
+			<li><a href="mailto:lamhaydon@gmail.com" target="_blank">email</a></li>
+		</ul>
+	</article>
 </section>
 
 <style>
-	.about {
+	section {
 		max-width: calc(var(--space-xxl) * 20);
 	}
-	.about :global(article + article) {
+	article + article {
 		margin-top: var(--space-l);
 	}
-	.about :global(ul) {
+	ul {
 		margin-left: var(--space-l);
 	}
 </style>

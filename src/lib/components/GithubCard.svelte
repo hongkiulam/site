@@ -1,10 +1,10 @@
 <script lang="ts">
 	import GithubIcon from 'svelte-feather-icons/src/icons/GithubIcon.svelte';
-	import VscodeIcon from 'simple-icons/icons/visualstudiocode.js';
 	import Icon from '$lib/components/Icon.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import type { EnhancedGithubRepo } from '$types/github';
 	import tooltip from '$lib/utils/tooltip';
+	import { siVisualstudiocode } from 'simple-icons/icons';
 
 	export let repo: EnhancedGithubRepo;
 </script>
@@ -18,7 +18,7 @@
 					<Icon featherIcon={GithubIcon} hoverColor="var(--primary)" />
 				</a>
 				<button on:click use:tooltip={{ message: 'Open in VS Code' }}>
-					<Icon simpleIcon={VscodeIcon} hoverColor="var(--primary)" />
+					<Icon simpleIcon={siVisualstudiocode} hoverColor="var(--primary)" />
 				</button>
 			</div>
 		</header>

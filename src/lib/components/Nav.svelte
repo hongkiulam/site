@@ -33,8 +33,10 @@
 			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
 		</button>
 		{#each navRoutes as route}
-			<a class:active={$page.path === route.href} href={route.href} on:click={closeMobileMenu}
-				><h2>{route.label}</h2></a
+			<a
+				class:active={$page.url.pathname === route.href}
+				href={route.href}
+				on:click={closeMobileMenu}><h2>{route.label}</h2></a
 			>
 		{/each}
 		<button class="menu-close" on:click={closeMobileMenu}><h2>close</h2></button>
