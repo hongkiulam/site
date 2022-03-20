@@ -20,8 +20,8 @@
 </script>
 
 <nav>
-	<a href="/"><h2>haydon lam</h2></a>
-	<menu class:mobileshow>
+	<a href="/" data-cursor="fill"><h2>haydon lam</h2></a>
+	<menu class:mobileshow data-cursor={mobileshow ? 'reset' : ''}>
 		<button
 			class="theme-toggle"
 			on:click={() => {
@@ -29,11 +29,13 @@
 				isDarkTheme = !isDarkTheme;
 			}}
 			use:tooltip={{ message: `Toggle theme`, position: 'left' }}
+			data-cursor={mobileshow ? '' : 'fill'}
 		>
 			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
 		</button>
 		{#each navRoutes as route}
 			<a
+				data-cursor={mobileshow ? '' : 'fill'}
 				class:active={$page.url.pathname === route.href}
 				href={route.href}
 				on:click={closeMobileMenu}><h2>{route.label}</h2></a

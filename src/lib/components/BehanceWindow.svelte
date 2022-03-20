@@ -125,10 +125,11 @@
 					alt={image}
 					id={image}
 					on:click={onImageChange(index)}
+					data-cursor="drag"
 				/>
 			{/each}
 			{#if loadingRemainingImages}
-				<sdiv class="image-loader"><Loader /></sdiv>
+				<div class="image-loader"><Loader /></div>
 			{/if}
 		</div>
 	</section>

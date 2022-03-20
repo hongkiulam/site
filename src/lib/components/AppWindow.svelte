@@ -71,7 +71,7 @@
 </script>
 
 {#if show && !minimised}
-	<div class="app-window" class:fullscreen bind:this={appWindowEl}>
+	<div class="app-window" class:fullscreen bind:this={appWindowEl} data-cursor="reset">
 		<div class="title-bar" on:mousedown={startDraggingElement}>
 			<div class="buttons">
 				<button class="close" on:click={() => (entity = undefined)} />
