@@ -18,11 +18,10 @@
 					href={project.url}
 					target="_blank"
 					use:tooltip={{ message: 'Open in Behance' }}
-					data-cursor="drag"
 				>
 					<Icon simpleIcon={siBehance} hoverColor="var(--primary)" />
 				</a>
-				<button on:click use:tooltip={{ message: 'View now in gallery' }} data-cursor="drag">
+				<button on:click use:tooltip={{ message: 'View now in gallery' }}>
 					<Icon featherIcon={EyeIcon} hoverColor="var(--primary)" />
 				</button>
 			</footer>

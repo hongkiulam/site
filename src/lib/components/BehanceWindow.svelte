@@ -125,7 +125,6 @@
 					alt={image}
 					id={image}
 					on:click={onImageChange(index)}
-					data-cursor="drag"
 				/>
 			{/each}
 			{#if loadingRemainingImages}

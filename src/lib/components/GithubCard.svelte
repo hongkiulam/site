@@ -18,11 +18,10 @@
 					href={repo.html_url}
 					target="_blank"
 					use:tooltip={{ message: 'Open in Github' }}
-					data-cursor="drag"
 				>
 					<Icon featherIcon={GithubIcon} hoverColor="var(--primary)" />
 				</a>
-				<button on:click use:tooltip={{ message: 'Open in VS Code' }} data-cursor="drag">
+				<button on:click use:tooltip={{ message: 'Open in VS Code' }}>
 					<Icon simpleIcon={siVisualstudiocode} hoverColor="var(--primary)" />
 				</button>
 			</div>
