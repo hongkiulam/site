@@ -1,5 +1,5 @@
 export interface InternalBehanceProject extends BehanceProjectOverview {
-	images: string[];
+	images: Record<number, PictureSource>[];
 }
 export interface BehanceProjectOverview {
 	created_on: number;
@@ -33,17 +33,35 @@ export interface BehanceProject extends BehanceProjectOverview {
 	// the rest irrelevant
 }
 
+export interface PictureSource {
+	srcset: string;
+	media_query: string;
+	width: number;
+	height: number;
+}
+
 interface ProjectModuleImage {
 	id: number;
 	type: 'image';
 	src: string;
 	sizes: Record<string, string>;
+	picture: {
+		sources: PictureSource[];
+		// the rest irrelevant
+	};
 	// the rest irrelevant
 }
 interface ProjectModuleMediaCollection {
 	id: number;
 	type: 'media_collection';
-	components: Array<{ src: string; sizes: Record<string, string> }>;
+	components: Array<{
+		src: string;
+		sizes: Record<string, string>;
+		picture: {
+			sources: PictureSource[];
+			// the rest irrelevant
+		};
+	}>;
 	// the rest irrelevant
 }
 

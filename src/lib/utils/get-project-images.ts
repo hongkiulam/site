@@ -7,14 +7,22 @@ export default async (params: { id: number; slug: string }) => {
 	const imageModules = projectModules.filter((mod) =>
 		['image', 'media_collection'].includes(mod.type)
 	);
-	const imageUrls: string[] = [];
+	const imageUrls: any[] = [];
+	const getImageFromBehanceProjectModule = (projMod) => {
+		const pictureSourceArrayAsObject = {};
+		
+		projMod.picture.sources.forEach((src) => {
+			pictureSourceArrayAsObject[src.width] = src;
+		});
+		imageUrls.push(pictureSourceArrayAsObject);
+	};
 	imageModules.forEach((mod) => {
 		if (mod.type === 'image') {
-			imageUrls.push(mod.sizes['1400']);
+			getImageFromBehanceProjectModule(mod);
 		} else {
 			// grid type
 			mod.components.forEach((comp) => {
-				imageUrls.push(comp.sizes['1400']);
+				getImageFromBehanceProjectModule(comp);
 			});
 		}
 	});
