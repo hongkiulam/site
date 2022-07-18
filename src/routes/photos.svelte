@@ -1,11 +1,13 @@
 <script context="module" lang="ts">
 	// loading images on each request was expensive
+	import { projects as projectsMockData } from '$lib/mocks/photos';
+	import { dev } from '$app/env';
 	export const prerender = true;
-
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ fetch }) {
+		if (dev) return { props: { projects: projectsMockData } };
 		const url = '/api/behance/all.json';
 
 		const res = await fetch(url);
@@ -18,7 +20,6 @@
 		}
 
 		const projects = await res.json();
-
 		return { props: { projects } };
 	}
 </script>
@@ -28,8 +29,9 @@
 	import { onMount } from 'svelte';
 	import type { MacyOptions, MacyInstance } from 'svelte-macy';
 	import type { InternalBehanceProject } from '$types/behance';
-	import BehanceSidebarItem from '$lib/components/BehanceSidebarItem.svelte';
+	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import BehanceLightbox from '$lib/components/BehanceLightbox.svelte';
+	import Sidebar from '$lib/components/shared/Sidebar.svelte';
 
 	export let projects: InternalBehanceProject[];
 	let selectedProject: InternalBehanceProject = projects[0];
@@ -72,17 +74,17 @@
 </svelte:head>
 
 <div class="sidebar-layout">
-	<aside>
+	<Sidebar>
 		{#each projects as project}
-			<BehanceSidebarItem
+			<SidebarItem
 				{project}
 				active={selectedProject === project}
 				on:click={() => {
-					selectedProject = project;
+					selectedProject = selectedProject === project ? undefined : project;
 				}}
 			/>
 		{/each}
-	</aside>
+	</Sidebar>
 	<div class="macy-container">
 		{#key selectedProject}
 			<svelte:component this={MacyComponent} bind:macy options={macyOptions}>
@@ -102,7 +104,7 @@
 	</div>
 </div>
 <BehanceLightbox
-	images={selectedProject.images}
+	images={selectedProject?.images || []}
 	imageIndex={lightboxImageIndex}
 	on:close={() => {
 		lightboxImageIndex = undefined;
@@ -118,13 +120,6 @@
 	.sidebar-layout ::-webkit-scrollbar {
 		width: 0px;
 	}
-	aside {
-		flex: 1 0 250px;
-		max-width: 250px;
-		margin-right: var(--space-l);
-		overflow-y: auto;
-	}
-
 	.macy-container {
 		display: flex;
 		width: 100%;
@@ -135,12 +130,9 @@
 	}
 	img {
 		width: 100%;
+		cursor: pointer;
 	}
 	@media only screen and (max-width: 600px) {
-		aside {
-			max-width: unset;
-			flex-basis: 100%;
-		}
 		.macy-container {
 			display: none;
 		}

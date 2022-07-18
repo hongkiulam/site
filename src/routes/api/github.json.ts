@@ -44,7 +44,7 @@ export async function get() {
 
 		// get pinned repos
 		const githubPageRes = await fetch('https://github.com/hongkiulam');
-		let githubPage = githubPageRes.ok ? await githubPageRes.text() : '';
+		const githubPage = githubPageRes.ok ? await githubPageRes.text() : '';
 
 		const root = NodeHtmlParser.parse(githubPage);
 		const pinnedRepos = root.querySelectorAll('.pinned-item-list-item-content span.repo');
