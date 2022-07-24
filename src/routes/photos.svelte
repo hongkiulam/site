@@ -28,13 +28,14 @@
 	import { browser } from '$app/env';
 	import { onMount } from 'svelte';
 	import type { MacyOptions, MacyInstance } from 'svelte-macy';
+	import autoAnimate from '@formkit/auto-animate';
 	import type { InternalBehanceProject } from '$types/behance';
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import BehanceLightbox from '$lib/components/BehanceLightbox.svelte';
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
 
 	export let projects: InternalBehanceProject[];
-	let selectedProject: InternalBehanceProject = projects[0];
+	let selectedProject: InternalBehanceProject;
 	let MacyComponent;
 	let macy: MacyInstance;
 	let macyOptions: MacyOptions = {};
@@ -77,15 +78,20 @@
 	<Sidebar>
 		{#each projects as project}
 			<SidebarItem
-				{project}
+				title={project.name}
+				link={project.url}
 				active={selectedProject === project}
 				on:click={() => {
 					selectedProject = selectedProject === project ? undefined : project;
 				}}
-			/>
+			>
+		<svelte:fragment slot="details">
+			<span>Last Modified: {project.modified_date}</span>
+		</svelte:fragment>
+		</SidebarItem>
 		{/each}
 	</Sidebar>
-	<div class="macy-container">
+	<div class="macy-container" use:autoAnimate>
 		{#key selectedProject}
 			<svelte:component this={MacyComponent} bind:macy options={macyOptions}>
 				{#each selectedProject?.images || [] as image, index}
