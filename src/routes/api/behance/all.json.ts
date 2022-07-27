@@ -5,7 +5,7 @@ import type { InternalBehanceProject } from '$types/behance';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get() {
+export async function GET() {
 	const behanceEntryUrl = 'https://www.behance.net/gallery/122144979/dummy-project';
 	try {
 		const behancePageStore = await getBehanceStore(behanceEntryUrl);
