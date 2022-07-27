@@ -5,7 +5,7 @@ import * as NodeHtmlParser from 'node-html-parser';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get() {
+export async function GET() {
 	const url = 'https://api.github.com/users/hongkiulam/repos?sort=updated';
 
 	try {
