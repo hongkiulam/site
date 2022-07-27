@@ -3,7 +3,7 @@ import getProjectImages from '$lib/utils/get-project-images';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get({ query }) {
+export async function GET({ query }) {
 	const projectId = query.get('projectId');
 	const projectSlug = query.get('projectSlug');
 	if (!projectId || !projectSlug) {

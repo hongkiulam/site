@@ -40,7 +40,7 @@ export interface PictureSource {
 	height: number;
 }
 
-interface ProjectModuleImage {
+export interface ProjectModuleImage {
 	id: number;
 	type: 'image';
 	src: string;

@@ -82,7 +82,7 @@
 			color: var(--primary);
 		}
 	}
-	@media only screen and(max-width: 600px) {
+	@media only screen and (max-width: 600px) {
 		menu {
 			display: none;
 			position: fixed;

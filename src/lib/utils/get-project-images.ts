@@ -1,5 +1,9 @@
 import getBehanceStore from './get-behance-store';
-import type { InternalBehanceProject } from '../../types/behance';
+import type {
+	InternalBehanceProject,
+	PictureSource,
+	ProjectModuleImage
+} from '../../types/behance';
 
 export default async (params: {
 	id: number;
@@ -12,8 +16,8 @@ export default async (params: {
 		['image', 'media_collection'].includes(mod.type)
 	);
 	const imageUrls: InternalBehanceProject['images'] = [];
-	const getImageFromBehanceProjectModule = (projMod) => {
-		const pictureSourceArrayAsObject = {};
+	const getImageFromBehanceProjectModule = (projMod: ProjectModuleImage) => {
+		const pictureSourceArrayAsObject: Record<number, PictureSource> = {};
 
 		projMod.picture.sources.forEach((src) => {
 			pictureSourceArrayAsObject[src.width] = src;
@@ -26,7 +30,7 @@ export default async (params: {
 		} else {
 			// grid type
 			mod.components.forEach((comp) => {
-				getImageFromBehanceProjectModule(comp);
+				getImageFromBehanceProjectModule(comp as ProjectModuleImage);
 			});
 		}
 	});

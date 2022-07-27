@@ -91,7 +91,7 @@
 	<div class="macy-container" use:autoAnimate>
 		{#key selectedProject}
 			<svelte:component this={MacyComponent} bind:macy options={macyOptions}>
-				{#each selectedProject?.images || [] as image, index}
+				{#each selectedProject?.images || [] as image}
 					<BehanceImage behanceImage={image} />
 				{/each}
 			</svelte:component>

@@ -4,9 +4,7 @@
 
 <section>
 	<article>
-		<h2>
-			👋 hi, i’m haydon! i am a software engineer from birmingham, uk 🇬🇧
-		</h2>
+		<h2>👋 hi, i’m haydon! i am a software engineer from birmingham, uk 🇬🇧</h2>
 	</article>
 	<article>
 		<h2>🚀 career...</h2>

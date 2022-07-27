@@ -14,11 +14,7 @@
 		<header>
 			<h2>{repo.name} <small>{repo.pinned ? '✨' : ''}</small></h2>
 			<div class="icons">
-				<a
-					href={repo.html_url}
-					target="_blank"
-					use:tooltip={{ message: 'Open in Github' }}
-				>
+				<a href={repo.html_url} target="_blank" use:tooltip={{ message: 'Open in Github' }}>
 					<Icon featherIcon={GithubIcon} hoverColor="var(--primary)" />
 				</a>
 				<button on:click use:tooltip={{ message: 'Open in VS Code' }}>
