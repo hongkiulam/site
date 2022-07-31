@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { InternalBehanceProject } from '$types/behance';
-	import Loader from '../Loader.svelte';
+	import Loader from '../shared/Loader.svelte';
 	export let behanceImage: InternalBehanceProject['images'][number];
 	const possibleSizes = [600, 1200, 1400, 1920, 2800];
 
@@ -102,5 +102,6 @@
 	.loader {
 		grid-column: 1/2;
 		grid-row: 1/2;
+		z-index: -1;
 	}
 </style>

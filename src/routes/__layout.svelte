@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { navigating } from '$app/stores';
 	import Nav from '$lib/components/Nav.svelte';
-	import Loader from '$lib/components/Loader.svelte';
+	import Loader from '$lib/components/shared/Loader.svelte';
 </script>
 
 <div>
