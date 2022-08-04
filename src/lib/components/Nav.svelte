@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { browser } from '$app/env';
 
 	import SunIcon from 'svelte-feather-icons/src/icons/SunIcon.svelte';
 	import MoonIcon from 'svelte-feather-icons/src/icons/MoonIcon.svelte';
@@ -7,6 +9,10 @@
 	import Icon from './Icon.svelte';
 	import tooltip from '$lib/utils/tooltip';
 
+	let darkThemeMediaQuery: MediaQueryList;
+	const darkThemeMediaListener = (e: MediaQueryListEvent) => {
+		isDarkTheme = e.matches;
+	};
 	let isDarkTheme = true;
 	let mobileshow = false;
 
@@ -17,6 +23,26 @@
 		{ href: '/photos', label: 'photos' },
 		{ href: '/about', label: 'about' }
 	];
+
+	$: if (browser) {
+		const tokensToDisable = document?.getElementById(
+			`${isDarkTheme ? 'light' : 'dark'}-design-tokens`
+		);
+		const tokensToEnable = document?.getElementById(
+			`${isDarkTheme ? 'dark' : 'light'}-design-tokens`
+		);
+		tokensToDisable?.setAttribute('media', 'none');
+		tokensToEnable?.setAttribute('media', 'all');
+	}
+
+	onMount(() => {
+		darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		isDarkTheme = darkThemeMediaQuery.matches;
+		darkThemeMediaQuery.addEventListener('change', darkThemeMediaListener);
+	});
+	onDestroy(() => {
+		darkThemeMediaQuery?.removeEventListener('change', darkThemeMediaListener);
+	});
 </script>
 
 <nav>
@@ -25,12 +51,14 @@
 		<button
 			class="theme-toggle"
 			on:click={() => {
-				document.body.classList.toggle('light');
 				isDarkTheme = !isDarkTheme;
 			}}
 			use:tooltip={{ message: `Toggle theme`, position: 'left' }}
 		>
-			<Icon featherIcon={isDarkTheme ? SunIcon : MoonIcon} hoverColor="var(--primary)" />
+			<Icon
+				featherIcon={isDarkTheme ? SunIcon : MoonIcon}
+				hoverColor="var(--color-primary-accent)"
+			/>
 		</button>
 		{#each navRoutes as route}
 			<a
@@ -47,24 +75,28 @@
 			mobileshow = true;
 		}}
 	>
-		<Icon featherIcon={MenuIcon} hoverColor="var(--primary)" />
+		<Icon featherIcon={MenuIcon} hoverColor="var(--color-primary-accent)" />
 	</button>
 </nav>
 
 <style lang="scss">
+	:global(:root) {
+		--nav-height: var(--spacing-8);
+	}
 	nav {
-		height: var(--space-xxxl);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		height: var(--nav-height);
 	}
+
 	menu {
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
-		gap: var(--space-l);
+		gap: var(--spacing-6);
 		a.active {
-			color: var(--primary);
+			color: var(--color-primary-accent);
 		}
 	}
 
@@ -77,23 +109,24 @@
 	}
 	.menu-close {
 		display: none;
-		color: var(--copy-1);
+		color: var(--color-copy-1);
 		&:hover {
-			color: var(--primary);
+			color: var(--color-primary-accent);
 		}
 	}
-	@media only screen and (max-width: 600px) {
+	@media (--breakpoints-sm-max) {
 		menu {
 			display: none;
 			position: fixed;
 			top: 0;
 			left: 0;
 			width: 100%;
-			padding: var(--space-l);
+			padding: var(--spacing-2);
+			gap: var(--spacing-2);
 			grid-auto-flow: row;
 			place-items: center;
-			background: var(--bg-1);
-			border-bottom: 2px solid var(--copy-1);
+			background: var(--color-bg-1);
+			border-bottom: 2px solid var(--color-copy-1);
 			z-index: 2;
 			animation: mobile-menu-in 0.2s;
 			&.mobileshow {
@@ -101,7 +134,7 @@
 			}
 			@keyframes mobile-menu-in {
 				from {
-					transform: translateY(calc(-1 * var(--space-xxl)));
+					transform: translateY(calc(-1 * var(--spacing-6)));
 				}
 			}
 		}

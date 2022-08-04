@@ -5,12 +5,12 @@
 <style lang="scss">
 	article {
 		display: flex;
-		color: var(--copy-2);
-		background: var(--bg-2);
+		color: var(--color-copy-2);
+		background: var(--color-bg-2);
 		border: 2px solid transparent;
 		border-radius: var(--space);
 		&:hover {
-			border-color: var(--primary);
+			border-color: var(--color-primary-accent);
 		}
 	}
 </style>

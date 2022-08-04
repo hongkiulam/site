@@ -10,7 +10,7 @@
 	ul {
 		flex: 1 0 250px;
 		max-width: 250px;
-		margin-right: var(--space-l);
+		margin-right: var(--spacing-3);
 		overflow-y: auto;
 	}
 	ul::-webkit-scrollbar {

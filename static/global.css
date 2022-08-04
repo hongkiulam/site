@@ -1,22 +1,22 @@
-:root {
-	--primary: #e88a46;
+/* :root {
+	--color-primary-accent: #e88a46;
 	--light-1: #fafafa;
 	--light-2: #d4d4d4;
 	--dark-1: #2f2f2f;
 	--dark-2: #545454;
 
-	--bg-1: var(--dark-1);
-	--bg-2: var(--dark-2);
-	--copy-1: var(--light-1);
-	--copy-2: var(--light-2);
+	--color-bg-1: var(--dark-1);
+	--color-bg-2: var(--dark-2);
+	--color-copy-1: var(--light-1);
+	--color-copy-2: var(--light-2);
 
 	--space: 12px;
-	--space-s: calc(var(--space) / 2);
-	--space-l: calc(var(--space) * 2);
+	--spacing-1: calc(var(--space) / 2);
+	--spacing-3: calc(var(--space) * 2);
 	--space-xl: calc(var(--space) * 3);
-	--space-xxl: calc(var(--space) * 4);
+	--spacing-6: calc(var(--space) * 4);
 	--space-xxxl: calc(var(--space) * 5);
-}
+} */
 
 * {
 	margin: 0;
@@ -34,16 +34,9 @@ html {
 body {
 	width: 100%;
 	font-family: 'Baloo 2', sans-serif;
-	font-size: 16px;
-	background: var(--bg-1);
-	color: var(--copy-1);
-}
-
-body.light {
-	--bg-1: var(--light-1);
-	--bg-2: var(--light-2);
-	--copy-1: var(--dark-1);
-	--copy-2: var(--dark-2);
+	font-size: var(--font-size-body);
+	background: var(--color-bg-1);
+	color: var(--color-copy-1);
 }
 
 html.noscroll {
@@ -51,8 +44,8 @@ html.noscroll {
 }
 
 h2 {
-	font-size: 24px;
-	font-weight: 400;
+	font-size: var(--font-size-h2);
+	font-weight: var(--font-weights-regular);
 }
 
 button {
@@ -72,14 +65,14 @@ a:visited {
 }
 
 a:hover {
-	color: var(--primary);
+	color: var(--color-primary-accent);
 }
 
 ::-webkit-scrollbar {
 	width: 10px;
 	height: 10px;
-	background: var(--copy-2);
+	background: var(--color-copy-2);
 }
 ::-webkit-scrollbar-thumb {
-	background: var(--bg-2);
+	background: var(--color-bg-2);
 }

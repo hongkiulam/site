@@ -1,4 +1,4 @@
-import '$lib/styles/tooltip.scss';
+import '$lib/styles/tooltip.css';
 
 interface TooltipOptions {
 	message: string;
@@ -14,7 +14,7 @@ interface TooltipOptions {
 	size?: 'small' | 'medium' | 'large' | 'fit';
 }
 
-export default (node: HTMLElement, opt: TooltipOptions) => {
+export default (node: HTMLElement, opt: TooltipOptions): void => {
 	node.setAttribute('role', 'tooltip');
 	node.setAttribute('aria-label', opt.message);
 	node.setAttribute('data-microtip-position', opt.position || 'top');

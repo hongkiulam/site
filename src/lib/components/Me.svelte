@@ -199,13 +199,13 @@
 	}
 
 	.window {
-		@include bodypart(0, 0, var(--bg-2), 0.933, 0.933);
+		@include bodypart(0, 0, var(--color-bg-2), 0.933, 0.933);
 		z-index: 0;
 		background-image: linear-gradient(
 				transparent 0%,
 				transparent 49%,
-				var(--copy-2) 49%,
-				var(--copy-2) 51%,
+				var(--color-copy-2) 49%,
+				var(--color-copy-2) 51%,
 				transparent 51%,
 				transparent 100%
 			),
@@ -213,14 +213,14 @@
 				90deg,
 				transparent 0%,
 				transparent 49%,
-				var(--copy-2) 49%,
-				var(--copy-2) 51%,
+				var(--color-copy-2) 49%,
+				var(--color-copy-2) 51%,
 				transparent 51%,
 				transparent 100%
 			);
 		// border-radius: calc(var(--width) * 0.046);
 		border-radius: 50%;
-		border: calc(var(--width) * 0.024) solid var(--copy-2);
+		border: calc(var(--width) * 0.024) solid var(--color-copy-2);
 		// overflow: hidden;
 		// .sun_moon {
 		// 	@include bodypart(-0.167, -0.3, transparent, 0.167, 0.167);

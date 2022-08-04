@@ -15,10 +15,10 @@
 			<h2>{repo.name} <small>{repo.pinned ? '✨' : ''}</small></h2>
 			<div class="icons">
 				<a href={repo.html_url} target="_blank" use:tooltip={{ message: 'Open in Github' }}>
-					<Icon featherIcon={GithubIcon} hoverColor="var(--primary)" />
+					<Icon featherIcon={GithubIcon} hoverColor="var(--color-primary-accent)" />
 				</a>
 				<button on:click use:tooltip={{ message: 'Open in VS Code' }}>
-					<Icon simpleIcon={siVisualstudiocode} hoverColor="var(--primary)" />
+					<Icon simpleIcon={siVisualstudiocode} hoverColor="var(--color-primary-accent)" />
 				</button>
 			</div>
 		</header>
@@ -72,10 +72,10 @@
 		[class*='color'] {
 			fill: currentColor;
 			vertical-align: middle;
-			stroke: var(--copy-2);
+			stroke: var(--color-copy-2);
 		}
 		span + span {
-			margin-left: var(--space-s);
+			margin-left: var(--spacing-1);
 		}
 	}
 </style>

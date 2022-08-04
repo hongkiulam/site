@@ -58,12 +58,13 @@
 
 <style>
 	section {
-		max-width: calc(var(--space-xxl) * 20);
+		max-width: calc(var(--spacing-6) * 20);
+		margin-top: var(--spacing-6);
 	}
 	article + article {
-		margin-top: var(--space-l);
+		margin-top: var(--spacing-3);
 	}
 	ul {
-		margin-left: var(--space-l);
+		margin-left: var(--spacing-3);
 	}
 </style>

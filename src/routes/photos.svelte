@@ -48,7 +48,7 @@
 				margin: Number(
 					window
 						.getComputedStyle(document.documentElement)
-						.getPropertyValue('--space')
+						.getPropertyValue('--spacing-1')
 						?.replace('px', '') || 16
 				),
 				breakAt: {
@@ -102,8 +102,7 @@
 <style>
 	.sidebar-layout {
 		display: flex;
-		height: calc(100vh - (var(--space-xxxl) + (2 * var(--space-xxl))));
-		overflow: hidden;
+		height: calc(100vh - var(--nav-height) - var(--spacing-2));
 	}
 	.sidebar-layout ::-webkit-scrollbar {
 		width: 0px;
@@ -117,7 +116,7 @@
 		width: 100%;
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media (--breapoint-sm-max) {
 		.macy-container {
 			display: none;
 		}

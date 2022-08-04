@@ -97,11 +97,11 @@
 		position: fixed;
 		top: 50%;
 		left: 50%;
-		width: calc(100% - var(--space-l));
-		height: calc(100% - var(--space-l));
+		width: calc(100% - var(--spacing-3));
+		height: calc(100% - var(--spacing-3));
 		max-width: $appWindowWidth;
 		max-height: calc(#{$appWindowWidth} * 2 / 3);
-		background: var(--bg-2);
+		background: var(--color-bg-2);
 		border-radius: var(--space);
 		overflow: hidden;
 		box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
@@ -121,14 +121,14 @@
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		box-shadow: 0px 2px var(--dark-2);
-		height: var(--space-l);
+		height: var(--spacing-3);
 		cursor: grab;
 		&:active {
 			cursor: grabbing;
 		}
 		.buttons {
-			height: var(--space-l);
-			padding: var(--space-s);
+			height: var(--spacing-3);
+			padding: var(--spacing-1);
 			display: flex;
 		}
 		button {
@@ -149,7 +149,7 @@
 				background: #43b81a;
 			}
 			& + button {
-				margin-left: var(--space-s);
+				margin-left: var(--spacing-1);
 			}
 		}
 		.title {
@@ -171,13 +171,13 @@
 		bottom: 0;
 		left: 50%;
 		transform: translateX(-50%);
-		background: var(--bg-2);
+		background: var(--color-bg-2);
 		padding: var(--space);
-		width: calc(var(--space-l) * 10);
+		width: calc(var(--spacing-3) * 10);
 		border-radius: var(--space) var(--space) 0 0;
 		opacity: 0.8;
 		cursor: pointer;
-		border: 2px solid var(--bg-1);
+		border: 2px solid var(--color-bg-1);
 		z-index: 1;
 		&:hover {
 			opacity: 1;

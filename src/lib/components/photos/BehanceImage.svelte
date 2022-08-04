@@ -14,7 +14,11 @@
 		.join(', ');
 
 	let showInLightbox = false;
-	let imageLoading = false;
+	let realImageLoading = false;
+	let imageLoadingLock = false;
+	/** Will always load for a minimum amount of time artificially */
+	$: artificalImageLoading = realImageLoading || imageLoadingLock;
+	const minimumImageLoadingTime = 500; //ms
 </script>
 
 <svelte:window
@@ -42,18 +46,26 @@
 		style="width:{behanceImage[600].width}; height:{behanceImage[600].height}"
 		alt=""
 		loading="lazy"
-		on:click|stopPropagation={(e) => {
-			showInLightbox = !showInLightbox;
-			imageLoading = true;
-		}}
 		class:lightbox-open={showInLightbox}
-		on:load={(e) => {
+		class:loading={artificalImageLoading}
+		on:click|stopPropagation={() => {
+			// trigger loading stuff when we are about to show in lightbox
+			if (!showInLightbox) {
+				realImageLoading = true;
+				imageLoadingLock = true;
+				setTimeout(() => {
+					imageLoadingLock = false;
+				}, minimumImageLoadingTime);
+			}
+			showInLightbox = !showInLightbox;
+		}}
+		on:load={() => {
 			if (showInLightbox) {
-				imageLoading = false;
+				realImageLoading = false;
 			}
 		}}
 	/>
-	{#if showInLightbox && imageLoading}
+	{#if showInLightbox && artificalImageLoading}
 		<div class="loader">
 			<Loader />
 		</div>
@@ -72,6 +84,21 @@
 		grid-column: 1/2;
 		grid-row: 1/2;
 	}
+	img.loading {
+		visibility: hidden;
+		height: 1px;
+	}
+	img:not(.loading) {
+		animation: image-fade 0.3s ease forwards;
+	}
+	@keyframes image-fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 	.backdrop {
 		position: fixed;
 		top: 0;
@@ -82,6 +109,11 @@
 		height: 100vh;
 		z-index: 1;
 	}
+	.lightbox {
+		/* fixes funny div additional spacing behaviour */
+		display: grid;
+		place-items: center;
+	}
 	/* important to override style attribute set by macy */
 	.lightbox.open {
 		position: fixed !important;
@@ -89,8 +121,6 @@
 		transform: translateY(-50%);
 		left: 0 !important;
 		z-index: 2;
-		display: grid;
-		place-items: center;
 		grid-template-columns: 1fr;
 		grid-template-rows: 1fr;
 		justify-content: center;

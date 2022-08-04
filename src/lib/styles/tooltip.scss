@@ -1,8 +1,0 @@
-@import 'microtip/microtip';
-
-[aria-label][role~='tooltip'] {
-	&::after {
-		line-height: initial;
-		color: var(--light-1);
-	}
-}

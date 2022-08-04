@@ -28,15 +28,15 @@
 		height: var(--size);
 	}
 	.icon-styler.feather :global(svg) {
-		stroke: var(--copy-1);
+		stroke: var(--color-copy-1);
 		&:hover {
-			stroke: var(--hover-color, var(--copy-1));
+			stroke: var(--hover-color, var(--color-copy-1));
 		}
 	}
 	.icon-styler.simple :global(svg) {
-		fill: var(--copy-1);
+		fill: var(--color-copy-1);
 		&:hover {
-			fill: var(--hover-color, var(--copy-1));
+			fill: var(--hover-color, var(--color-copy-1));
 		}
 	}
 </style>

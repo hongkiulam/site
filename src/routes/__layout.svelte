@@ -16,11 +16,13 @@
 
 <style>
 	div {
-		padding: 0 var(--space-xxl);
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		padding-inline: var(--spacing-8);
+		padding-block-end: var(--spacing-2);
 	}
-	main {
-		padding: var(--space-xxl) 0;
-	}
+
 	.navigating {
 		opacity: 0.1;
 		pointer-events: none;
@@ -32,5 +34,10 @@
 		transform: translate(-50%, -50%);
 		display: grid;
 		place-items: center;
+	}
+	@media (--breakpoints-sm-max) {
+		div {
+			padding-inline: var(--spacing-3);
+		}
 	}
 </style>
