@@ -7,5 +7,7 @@ declare namespace App {
 	// interface Locals {}
 	// interface Platform {}
 	// interface Session {}
-	// interface Stuff {}
+	interface Stuff {
+		projects?: import('$types/behance').InternalBehanceProject[];
+	}
 }

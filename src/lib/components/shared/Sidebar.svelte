@@ -16,7 +16,7 @@
 	ul::-webkit-scrollbar {
 		display: none;
 	}
-	@media only screen and (max-width: 600px) {
+	@media (--breakpoints-sm-max) {
 		ul {
 			max-width: unset;
 			flex-basis: 100%;

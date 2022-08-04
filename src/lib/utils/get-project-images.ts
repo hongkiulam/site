@@ -7,9 +7,9 @@ import type {
 
 export default async (params: {
 	id: number;
-	slug: string;
+	slug?: string;
 }): Promise<InternalBehanceProject['images']> => {
-	const projectPath = params.id + '/' + params.slug;
+	const projectPath = params.id + '/' + params.slug || 'randomslug'; // slug doesn't appear to be important
 	const pageStore = await getBehanceStore(`https://behance.net/gallery/${projectPath}`);
 	const projectModules = pageStore.project.project.modules;
 	const imageModules = projectModules.filter((mod) =>
