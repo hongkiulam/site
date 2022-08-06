@@ -113,10 +113,12 @@
 		}
 	}
 
-	.theme-toggle, .menu-open{
-		color:var(--color-copy-1);
+	.theme-toggle,
+	.menu-open {
+		color: var(--color-copy-1);
 	}
-	.theme-toggle:hover,.menu-open:hover{
+	.theme-toggle:hover,
+	.menu-open:hover {
 		color: var(--color-primary-accent);
 	}
 	@media (--breakpoints-sm-max) {
