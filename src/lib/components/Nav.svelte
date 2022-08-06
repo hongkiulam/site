@@ -1,12 +1,8 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
+	import { Menu, Moon, Sun } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { browser } from '$app/env';
-
-	import SunIcon from 'svelte-feather-icons/src/icons/SunIcon.svelte';
-	import MoonIcon from 'svelte-feather-icons/src/icons/MoonIcon.svelte';
-	import MenuIcon from 'svelte-feather-icons/src/icons/MenuIcon.svelte';
-	import Icon from './Icon.svelte';
 	import tooltip from '$lib/utils/tooltip';
 
 	let darkThemeMediaQuery: MediaQueryList;
@@ -55,10 +51,11 @@
 			}}
 			use:tooltip={{ message: `Toggle theme`, position: 'left' }}
 		>
-			<Icon
-				featherIcon={isDarkTheme ? SunIcon : MoonIcon}
-				hoverColor="var(--color-primary-accent)"
-			/>
+			{#if isDarkTheme}
+				<Sun />
+			{:else}
+				<Moon />
+			{/if}
 		</button>
 		{#each navRoutes as route}
 			<a
@@ -75,7 +72,7 @@
 			mobileshow = true;
 		}}
 	>
-		<Icon featherIcon={MenuIcon} hoverColor="var(--color-primary-accent)" />
+		<Menu />
 	</button>
 </nav>
 
@@ -103,6 +100,7 @@
 	.theme-toggle {
 		line-height: 0px;
 	}
+
 	.menu-open {
 		display: none;
 		line-height: 0px;
@@ -113,6 +111,13 @@
 		&:hover {
 			color: var(--color-primary-accent);
 		}
+	}
+
+	.theme-toggle, .menu-open{
+		color:var(--color-copy-1);
+	}
+	.theme-toggle:hover,.menu-open:hover{
+		color: var(--color-primary-accent);
 	}
 	@media (--breakpoints-sm-max) {
 		menu {

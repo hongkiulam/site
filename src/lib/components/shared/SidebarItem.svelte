@@ -1,7 +1,5 @@
 <script lang="ts">
 	import autoAnimate from '@formkit/auto-animate';
-	import { siBehance } from 'simple-icons/icons';
-	import Icon from '../Icon.svelte';
 	export let active: boolean = false;
 	export let title: string;
 	export let iconHref: string;

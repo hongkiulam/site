@@ -1,11 +1,10 @@
 <script lang="ts">
-	import MinusIcon from 'svelte-feather-icons/src/icons/MinusIcon.svelte';
-	import Icon from '$lib/components/Icon.svelte';
+	import { Minus } from 'lucide-svelte';
 	export let size: number = 36;
 </script>
 
 <div class="loader">
-	<Icon featherIcon={MinusIcon} {size} />
+	<Minus {size} />
 </div>
 
 <style>

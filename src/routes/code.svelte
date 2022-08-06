@@ -1,19 +1,24 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
+	import { dev } from '$app/env';
+	import { repos as reposMockData } from '$lib/mocks/code';
+
 	export const load: Load = async () => {
-		const url = '/api/github.json';
+		let repos: EnhancedGithubRepo[] = reposMockData;
+		if (!dev) {
+			const url = '/api/github.json';
 
-		const res = await fetch(url);
+			const res = await fetch(url);
 
-		if (!res.ok) {
-			return {
-				status: res.status,
-				error: new Error(`Could not load ${url}`)
-			};
+			if (!res.ok) {
+				return {
+					status: res.status,
+					error: new Error(`Could not load ${url}`)
+				};
+			}
+
+			repos = await res.json();
 		}
-
-		const repos: EnhancedGithubRepo[] = await res.json();
-
 		return { props: { repos } };
 	};
 </script>
