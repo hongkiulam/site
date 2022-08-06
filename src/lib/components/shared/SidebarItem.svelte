@@ -4,17 +4,16 @@
 	import Icon from '../Icon.svelte';
 	export let active: boolean = false;
 	export let title: string;
-	export let href = 'javascript:;';
 	export let iconHref: string;
 </script>
 
 <li class="sidebar-item" use:autoAnimate>
-	<a class="button" {href} on:click class:active>
+	<button class="button" on:click class:active>
 		<span class="title">{title}</span>
 		<a class="behance-button" href={iconHref} target="_blank" on:click|stopPropagation={() => {}}>
 			<Icon simpleIcon={siBehance} hoverColor="var(--color-primary-accent)" size={20} />
 		</a>
-	</a>
+	</button>
 	{#if active}
 		<div class="details"><slot name="details" /></div>
 	{/if}

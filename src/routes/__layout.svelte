@@ -1,8 +1,3 @@
-<script context="module">
-	import { writable } from 'svelte/store';
-	export const blockNavigationLoader = writable(false);
-</script>
-
 <script lang="ts">
 	import { navigating as actuallyNavigating } from '$app/stores';
 	import Nav from '$lib/components/Nav.svelte';
@@ -12,12 +7,7 @@
 
 	$: perceivedNavigating = $actuallyNavigating || artificalNavigating;
 
-	$: if (!$actuallyNavigating) {
-		// finished navigating, turn on navigation loader again for
-		// next navigation
-		$blockNavigationLoader = false;
-	}
-	$: if (!!$actuallyNavigating && !$blockNavigationLoader) {
+	$: if (!!$actuallyNavigating) {
 		// started navigation, begin artificial loading
 		artificalNavigating = true;
 		setTimeout(() => {
@@ -28,10 +18,10 @@
 
 <div>
 	<Nav />
-	{#if perceivedNavigating && !$blockNavigationLoader}
+	{#if perceivedNavigating}
 		<div class="loader-container"><Loader /></div>
 	{/if}
-	<main class:navigating={perceivedNavigating && !$blockNavigationLoader}>
+	<main class:navigating={perceivedNavigating}>
 		<slot />
 	</main>
 </div>
