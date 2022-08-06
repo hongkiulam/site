@@ -2,7 +2,6 @@
 	// loading images on each request was expensive
 	import { projects as projectsMockData } from '$lib/mocks/photos';
 	import { dev } from '$app/env';
-	export const prerender = true;
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
@@ -21,13 +20,13 @@
 		}
 
 		const projects = await res.json();
-		return { props: { projects }, stuff: projects };
+		return { props: { projects }, stuff: { projects } };
 	}
 </script>
 
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import type { InternalBehanceProject } from '$types/behance';
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
@@ -42,7 +41,7 @@
 		{#each projects as project}
 			<SidebarItem
 				title={project.name}
-				link={project.url}
+				iconHref={project.url}
 				active={project?.id === projectId}
 				on:click={() => {
 					$blockNavigationLoader = true;

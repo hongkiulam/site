@@ -22,7 +22,7 @@
 		artificalNavigating = true;
 		setTimeout(() => {
 			artificalNavigating = false;
-		}, 800);
+		}, 300);
 	}
 </script>
 

@@ -1,20 +1,20 @@
 <script lang="ts">
 	import autoAnimate from '@formkit/auto-animate';
 	import { siBehance } from 'simple-icons/icons';
-	import type { InternalBehanceProject } from '$types/behance';
 	import Icon from '../Icon.svelte';
 	export let active: boolean = false;
 	export let title: string;
-	export let link: string;
+	export let href = 'javascript:;';
+	export let iconHref: string;
 </script>
 
 <li class="sidebar-item" use:autoAnimate>
-	<button on:click class:active>
+	<a class="button" {href} on:click class:active>
 		<span class="title">{title}</span>
-		<a class="behance-button" href={link} target="_blank" on:click|stopPropagation={() => {}}>
+		<a class="behance-button" href={iconHref} target="_blank" on:click|stopPropagation={() => {}}>
 			<Icon simpleIcon={siBehance} hoverColor="var(--color-primary-accent)" size={20} />
 		</a>
-	</button>
+	</a>
 	{#if active}
 		<div class="details"><slot name="details" /></div>
 	{/if}
@@ -30,7 +30,7 @@
 	.sidebar-item + :global(.sidebar-item) {
 		margin-top: var(--spacing-1);
 	}
-	.sidebar-item button {
+	.sidebar-item .button {
 		display: flex;
 		color: inherit;
 		border-radius: var(--border-radius-s);
@@ -55,7 +55,7 @@
 		text-overflow: ellipsis;
 		text-align: left;
 	}
-	.sidebar-item button a {
+	.sidebar-item .button a {
 		line-height: 100%;
 		margin-left: var(--spacing-1);
 	}
