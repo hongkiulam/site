@@ -11,7 +11,7 @@
 	<button class="button" on:click class:active>
 		<span class="title">{title}</span>
 		<a class="behance-button" href={iconHref} target="_blank" on:click|stopPropagation={() => {}}>
-			<Icon simpleIcon={siBehance} hoverColor="var(--color-primary-accent)" size={20} />
+			<slot name="icon" />
 		</a>
 	</button>
 	{#if active}

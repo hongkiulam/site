@@ -28,7 +28,7 @@
 <script lang="ts">
 	import { onMount, SvelteComponentTyped } from 'svelte';
 	import autoAnimate from '@formkit/auto-animate';
-	import { Image } from 'lucide-svelte';
+	import { ExternalLink, Image } from 'lucide-svelte';
 	import { browser } from '$app/env';
 	import { beforeNavigate } from '$app/navigation';
 	import type { InternalBehanceProject } from '$types/behance';
@@ -94,6 +94,10 @@
 					selectedProject = selectedProject?.id === project.id ? undefined : project;
 				}}
 			>
+				<svelte:fragment slot="icon">
+					<ExternalLink style="width:var(--font-size-body);height:var(--font-size-body)" />
+				</svelte:fragment>
+
 				<svelte:fragment slot="details">
 					<span>Last Modified: {project.modified_date}</span>
 				</svelte:fragment>
