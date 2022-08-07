@@ -98,6 +98,7 @@
 				</svelte:fragment>
 
 				<svelte:fragment slot="details">
+					<span>{project.images.length} Photo(s)</span>
 					<span>Last Modified: {project.modified_date}</span>
 				</svelte:fragment>
 			</SidebarItem>
