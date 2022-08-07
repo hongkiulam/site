@@ -1,28 +1,28 @@
 <script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
 	// loading images on each request was expensive
 	import { projects as projectsMockData } from '$lib/mocks/photos';
 	import { dev } from '$app/env';
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ fetch }: { fetch: any }) {
-		let projects = projectsMockData;
-		if (!dev) {
-			const url = '/api/behance/all.json';
+	export const prerender = true;
 
-			const res = await fetch(url);
+	export const load: Load = async ({ fetch }) => {
+		let projects: InternalBehanceProject[] = [];
+		if (dev) {
+			projects = projectsMockData as any;
+		} else {
+			const res = await fetch('/api/behance/all.json');
 
 			if (!res.ok) {
 				return {
 					status: res.status,
-					error: new Error(`Could not load ${url}`)
+					error: new Error(`Could not load photos`)
 				};
 			}
 
 			projects = await res.json();
 		}
 		return { props: { projects } };
-	}
+	};
 </script>
 
 <script lang="ts">

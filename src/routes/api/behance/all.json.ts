@@ -1,11 +1,9 @@
 import getBehanceStore from '$lib/utils/get-behance-store';
 import getProjectImages from '$lib/utils/get-project-images';
 import type { InternalBehanceProject } from '$types/behance';
+import type { RequestHandler } from '@sveltejs/kit';
 
-/**
- * @type {import('@sveltejs/kit').RequestHandler}
- */
-export async function GET() {
+export const GET: RequestHandler<Record<string, string>, InternalBehanceProject[]> = async () => {
 	const behanceEntryUrl = 'https://www.behance.net/gallery/122144979/dummy-project';
 	try {
 		const behancePageStore = await getBehanceStore(behanceEntryUrl);
@@ -33,4 +31,4 @@ export async function GET() {
 	} catch {
 		return { status: 500 };
 	}
-}
+};

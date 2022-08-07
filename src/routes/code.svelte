@@ -3,17 +3,17 @@
 	import { dev } from '$app/env';
 	import { repos as reposMockData } from '$lib/mocks/code';
 
-	export const load: Load = async () => {
-		let repos: EnhancedGithubRepo[] = reposMockData;
-		if (!dev) {
-			const url = '/api/github.json';
-
-			const res = await fetch(url);
+	export const load: Load = async ({ fetch }) => {
+		let repos: EnhancedGithubRepo[] = [];
+		if (dev) {
+			repos = reposMockData;
+		} else {
+			const res = await fetch('/api/github.json');
 
 			if (!res.ok) {
 				return {
 					status: res.status,
-					error: new Error(`Could not load ${url}`)
+					error: new Error(`Could not load github projects`)
 				};
 			}
 
