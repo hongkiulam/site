@@ -1,11 +1,12 @@
 <script lang="ts">
-	import autoAnimate from '@formkit/auto-animate';
+	import { slide } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
 	export let active: boolean = false;
 	export let title: string;
 	export let iconHref: string;
 </script>
 
-<li class="sidebar-item" use:autoAnimate>
+<li class="sidebar-item">
 	<button class="button" on:click class:active>
 		<span class="title">{title}</span>
 		<a class="behance-button" href={iconHref} target="_blank" on:click|stopPropagation={() => {}}>
@@ -13,7 +14,7 @@
 		</a>
 	</button>
 	{#if active}
-		<div class="details"><slot name="details" /></div>
+		<div class="details" transition:slide={{ easing: expoOut }}><slot name="details" /></div>
 	{/if}
 </li>
 

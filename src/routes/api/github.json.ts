@@ -1,12 +1,9 @@
 import { variables } from '$lib/variables';
 import type { EnhancedGithubRepo, GithubRepo } from '$types/github';
+import type { RequestHandler } from '@sveltejs/kit';
 import axios from 'axios';
-import * as NodeHtmlParser from 'node-html-parser';
 
-/**
- * @type {import('@sveltejs/kit').RequestHandler}
- */
-export async function GET() {
+export const GET: RequestHandler<Record<string, string>, EnhancedGithubRepo[]> = async () => {
 	const url = 'https://api.github.com/users/hongkiulam/repos?sort=updated';
 
 	try {
@@ -71,4 +68,4 @@ export async function GET() {
 	} catch {
 		return { status: 500 };
 	}
-}
+};

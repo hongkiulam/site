@@ -27,7 +27,6 @@
 
 <script lang="ts">
 	import { onMount, SvelteComponentTyped } from 'svelte';
-	import autoAnimate from '@formkit/auto-animate';
 	import { ExternalLink, Image } from 'lucide-svelte';
 	import { browser } from '$app/env';
 	import { beforeNavigate } from '$app/navigation';
@@ -106,7 +105,7 @@
 	</Sidebar>
 	<section class="photo-content" class:photo-view={!!selectedProject}>
 		{#if selectedProject}
-			<div class="macy-container" use:autoAnimate>
+			<div class="macy-container">
 				{#key selectedProject?.id}
 					<svelte:component this={MacyComponent} bind:macy options={macyOptions}>
 						{#each selectedProject?.images || [] as image}
