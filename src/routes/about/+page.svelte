@@ -15,7 +15,7 @@
 		</ul>
 	</article>
 	<article>
-		<h2>❤️ things i link...</h2>
+		<h2>❤️ things i like...</h2>
 		<ul>
 			<li>bullet journalling</li>
 			<li>watching anime</li>
@@ -45,13 +45,14 @@
 		</ul>
 	</article>
 	<article>
-		<h2>🦉 find me...</h2>
+		<h2>🦉 find out more...</h2>
 		<ul>
 			<li><a href="https://github.com/hongkiulam" target="_blank">github</a></li>
 			<li><a href="https://linkedin.com/in/haydonlam" target="_blank">linkedin</a></li>
 			<li><a href="https://instagr.am/haydonlam" target="_blank">instagram</a></li>
 			<li><a href="https://behance.net/haydonlam" target="_blank">behance</a></li>
 			<li><a href="mailto:lamhaydon@gmail.com?subject=Hi Haydon!" target="_blank">email</a></li>
+			<li><a href="/about/timeline">career timeline</a></li>
 		</ul>
 	</article>
 </section>
