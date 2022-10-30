@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, SvelteComponentTyped } from 'svelte';
+	import { onMount } from 'svelte';
 	import { ExternalLink, Image } from 'lucide-svelte';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
@@ -7,37 +7,34 @@
 	import BehanceImage from '$lib/components/photos/BehanceImage.svelte';
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
-	import type { MacyOptions, MacyInstance } from 'svelte-macy';
+	import type { MacyOptions, MacyInstance, Macy } from 'svelte-macy';
 
 	export let data: import('./$types').PageData;
 	$: projects = data?.projects;
 	let selectedProject: InternalBehanceProject | undefined;
 
-	let MacyComponent: SvelteComponentTyped;
+	let MacyComponent: typeof Macy;
 	let macy: MacyInstance;
 	let macyOptions: MacyOptions = {};
 
-	if (browser) {
-		onMount(async () => {
-			console.log('mount');
-			MacyComponent = (await import('svelte-macy')).Macy as any;
-			macyOptions = {
-				columns: 5,
-				margin: Number(
-					window
-						.getComputedStyle(document.documentElement)
-						.getPropertyValue('--spacing-1')
-						?.replace('px', '') || 16
-				),
-				breakAt: {
-					1100: { columns: 1 },
-					1500: { columns: 2 },
-					1800: { columns: 3 },
-					2000: { columns: 4 }
-				}
-			};
-		});
-	}
+	onMount(async () => {
+		MacyComponent = (await import('svelte-macy')).Macy;
+		macyOptions = {
+			columns: 5,
+			margin: Number(
+				window
+					.getComputedStyle(document.documentElement)
+					.getPropertyValue('--spacing-1')
+					?.replace('px', '') || 16
+			),
+			breakAt: {
+				1100: { columns: 1 },
+				1500: { columns: 2 },
+				1800: { columns: 3 },
+				2000: { columns: 4 }
+			}
+		};
+	});
 	$: if (macy) {
 		macy.runOnImageLoad(() => {
 			macy.recalculate(true, true);

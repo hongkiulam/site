@@ -19,7 +19,7 @@ specifiers:
   sass: ^1.35.1
   svelte: ^3.49.0
   svelte-check: ^2.0.0
-  svelte-macy: 1.1.4
+  svelte-macy: ^1.2.0
   svelte-preprocess: ^4.0.0
   svelte2tsx: ^0.4.12
   tslib: ^2.0.0
@@ -47,7 +47,7 @@ devDependencies:
   sass: 1.35.1
   svelte: 3.49.0
   svelte-check: 2.2.0_wn4j6whynht5ryg7xmbrp5qitq
-  svelte-macy: 1.1.4
+  svelte-macy: 1.2.0
   svelte-preprocess: 4.7.3_ew3jsdhem653r4g7ftvld6fg7q
   svelte2tsx: 0.4.14_woovk77sm6kj2davde7jdwv3tq
   tslib: 2.3.0
@@ -2095,8 +2095,8 @@ packages:
       svelte: 3.49.0
     dev: true
 
-  /svelte-macy/1.1.4:
-    resolution: {integrity: sha512-s5WdsH72htRKMcyJDIJN1NBVIqXpuZmIkhu4EKY+pLe0ZO+863w268RNivF8kCqOFOc9GOvca15XDzUCJbMXMg==}
+  /svelte-macy/1.2.0:
+    resolution: {integrity: sha512-TKhRSya37Tl2I4lnTXPdMzu3cN/JjXWOEsqYC+FrBvXTbbgLAQyJJ8jSW6eOuxxO0tKJ+TKmnjiST3+QU/dLng==}
     dependencies:
       macy: 2.5.1
     dev: true
