@@ -1,35 +1,12 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import { dev } from '$app/env';
-	import { repos as reposMockData } from '$lib/mocks/code';
-
-	export const load: Load = async ({ fetch }) => {
-		let repos: EnhancedGithubRepo[] = [];
-		if (dev) {
-			repos = reposMockData;
-		} else {
-			const res = await fetch('/api/github.json');
-
-			if (!res.ok) {
-				return {
-					status: res.status,
-					error: new Error(`Could not load github projects`)
-				};
-			}
-
-			repos = await res.json();
-		}
-		return { props: { repos } };
-	};
-</script>
-
 <script lang="ts">
 	import type { EnhancedGithubRepo } from '$types/github';
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import { Code2, Github } from 'lucide-svelte';
+	import githubLanguageColors from '$lib/utils/github-language-colors';
 
-	export let repos: EnhancedGithubRepo[];
+	export let data: import('./$types').PageData;
+	$: repos = data.repos;
 	let selectedRepo: EnhancedGithubRepo | undefined;
 </script>
 
@@ -39,7 +16,7 @@
 
 <div class="sidebar-layout">
 	<Sidebar>
-		{#each repos as repo}
+		{#each repos || [] as repo}
 			<SidebarItem
 				title={repo.name}
 				iconHref={repo.html_url}
@@ -55,12 +32,12 @@
 					<span>{repo.description || '-no description-'}</span>
 					<hr />
 					<ul class="languages">
-						{#each repo.languages.map((l) => l.toLowerCase()) as language}
-							<li class="language-item color-{language}">
+						{#each repo.languages as language}
+							<li class="language-item" style:color={githubLanguageColors[language]}>
 								<span class="language-text">
-									{language}
+									{language.toLowerCase()}
 								</span>
-								<span class="language-shadow">{language}</span>
+								<span class="language-shadow">{language.toLowerCase()}</span>
 							</li>
 						{/each}
 					</ul>
@@ -94,7 +71,6 @@
 		width: 100%;
 	}
 
-	@import url('https://quickutils.github.io/language-colors/language-colors.css');
 	.languages {
 		display: flex;
 		flex-wrap: wrap;

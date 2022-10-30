@@ -2,7 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { Menu, Moon, Sun } from 'lucide-svelte';
 	import { page } from '$app/stores';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import tooltip from '$lib/utils/tooltip';
 
 	let darkThemeMediaQuery: MediaQueryList;

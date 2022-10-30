@@ -1,34 +1,7 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	// loading images on each request was expensive
-	import { projects as projectsMockData } from '$lib/mocks/photos';
-	import { dev } from '$app/env';
-	export const prerender = true;
-
-	export const load: Load = async ({ fetch }) => {
-		let projects: InternalBehanceProject[] = [];
-		if (dev) {
-			projects = projectsMockData as any;
-		} else {
-			const res = await fetch('/api/behance/all.json');
-
-			if (!res.ok) {
-				return {
-					status: res.status,
-					error: new Error(`Could not load photos`)
-				};
-			}
-
-			projects = await res.json();
-		}
-		return { props: { projects } };
-	};
-</script>
-
 <script lang="ts">
 	import { onMount, SvelteComponentTyped } from 'svelte';
 	import { ExternalLink, Image } from 'lucide-svelte';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import type { InternalBehanceProject } from '$types/behance';
 	import BehanceImage from '$lib/components/photos/BehanceImage.svelte';
@@ -36,7 +9,8 @@
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
 	import type { MacyOptions, MacyInstance } from 'svelte-macy';
 
-	export let projects: InternalBehanceProject[];
+	export let data: import('./$types').PageData;
+	$: projects = data?.projects;
 	let selectedProject: InternalBehanceProject | undefined;
 
 	let MacyComponent: SvelteComponentTyped;
@@ -45,6 +19,7 @@
 
 	if (browser) {
 		onMount(async () => {
+			console.log('mount');
 			MacyComponent = (await import('svelte-macy')).Macy as any;
 			macyOptions = {
 				columns: 5,
@@ -84,7 +59,7 @@
 
 <div class="sidebar-layout" class:photo-view={!!selectedProject}>
 	<Sidebar>
-		{#each projects as project}
+		{#each projects || [] as project}
 			<SidebarItem
 				title={project.name}
 				iconHref={project.url}

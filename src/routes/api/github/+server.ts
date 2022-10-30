@@ -1,9 +1,9 @@
 import { variables } from '$lib/variables';
 import type { EnhancedGithubRepo, GithubRepo } from '$types/github';
-import type { RequestHandler } from '@sveltejs/kit';
+import { error, json, type RequestHandler } from '@sveltejs/kit';
 import axios from 'axios';
 
-export const GET: RequestHandler<Record<string, string>, EnhancedGithubRepo[]> = async () => {
+export const GET: RequestHandler = async () => {
 	const url = 'https://api.github.com/users/hongkiulam/repos?sort=updated';
 
 	try {
@@ -61,11 +61,8 @@ export const GET: RequestHandler<Record<string, string>, EnhancedGithubRepo[]> =
 				return b.pinned ? 1 : -1; // move pinned items to the start
 			});
 
-		return {
-			body: enhancedGithubRepos,
-			status: 200
-		};
+		return json(enhancedGithubRepos);
 	} catch {
-		return { status: 500 };
+		return error(500)
 	}
 };
