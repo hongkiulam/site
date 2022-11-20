@@ -1,45 +1,16 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { ExternalLink, Image } from 'lucide-svelte';
-	import { browser } from '$app/environment';
+	import Masonry from 'svelte-bricks';
 	import { beforeNavigate } from '$app/navigation';
 	import type { InternalBehanceProject } from '$types/behance';
 	import BehanceImage from '$lib/components/photos/BehanceImage.svelte';
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
-	import type { MacyOptions, MacyInstance, Macy } from 'svelte-macy';
 
 	export let data: import('./$types').PageData;
 	$: projects = data?.projects;
 	let selectedProject: InternalBehanceProject | undefined;
 
-	let MacyComponent: typeof Macy;
-	let macy: MacyInstance;
-	let macyOptions: MacyOptions = {};
-
-	onMount(async () => {
-		MacyComponent = (await import('svelte-macy')).Macy;
-		macyOptions = {
-			columns: 5,
-			margin: Number(
-				window
-					.getComputedStyle(document.documentElement)
-					.getPropertyValue('--spacing-1')
-					?.replace('px', '') || 16
-			),
-			breakAt: {
-				1100: { columns: 1 },
-				1500: { columns: 2 },
-				1800: { columns: 3 },
-				2000: { columns: 4 }
-			}
-		};
-	});
-	$: if (macy) {
-		macy.runOnImageLoad(() => {
-			macy.recalculate(true, true);
-		}, true);
-	}
 	beforeNavigate(({ cancel }) => {
 		if (selectedProject && window.innerWidth <= 600) {
 			cancel();
@@ -78,13 +49,18 @@
 	</Sidebar>
 	<section class="photo-content" class:photo-view={!!selectedProject}>
 		{#if selectedProject}
-			<div class="macy-container">
+			<div class="masonry-container">
 				{#key selectedProject?.id}
-					<svelte:component this={MacyComponent} bind:macy options={macyOptions}>
-						{#each selectedProject?.images || [] as image}
-							<BehanceImage behanceImage={image} />
-						{/each}
-					</svelte:component>
+					<Masonry
+						animate={false}
+						minColWidth={250}
+						maxColWidth={600}
+						items={selectedProject?.images || []}
+						getId={(item) => Object.values(item)[0].srcset}
+						let:item
+					>
+						<BehanceImage behanceImage={item} />
+					</Masonry>
 				{/key}
 			</div>
 		{:else}
@@ -111,14 +87,12 @@
 		place-items: center;
 		width: 100%;
 	}
-	.macy-container {
+	.masonry-container {
 		display: flex;
 		width: 100%;
 		overflow: auto;
 	}
-	.macy-container :global(#macy) {
-		width: 100%;
-	}
+
 	@media (--breakpoints-sm-max) {
 		/* the sidebar */
 		.sidebar-layout.photo-view > :global(ul) {

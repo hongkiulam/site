@@ -32,22 +32,52 @@
 	<div class="backdrop" />
 {/if}
 
-<div
-	class="lightbox"
-	class:open={showInLightbox}
-	on:click={() => {
-		showInLightbox = false;
-	}}
->
+<div class="image-container">
+	<div
+		class="lightbox"
+		class:open={showInLightbox}
+		on:click={() => {
+			showInLightbox = false;
+		}}
+	>
+		<img
+			srcset={showInLightbox ? srcset : undefined}
+			sizes={showInLightbox ? sizes : undefined}
+			src={behanceImage[600].srcset}
+			style="width:{behanceImage[600].width}; height:{behanceImage[600].height}"
+			alt=""
+			loading="lazy"
+			class:lightbox-open={showInLightbox}
+			class:loading={artificalImageLoading}
+			on:click|stopPropagation={() => {
+				// trigger loading stuff when we are about to show in lightbox
+				if (!showInLightbox) {
+					realImageLoading = true;
+					imageLoadingLock = true;
+					setTimeout(() => {
+						imageLoadingLock = false;
+					}, minimumImageLoadingTime);
+				}
+				showInLightbox = !showInLightbox;
+			}}
+			on:load={() => {
+				if (showInLightbox) {
+					realImageLoading = false;
+				}
+			}}
+		/>
+		{#if showInLightbox && artificalImageLoading}
+			<div class="loader">
+				<Loader />
+			</div>
+		{/if}
+	</div>
+
 	<img
-		srcset={showInLightbox ? srcset : undefined}
-		sizes={showInLightbox ? sizes : undefined}
 		src={behanceImage[600].srcset}
 		style="width:{behanceImage[600].width}; height:{behanceImage[600].height}"
 		alt=""
 		loading="lazy"
-		class:lightbox-open={showInLightbox}
-		class:loading={artificalImageLoading}
 		on:click|stopPropagation={() => {
 			// trigger loading stuff when we are about to show in lightbox
 			if (!showInLightbox) {
@@ -59,17 +89,7 @@
 			}
 			showInLightbox = !showInLightbox;
 		}}
-		on:load={() => {
-			if (showInLightbox) {
-				realImageLoading = false;
-			}
-		}}
 	/>
-	{#if showInLightbox && artificalImageLoading}
-		<div class="loader">
-			<Loader />
-		</div>
-	{/if}
 </div>
 
 <style>
@@ -109,13 +129,19 @@
 		height: 100vh;
 		z-index: 1;
 	}
-	.lightbox {
-		/* fixes funny div additional spacing behaviour */
+	.image-container {
 		display: grid;
+		/* fixes funny div additional spacing behaviour */
 		place-items: center;
 	}
+	.lightbox {
+		display: none;
+	}
+	
 	/* important to override style attribute set by macy */
 	.lightbox.open {
+		display: grid;
+		place-items: center;
 		position: fixed !important;
 		top: 50% !important;
 		transform: translateY(-50%);

@@ -18,8 +18,8 @@ specifiers:
   prettier-plugin-svelte: ^2.2.0
   sass: ^1.35.1
   svelte: ^3.49.0
+  svelte-bricks: ^0.1.7
   svelte-check: ^2.0.0
-  svelte-macy: ^1.2.0
   svelte-preprocess: ^4.0.0
   svelte2tsx: ^0.4.12
   tslib: ^2.0.0
@@ -46,8 +46,8 @@ devDependencies:
   prettier-plugin-svelte: 2.3.1_n5uqtrof44s2kzuvtjlxoqxfqm
   sass: 1.35.1
   svelte: 3.49.0
+  svelte-bricks: 0.1.7
   svelte-check: 2.2.0_wn4j6whynht5ryg7xmbrp5qitq
-  svelte-macy: 1.2.0
   svelte-preprocess: 4.7.3_ew3jsdhem653r4g7ftvld6fg7q
   svelte2tsx: 0.4.14_woovk77sm6kj2davde7jdwv3tq
   tslib: 2.3.0
@@ -1497,11 +1497,6 @@ packages:
       svelte2tsx: 0.4.14_woovk77sm6kj2davde7jdwv3tq
     dev: true
 
-  /macy/2.5.1:
-    resolution: {integrity: sha512-+y4WYyh3rl4G8UczZP30pXxhLQRZ941QcaDmWoGefzUBXdwNW8TOhjjN1g5i/VG3SmiSsHgpjVXhlnZ84P2QMw==}
-    engines: {node: '>= 0.9'}
-    dev: true
-
   /magic-string/0.26.2:
     resolution: {integrity: sha512-NzzlXpclt5zAbmo6h6jNc8zl2gNRGHvmsZW4IvZhTC4W7k4OlLP+S5YLussa/r3ixNT66KOQfNORlXHSOy/X4A==}
     engines: {node: '>=12'}
@@ -2057,6 +2052,10 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /svelte-bricks/0.1.7:
+    resolution: {integrity: sha512-2wJseuhlVYVRoCKJGQuwCySTMsvBVS4dchah6Ecz9RNng0zufx6NxToXc7iGf0QOHjo9wwAsOczRI+Ou2q4gEg==}
+    dev: true
+
   /svelte-check/2.2.0_wn4j6whynht5ryg7xmbrp5qitq:
     resolution: {integrity: sha512-6Lo5h/I2LlygtKn9sl2n5hAPBZgeY99wlsz0+6f5K3qCpMwYC8rkcbrZkNpNEMwbMABQkcWOKb5cfEew6Q/Kpg==}
     hasBin: true
@@ -2093,12 +2092,6 @@ packages:
       svelte: '>=3.19.0'
     dependencies:
       svelte: 3.49.0
-    dev: true
-
-  /svelte-macy/1.2.0:
-    resolution: {integrity: sha512-TKhRSya37Tl2I4lnTXPdMzu3cN/JjXWOEsqYC+FrBvXTbbgLAQyJJ8jSW6eOuxxO0tKJ+TKmnjiST3+QU/dLng==}
-    dependencies:
-      macy: 2.5.1
     dev: true
 
   /svelte-preprocess/4.7.3_ew3jsdhem653r4g7ftvld6fg7q:
