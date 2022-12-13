@@ -6,6 +6,7 @@
 	import BehanceImage from '$lib/components/photos/BehanceImage.svelte';
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import Sidebar from '$lib/components/shared/Sidebar.svelte';
+	import SidebarLayout from '$lib/components/SidebarLayout.svelte';
 
 	export let data: import('./$types').PageData;
 	$: projects = data?.projects;
@@ -25,7 +26,7 @@
 	</title>
 </svelte:head>
 
-<div class="sidebar-layout" class:photo-view={!!selectedProject}>
+<SidebarLayout class={!!selectedProject ? 'photo-view' : ''}>
 	<Sidebar>
 		{#each projects || [] as project}
 			<SidebarItem
@@ -69,16 +70,9 @@
 			</div>
 		{/if}
 	</section>
-</div>
+</SidebarLayout>
 
 <style>
-	.sidebar-layout {
-		display: flex;
-		height: calc(100vh - var(--nav-height) - var(--spacing-2));
-	}
-	.sidebar-layout :global(::-webkit-scrollbar) {
-		width: 0px;
-	}
 	.photo-content {
 		display: contents;
 	}
@@ -95,7 +89,7 @@
 
 	@media (--breakpoints-sm-max) {
 		/* the sidebar */
-		.sidebar-layout.photo-view > :global(ul) {
+		.photo-view > :global(ul) {
 			display: none;
 		}
 		.photo-content:not(.photo-view) {

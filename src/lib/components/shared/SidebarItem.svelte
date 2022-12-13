@@ -13,7 +13,7 @@
 			<slot name="icon" />
 		</a>
 	</button>
-	{#if active}
+	{#if active && $$slots.details}
 		<div class="details" transition:slide={{ easing: expoOut }}><slot name="details" /></div>
 	{/if}
 </li>

@@ -4,6 +4,7 @@
 	import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
 	import { Code2, Github } from 'lucide-svelte';
 	import githubLanguageColors from '$lib/utils/github-language-colors';
+	import SidebarLayout from '$lib/components/SidebarLayout.svelte';
 
 	export let data: import('./$types').PageData;
 	$: repos = data.repos;
@@ -14,7 +15,7 @@
 	<title>code | {selectedRepo?.name || 'haydon lam'}</title>
 </svelte:head>
 
-<div class="sidebar-layout">
+<SidebarLayout>
 	<Sidebar>
 		{#each repos || [] as repo}
 			<SidebarItem
@@ -58,13 +59,9 @@
 			<Code2 />
 		</div>
 	{/if}
-</div>
+</SidebarLayout>
 
 <style lang="scss">
-	.sidebar-layout {
-		display: flex;
-		height: calc(100vh - var(--nav-height) - var(--spacing-2));
-	}
 	.code-icon-wrapper {
 		display: grid;
 		place-items: center;
