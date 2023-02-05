@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
 	import { Menu, Moon, Sun } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import tooltip from '$lib/utils/tooltip';
+	import { darkMode } from '$lib/utils/dark-mode';
 
-	let darkThemeMediaQuery: MediaQueryList;
-	const darkThemeMediaListener = (e: MediaQueryListEvent) => {
-		isDarkTheme = e.matches;
-	};
-	let isDarkTheme = true;
 	let mobileshow = false;
 
 	const closeMobileMenu = () => (mobileshow = false);
@@ -22,24 +17,16 @@
 
 	$: if (browser) {
 		const tokensToDisable = document?.getElementById(
-			`${isDarkTheme ? 'light' : 'dark'}-design-tokens`
+			`${$darkMode ? 'light' : 'dark'}-design-tokens`
 		);
 		const tokensToEnable = document?.getElementById(
-			`${isDarkTheme ? 'dark' : 'light'}-design-tokens`
+			`${$darkMode ? 'dark' : 'light'}-design-tokens`
 		);
 		tokensToDisable?.setAttribute('media', 'none');
 		tokensToEnable?.setAttribute('media', 'all');
 	}
 
-	onMount(() => {
-		darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		isDarkTheme = darkThemeMediaQuery.matches;
-		darkThemeMediaQuery.addEventListener('change', darkThemeMediaListener);
-	});
-	onDestroy(() => {
-		darkThemeMediaQuery?.removeEventListener('change', darkThemeMediaListener);
-	});
-</script>
+	</script>
 
 <nav>
 	<a href="/"><h2>haydon lam</h2></a>
@@ -47,11 +34,11 @@
 		<button
 			class="theme-toggle"
 			on:click={() => {
-				isDarkTheme = !isDarkTheme;
+				$darkMode = !$darkMode;
 			}}
 			use:tooltip={{ message: `Toggle theme`, position: 'left' }}
 		>
-			{#if isDarkTheme}
+			{#if $darkMode}
 				<Sun />
 			{:else}
 				<Moon />

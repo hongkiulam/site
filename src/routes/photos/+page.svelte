@@ -26,7 +26,7 @@
 	</title>
 </svelte:head>
 
-<SidebarLayout class={!!selectedProject ? 'photo-view' : ''}>
+<SidebarLayout class={!!selectedProject ? ' photo-view' : ''}>
 	<Sidebar>
 		{#each projects || [] as project}
 			<SidebarItem
