@@ -3,14 +3,13 @@
 </script>
 
 <script>
+	import { fade } from 'svelte/transition';
 	import Room from '$lib/components/3d/Room.svelte';
-
 	// import Me from '$lib/components/Me.svelte';
 	import Loader from '$lib/components/shared/Loader.svelte';
 	let fakeLoading = true;
 
 	let touchDevice = typeof window !== 'undefined' ? 'ontouchstart' in window : false;
-	console.log(touchDevice);
 </script>
 
 <svelte:head>
@@ -32,108 +31,110 @@
 		}}
 	/>
 </div>
-<div class="spline-controls">
-	<div class="orbit">
-		{#if touchDevice}
-			<!-- mobile icon -->
-			<svg
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<circle cx="6" cy="12" r="3.5" stroke="currentColor" stroke-width="2" />
-				<path
-					d="M12 12L21 12"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-			</svg>
-		{:else}
-			<!-- desktop icon -->
-			<svg
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15V9Z"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-				<path
-					d="M12 11V6C9 6 9 9.33333 9 11H12Z"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linejoin="round"
-				/>
-			</svg>
-		{/if}
+{#if !fakeLoading}
+	<div class="spline-controls" transition:fade>
+		<div class="orbit">
+			{#if touchDevice}
+				<!-- mobile icon -->
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<circle cx="6" cy="12" r="3.5" stroke="currentColor" stroke-width="2" />
+					<path
+						d="M12 12L21 12"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			{:else}
+				<!-- desktop icon -->
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15V9Z"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M12 11V6C9 6 9 9.33333 9 11H12Z"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			{/if}
 
-		orbit
-	</div>
-	<div class="pan">
-		{#if touchDevice}
-			<!-- mobile icon -->
-			<svg
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<circle cx="6" cy="8" r="3.5" stroke="currentColor" stroke-width="2" />
-				<path
-					d="M12 8L17 8"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-				<circle cx="10" cy="16" r="3.5" stroke="currentColor" stroke-width="2" />
-				<path
-					d="M16 16L21 16"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-			</svg>
-		{:else}
-			<!-- desktop icon -->
-			<svg
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15V9Z"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-				<path
-					d="M12 11V6C15 6 15 9.33333 15 11H12Z"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linejoin="round"
-				/>
-			</svg>
-		{/if}
+			orbit
+		</div>
+		<div class="pan">
+			{#if touchDevice}
+				<!-- mobile icon -->
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<circle cx="6" cy="8" r="3.5" stroke="currentColor" stroke-width="2" />
+					<path
+						d="M12 8L17 8"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<circle cx="10" cy="16" r="3.5" stroke="currentColor" stroke-width="2" />
+					<path
+						d="M16 16L21 16"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			{:else}
+				<!-- desktop icon -->
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15V9Z"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M12 11V6C15 6 15 9.33333 15 11H12Z"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			{/if}
 
-		pan
+			pan
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.loading-container {
