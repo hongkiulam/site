@@ -149,11 +149,12 @@
 
 <style>
 	.loading-container {
-		width: 100%;
-		height: calc(100vh - var(--nav-height) - var(--spacing-2));
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		display: grid;
 		place-items: center;
-		grid-template-columns: 1fr;
 	}
 	.canvas-container {
 		transition: transform 0.3s ease;

@@ -91,7 +91,8 @@
 	}
 
 	@media (--breakpoints-sm-max) {
-		.vs-code {
+		.vs-code,
+		.code-icon-wrapper {
 			display: none;
 		}
 	}
