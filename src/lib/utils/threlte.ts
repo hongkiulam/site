@@ -16,6 +16,7 @@ type Object3DOverrides = {
 
 	// camera
 	fov: number;
+	zoom: number;
 	// lights
 	color: ColorRepresentation;
 	intensity: number;

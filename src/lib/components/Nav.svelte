@@ -25,8 +25,7 @@
 		tokensToDisable?.setAttribute('media', 'none');
 		tokensToEnable?.setAttribute('media', 'all');
 	}
-
-	</script>
+</script>
 
 <nav>
 	<a href="/"><h2>haydon lam</h2></a>
@@ -72,6 +71,10 @@
 		align-items: center;
 		justify-content: space-between;
 		height: var(--nav-height);
+	}
+
+	nav a {
+		text-shadow: 0px 0px 2px var(--color-bg-1);
 	}
 
 	menu {

@@ -2,14 +2,17 @@
 	export const prerender = true;
 </script>
 
-<script>
+<script lang="ts">
 	import { fade } from 'svelte/transition';
-	import Room from '$lib/components/3d/Room.svelte';
+	// import Room from '$lib/components/3d/Room.svelte';
 	// import Me from '$lib/components/Me.svelte';
 	import Loader from '$lib/components/shared/Loader.svelte';
+	import LandingScene from '$lib/components/3d/LandingScene.svelte';
 	let fakeLoading = true;
 
 	let touchDevice = typeof window !== 'undefined' ? 'ontouchstart' in window : false;
+
+	let objectClickHref = '';
 </script>
 
 <svelte:head>
@@ -21,16 +24,24 @@
 		<Loader />
 	</div>
 {/if}
-<div class="canvas-container" class:hidden={fakeLoading}>
-	<Room
+<div class="canvas-container" class:hidden={fakeLoading} out:fade={{ duration: 0.1 }}>
+	<LandingScene
 		on:splinedataloaded={() => {
 			// after spline data loaded, give some buffer time for canvas to render to page
 			setTimeout(() => {
 				fakeLoading = false;
 			}, 300);
 		}}
+		on:object-hover={(e) => {
+			objectClickHref = e.detail;
+		}}
 	/>
 </div>
+{#if objectClickHref}
+	<a transition:fade class="object-click-href" href={objectClickHref}
+		>Click to go to {objectClickHref}</a
+	>
+{/if}
 {#if !fakeLoading}
 	<div class="spline-controls" transition:fade>
 		<div class="orbit">
@@ -175,5 +186,15 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--spacing-0);
+	}
+	.object-click-href {
+		display: block;
+		background-color: var(--color-bg-1);
+		padding: var(--spacing-1) var(--spacing-2);
+		position: fixed;
+		bottom: var(--spacing-1);
+		left: var(--spacing-1);
+		border: 1px solid var(--color-copy-1);
+		border-radius: var(--border-radius-s);
 	}
 </style>

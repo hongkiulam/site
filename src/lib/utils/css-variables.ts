@@ -1,4 +1,4 @@
-export type CSSColor = `color-${'bg' | 'copy'}-${'1' | '2'}`;
+export type CSSColor = `color-${'bg' | 'copy'}-${'1' | '2'}` | 'color-primary-accent';
 export const cssColorVar = (key: CSSColor): string => {
 	if (typeof window === 'undefined') return '';
 	const variables = window.getComputedStyle(document.documentElement);

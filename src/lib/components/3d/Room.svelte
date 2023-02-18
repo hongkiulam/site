@@ -7,6 +7,7 @@
 	import SplineMesh from './SplineMesh.svelte';
 	import RectAreaLight from './RectAreaLight.svelte';
 	import SplineGroupAndMeshChildren from './SplineGroupAndMeshChildren.svelte';
+	import SplineGroup from './SplineGroup.svelte';
 
 	const dispatch = createEventDispatcher();
 	let splineDataLoaded = false;
@@ -98,18 +99,18 @@ that colors and lighting are aligned with what is in spline -->
 		<SplineMesh node={nodes['blinds2']} />
 
 		<!-- Work Station Objects -->
-		<T.Group position={nodes['tableParts'].position} rotation={nodes['tableParts'].rotation}>
+		<SplineGroup node={nodes['tableParts']} >
 			<SplineMesh node={nodes['tableTop']} />
 			<SplineMesh node={nodes['leg']}><MeshPhongWithCssColor color="color-copy-2" /></SplineMesh>
 			<SplineMesh node={nodes['leg1']}><MeshPhongWithCssColor color="color-copy-2" /></SplineMesh
 			><SplineMesh node={nodes['leg2']}><MeshPhongWithCssColor color="color-copy-2" /></SplineMesh
 			><SplineMesh node={nodes['leg3']}><MeshPhongWithCssColor color="color-copy-2" /></SplineMesh>
-		</T.Group>
+		</SplineGroup>
 		<SplineGroupAndMeshChildren node={nodes['officeChair']} />
 		<SplineGroupAndMeshChildren node={nodes['mac']} />
 		<SplineGroupAndMeshChildren node={nodes['keyboard']} />
 
-		<T.Group position={nodes['monitor'].position} rotation={nodes['monitor'].rotation}>
+		<SplineGroup node={nodes['monitor']} >
 			<SplineMesh node={nodes['monitorFrame']}>
 				<MeshPhongWithCssColor color="color-copy-2" />
 			</SplineMesh>
@@ -117,7 +118,7 @@ that colors and lighting are aligned with what is in spline -->
 				<MeshPhongWithCssColor color="color-copy-2" />
 			</SplineMesh>
 			<RectAreaLight node={nodes['monitorScreen']} color="#e2fcff" />
-		</T.Group>
+		</SplineGroup>
 
 		<SplineGroupAndMeshChildren node={nodes['mouse']} />
 		<SplineMesh node={nodes['bin']}>
@@ -125,19 +126,19 @@ that colors and lighting are aligned with what is in spline -->
 		>
 
 		<!-- Picture Objects -->
-		<T.Group position={nodes['picture1'].position} rotation={nodes['picture1'].rotation}>
+		<SplineGroup node={nodes['picture1']} >
 			<SplineMesh node={nodes['pictureFrame1']}>
 				<MeshPhongWithCssColor color="color-bg-2" />
 			</SplineMesh>
 			<SplineMesh node={nodes['canvas1']} />
-		</T.Group>
+		</SplineGroup>
 
-		<T.Group position={nodes['picture2'].position} rotation={nodes['picture2'].rotation}>
+		<SplineGroup node={nodes['picture2']} >
 			<SplineMesh node={nodes['pictureFrame2']}>
 				<MeshPhongWithCssColor color="color-bg-2" />
 			</SplineMesh>
 			<SplineMesh node={nodes['canvas2']} />
-		</T.Group>
+		</SplineGroup>
 
 		<!-- Exercise Area -->
 		<SplineMesh node={nodes['exerciseMat']} />
