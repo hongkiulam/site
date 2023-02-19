@@ -71,6 +71,17 @@
 		align-items: center;
 		justify-content: space-between;
 		height: var(--nav-height);
+		width: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		// should match the overall page container in +layout
+		padding-inline: var(--spacing-8);
+	}
+	@media (--breakpoints-sm-max) {
+		nav {
+			padding-inline: var(--spacing-3);
+		}
 	}
 
 	nav a {

@@ -11,6 +11,7 @@
 	.sidebar-layout {
 		display: flex;
 		height: calc(100vh - var(--nav-height) - var(--spacing-2));
+		margin-top: var(--nav-height);
 	}
 	.sidebar-layout :global(::-webkit-scrollbar) {
 		width: 0px;

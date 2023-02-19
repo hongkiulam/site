@@ -60,7 +60,7 @@
 <style>
 	section {
 		max-width: calc(var(--spacing-6) * 20);
-		margin-top: var(--spacing-6);
+		margin-top: calc(var(--spacing-6) + var(--nav-height));
 	}
 	article + article {
 		margin-top: var(--spacing-3);

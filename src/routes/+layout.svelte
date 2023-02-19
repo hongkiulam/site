@@ -34,6 +34,11 @@
 		padding-inline: var(--spacing-8);
 		padding-block-end: var(--spacing-2);
 	}
+	@media (--breakpoints-sm-max) {
+		div {
+			padding-inline: var(--spacing-3);
+		}
+	}
 
 	.navigating {
 		opacity: 0.1;
@@ -47,9 +52,5 @@
 		display: grid;
 		place-items: center;
 	}
-	@media (--breakpoints-sm-max) {
-		div {
-			padding-inline: var(--spacing-3);
-		}
-	}
+	
 </style>
