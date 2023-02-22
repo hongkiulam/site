@@ -3,7 +3,7 @@
 	import { Canvas, OrbitControls, T, useLoader } from '@threlte/core';
 	import { useCursor } from '@threlte/extras';
 	import { degToRad } from 'three/src/math/MathUtils';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import MeshPhongWithCssColor from './MeshPhongWithCSSColor.svelte';
 	import SplineMesh from './SplineMesh.svelte';
 	import RectAreaLight from './RectAreaLight.svelte';
@@ -36,18 +36,34 @@
 		);
 	});
 
+	const isMobile = typeof window !== 'undefined' ? 'ontouchstart' in window : false;
 	type Links = '/photos' | '/code' | '/about';
+	const preObjectActionEventName = 'pre-object-action';
+	let mobileAutoDismissTimeout: number;
 	const hoverOverObject = (href: Links, hovered: boolean) => {
 		// disable on mobile
-		if ('ontouchstart' in window) return;
+		if (isMobile) return;
 		(hovered ? onPointerEnter : onPointerLeave)();
-		dispatch('object-hover', hovered ? href : '');
+		dispatch(preObjectActionEventName, hovered ? href : '');
 	};
 	const clickObject = (href: Links) => {
-		// disable on mobile
-		if ('ontouchstart' in window) return;
-		goto(href);
+		if (isMobile) {
+			// prompt the toast to appear on mobile
+			dispatch(preObjectActionEventName, href);
+			window.clearTimeout(mobileAutoDismissTimeout);
+			mobileAutoDismissTimeout = window.setTimeout(() => {
+				dispatch(preObjectActionEventName, '');
+			}, 6000);
+		} else {
+			goto(href);
+		}
 	};
+
+	onDestroy(() => {
+		if (typeof window !== 'undefined') {
+			window.clearTimeout(mobileAutoDismissTimeout);
+		}
+	});
 </script>
 
 <!-- Spline uses linear encoding for colours, this sets ctx.renderer.outputEncoding = LinearEncoding so

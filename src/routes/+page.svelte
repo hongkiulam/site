@@ -32,7 +32,7 @@
 				fakeLoading = false;
 			}, 300);
 		}}
-		on:object-hover={(e) => {
+		on:pre-object-action={(e) => {
 			objectClickHref = e.detail;
 		}}
 	/>
@@ -197,5 +197,12 @@
 		left: var(--spacing-1);
 		border: 1px solid var(--color-copy-1);
 		border-radius: var(--border-radius-s);
+	}
+	@media (--breakpoints-sm-max) {
+		.object-click-href {
+			bottom: unset;
+			top: var(--nav-height);
+			left: var(--spacing-3);
+		}
 	}
 </style>
