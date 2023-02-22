@@ -197,5 +197,11 @@ that colors and lighting are aligned with what is in spline -->
 				on:hover={(e) => hoverOverObject('/about', e.detail)}
 			/>
 		</SplineGroup>
+
+		<!-- Arrows -->
+		<SplineGroupAndMeshChildren node={nodes['pointerPicture1']} />
+		<SplineGroupAndMeshChildren node={nodes['pointerPicture2']} />
+		<SplineGroupAndMeshChildren node={nodes['pointerMac']} />
+		<SplineGroupAndMeshChildren node={nodes['pointerJournal']} />
 	{/if}
 </Canvas>
