@@ -20,7 +20,7 @@
 			<li>bullet journalling</li>
 			<li>watching anime</li>
 			<li>lifting weights</li>
-			<li>saving the environment</li>
+			<li>sustainable living</li>
 		</ul>
 	</article>
 	<article>
@@ -30,10 +30,10 @@
 			<li>git (version control)</li>
 			<li>node.js (backend)</li>
 			<li>docker (containerisation)</li>
-			<li>mongodb, firestore (database)</li>
+			<li>sql, mongodb, firestore (database)</li>
 			<li>vscode (code editor)</li>
 			<li>figma (design)</li>
-			<li>pop os (operating system)</li>
+			<li>mac <strike>pop</strike> os (operating system)</li>
 		</ul>
 	</article>
 	<article>
@@ -41,7 +41,7 @@
 		<ul>
 			<li>sony alpha a6000 (body)</li>
 			<li>sony 16-50mm f3.5-5.6, industar-50 50mm f3.5, hoya 28mm f2.8 (lens)</li>
-			<li>rawtherapee (raw editor)</li>
+			<li>rawtherapee, darkroom, lightroom mobile (raw editor)</li>
 		</ul>
 	</article>
 	<article>
