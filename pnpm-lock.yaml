@@ -7,10 +7,10 @@ specifiers:
   '@splinetool/loader': 0.9.210
   '@sveltejs/adapter-auto': 1.0.0-next.85
   '@sveltejs/kit': 1.0.0-next.528
-  '@threlte/core': ^5.0.5
+  '@threlte/core': ^5.0.9
   '@threlte/extras': ^4.8.0
   '@threlte/preprocess': ^0.0.2
-  '@types/three': ^0.146.0
+  '@types/three': 0.149.0
   '@typescript-eslint/eslint-plugin': ^4.19.0
   '@typescript-eslint/parser': ^4.19.0
   axios: ^0.21.1
@@ -32,6 +32,7 @@ specifiers:
   svelte-sequential-preprocessor: ^0.0.7
   svelte2tsx: ^0.4.12
   three: ^0.147.0
+  threlte-spline: ^0.2.1
   tslib: ^2.0.0
   typescript: ^4.6.2
   vite: ^3.2.1
@@ -44,10 +45,10 @@ devDependencies:
   '@splinetool/loader': 0.9.210_three@0.147.0
   '@sveltejs/adapter-auto': 1.0.0-next.85
   '@sveltejs/kit': 1.0.0-next.528_svelte@3.49.0+vite@3.2.1
-  '@threlte/core': 5.0.5
+  '@threlte/core': 5.0.9
   '@threlte/extras': 4.8.0_three@0.147.0
   '@threlte/preprocess': 0.0.2
-  '@types/three': 0.146.0
+  '@types/three': 0.149.0
   '@typescript-eslint/eslint-plugin': 4.28.0_rkrpswvqzeay7lto6xxybg4yzy
   '@typescript-eslint/parser': 4.28.0_zzies6ec5g4d4to5nqfw7gr4eu
   eslint: 7.29.0
@@ -67,6 +68,7 @@ devDependencies:
   svelte-sequential-preprocessor: 0.0.7
   svelte2tsx: 0.4.14_woovk77sm6kj2davde7jdwv3tq
   three: 0.147.0
+  threlte-spline: 0.2.1_efg2zjmjr6wh5uyd2pxgwujyim
   tslib: 2.3.0
   typescript: 4.6.2
   vite: 3.2.1_sass@1.35.1
@@ -278,8 +280,8 @@ packages:
       - supports-color
     dev: true
 
-  /@threlte/core/5.0.5:
-    resolution: {integrity: sha512-1yX6DDXdD9+v9UyOILOMrZqyQxVrrRWRhKtC3IdIY8P4t8aQCyfTTSzLSZZA3cSXhClNGwTcwBh5sJju++XgIg==}
+  /@threlte/core/5.0.9:
+    resolution: {integrity: sha512-3u8SGLD/fzOh0sEf1MDa0FVpp7oLqdEUR8nvGEkWZvGDwKUlhe0XxSmXNzvAYwCSnNLsYYfwiAWy8wBrVkoRlg==}
     dev: true
 
   /@threlte/extras/4.8.0_three@0.147.0:
@@ -316,8 +318,8 @@ packages:
       '@types/node': 15.12.4
     dev: true
 
-  /@types/three/0.146.0:
-    resolution: {integrity: sha512-75AgysUrIvTCB054eQa2pDVFurfeFW8CrMQjpzjt3yHBfuuknoSvvsESd/3EhQxPrz9si3+P0wiDUVsWUlljfA==}
+  /@types/three/0.149.0:
+    resolution: {integrity: sha512-fgNBm9LWc65ER/W0cvoXdC0iMy7Ke9e2CONmEr6Jt8sDSY3sw4DgOubZfmdZ747dkPhbQrgRQAWwDEr2S/7IEg==}
     dependencies:
       '@types/webxr': 0.5.0
     dev: true
@@ -2250,6 +2252,21 @@ packages:
 
   /three/0.147.0:
     resolution: {integrity: sha512-LPTOslYQXFkmvceQjFTNnVVli2LaVF6C99Pv34fJypp8NbQLbTlu3KinZ0zURghS5zEehK+VQyvWuPZ/Sm8fzw==}
+    dev: true
+
+  /threlte-spline/0.2.1_efg2zjmjr6wh5uyd2pxgwujyim:
+    resolution: {integrity: sha512-CW4/4kR0ucd5M0/Csvv9TZ+KqHyMx0ZEDgJBdhXftBlq1ACJO+JDwGo+8ryBytIfUPmNN/uLCc+ZdZiZ0O5Y/w==}
+    peerDependencies:
+      '@splinetool/loader': '>=0.9 <1'
+      '@threlte/core': ^5
+      '@types/three': '>=0.1'
+    peerDependenciesMeta:
+      '@types/three':
+        optional: true
+    dependencies:
+      '@splinetool/loader': 0.9.210_three@0.147.0
+      '@threlte/core': 5.0.9
+      '@types/three': 0.149.0
     dev: true
 
   /tiny-glob/0.2.9:
