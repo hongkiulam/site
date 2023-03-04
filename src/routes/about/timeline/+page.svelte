@@ -2,6 +2,9 @@
   export const prerender = true;
 </script>
 
+<svelte:head>
+  <title>about | haydon lam</title>
+</svelte:head>
 <section>
   <h2>📅 career timeline...</h2>
   <dl>

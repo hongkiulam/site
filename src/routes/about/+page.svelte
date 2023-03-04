@@ -2,6 +2,9 @@
   export const prerender = true;
 </script>
 
+<svelte:head>
+  <title>about | haydon lam</title>
+</svelte:head>
 <section>
   <article>
     <h2>👋 hi, i’m haydon! i am a software engineer from birmingham, uk 🇬🇧</h2>
