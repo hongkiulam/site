@@ -32,9 +32,6 @@
 </section>
 
 <style>
-  section {
-    margin-top: calc(var(--spacing-2) + var(--nav-height));
-  }
   h2 {
     margin-bottom: var(--spacing-3);
   }

@@ -6,7 +6,7 @@
 
 html {
 	width: 100vw;
-	min-height: 100vh;
+	min-height: var(--100pvh, 100vh);
 	overflow: auto;
 	overflow: overlay;
 }

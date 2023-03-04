@@ -162,7 +162,7 @@
 		top: 0;
 		left: 0;
 		width: 100vw;
-		height: 100vh;
+		height: var(--100pvh, 100vh);
 		/* so that it sits below navbar */
 		z-index: -1;
 	}

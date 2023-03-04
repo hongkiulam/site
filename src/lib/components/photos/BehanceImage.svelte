@@ -126,7 +126,7 @@
 		background: var(--color-bg-2);
 		opacity: var(--opacity-85);
 		width: 100vw;
-		height: 100vh;
+		height: var(--100pvh, 100vh);
 		z-index: 1;
 	}
 	.image-container {
@@ -150,7 +150,7 @@
 		grid-template-columns: 1fr;
 		grid-template-rows: 1fr;
 		justify-content: center;
-		height: 100vh;
+		height: var(--100pvh, 100vh);
 		width: 100vw !important;
 		overflow-y: auto;
 		overflow-x: hidden;
