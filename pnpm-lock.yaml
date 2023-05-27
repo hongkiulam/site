@@ -91,8 +91,8 @@ devDependencies:
     specifier: ^0.147.0
     version: 0.147.0
   threlte-spline:
-    specifier: ^0.3.0
-    version: 0.3.0(@splinetool/loader@0.9.210)(@types/three@0.149.0)
+    specifier: ^0.4.1
+    version: 0.4.1(@splinetool/loader@0.9.210)(@types/three@0.149.0)
   tslib:
     specifier: ^2.0.0
     version: 2.3.0
@@ -2284,8 +2284,8 @@ packages:
     resolution: {integrity: sha512-LPTOslYQXFkmvceQjFTNnVVli2LaVF6C99Pv34fJypp8NbQLbTlu3KinZ0zURghS5zEehK+VQyvWuPZ/Sm8fzw==}
     dev: true
 
-  /threlte-spline@0.3.0(@splinetool/loader@0.9.210)(@types/three@0.149.0):
-    resolution: {integrity: sha512-7I8NoR7yO/NNc5OVOmAEGloWUXAnuyVzOjgmCrjb8HLX3VBw2topJhBCfOYIxOqBt3C8wYAHvxmuGm5cnrbnLg==}
+  /threlte-spline@0.4.1(@splinetool/loader@0.9.210)(@types/three@0.149.0):
+    resolution: {integrity: sha512-C7vaVDVOlSGzBQCcy0uJDVbV3Y5wPNqHBE0GjP+WTxs+PjQz5yLRtclNPhmFuC8SIuz8ZvAOJZOLj2Ke3a3OwQ==}
     peerDependencies:
       '@splinetool/loader': '>=0.9 <1'
       '@types/three': '>=0.1'
