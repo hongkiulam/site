@@ -1,3 +1,4 @@
+// unused
 import getProjectImages from '$lib/utils/get-project-images';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
