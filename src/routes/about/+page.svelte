@@ -3,7 +3,8 @@
 </svelte:head>
 <section>
   <article>
-    <h2>👋 hi, i’m haydon! i am a software engineer from birmingham, uk 🇬🇧</h2>
+    <h2>👋 hi, i’m haydon! i am a software engineer based in london, uk 🇬🇧</h2>
+    
   </article>
   <article>
     <h2>🚀 career...</h2>
@@ -11,6 +12,7 @@
       <li>front end engineer - laced</li>
       <li>web developer - simwood</li>
       <li>product design engineer - loughborough university</li>
+      <a href="/about/timeline">see more...</a>
     </ul>
   </article>
   <article>
@@ -51,7 +53,6 @@
       <li><a href="https://instagr.am/haydonlam" target="_blank">instagram</a></li>
       <li><a href="https://behance.net/haydonlam" target="_blank">behance</a></li>
       <li><a href="mailto:lamhaydon@gmail.com?subject=Hi Haydon!" target="_blank">email</a></li>
-      <li><a href="/about/timeline">career timeline</a></li>
     </ul>
   </article>
 </section>

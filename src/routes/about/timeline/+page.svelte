@@ -5,7 +5,12 @@
   <h2>📅 career timeline...</h2>
   <dl>
     <dt>now</dt>
-    <dd>diving deep into frontend engineering</dd>
+  </dl>
+  <dl>
+    <dt>2023</dt>
+    <dd>
+      <p><strong>may</strong> - gave a lightning talk on svelte and three.js</p>
+    </dd>
   </dl>
   <dl>
     <dt>2022</dt>
