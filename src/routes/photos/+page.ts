@@ -4,7 +4,7 @@ import { projects as projectsMockData } from '$lib/mocks/photos';
 
 export const load = async ({ fetch }) => {
   let projects: BehanceProfileProject[] = [];
-  if (!dev) {
+  if (dev) {
     projects = projectsMockData;
   } else {
     const res = await fetch('/api/behance/all-graphql');
