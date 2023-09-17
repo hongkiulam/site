@@ -21,6 +21,12 @@
   /** Will always load for a minimum amount of time artificially */
   $: artificalImageLoading = realImageLoading || imageLoadingLock;
   const minimumImageLoadingTime = 500; //ms
+
+  // let imageZoom = 1;
+  // $: if (!showInLightbox) {
+  //   // reset image zoom when closing lightbox
+  //   imageZoom = 1;
+  // }
 </script>
 
 <svelte:window
@@ -38,6 +44,7 @@
   <div
     class="lightbox"
     class:open={showInLightbox}
+    on:keydown={() => {}}
     on:click={() => {
       showInLightbox = false;
     }}
@@ -46,21 +53,28 @@
       srcset={showInLightbox ? srcset : undefined}
       sizes={showInLightbox ? '(max-width: 2800px) 100vw, 2800px' : undefined}
       src={behanceImage['size_disp'].url}
-      style="width:{behanceImage['size_disp'].width}; height:{behanceImage['size_disp'].height}"
+      style="width:{behanceImage['size_disp'].width}; height:{behanceImage['size_disp'].height};"
       alt=""
       loading="lazy"
       class:lightbox-open={showInLightbox}
       class:loading={artificalImageLoading}
-      on:click|stopPropagation={() => {
-        // trigger loading stuff when we are about to show in lightbox
-        if (!showInLightbox) {
-          realImageLoading = true;
-          imageLoadingLock = true;
-          setTimeout(() => {
-            imageLoadingLock = false;
-          }, minimumImageLoadingTime);
-        }
-        showInLightbox = !showInLightbox;
+      on:keydown={() => {}}
+      on:click|stopPropagation={(e) => {
+        // const image = e.currentTarget;
+        // const width = window.getComputedStyle(image).width;
+        // const rawWidth = Number(width.replace('px', ''));
+        // console.log(rawWidth * 1.5);
+        // image.style.width = rawWidth * 1.5 + 'px';
+        // image.style.height = 'auto';
+        // image.style.maxHeight = 'initial';
+        // image.style.maxWidth = 'initial';
+        // console.log(width);
+        // todo: fix bad scrolling behaviour. Maye have to move away from transform, and to aybe adjust width directly
+        // if (imageZoom > 3) {
+        //   imageZoom = 1;
+        // } else {
+        //   imageZoom = imageZoom * 1.5;
+        // }
       }}
       on:load={() => {
         if (showInLightbox) {
@@ -80,6 +94,7 @@
     style="width:{behanceImage['size_disp'].width}; height:{behanceImage['size_disp'].height}"
     alt=""
     loading="lazy"
+    on:keydown={() => {}}
     on:click|stopPropagation={() => {
       // trigger loading stuff when we are about to show in lightbox
       if (!showInLightbox) {
@@ -99,12 +114,15 @@
     width: 100%;
     cursor: pointer;
   }
+
   img.lightbox-open {
-    width: auto;
-    max-width: min(2500px, 85vw);
-    margin: 0 auto;
-    grid-column: 1/2;
-    grid-row: 1/2;
+    width: min-content;
+    height: min-content;
+    max-width: 100%;
+    max-height: 100%;
+    border-style: solid;
+    border-color: var(--color-copy-1);
+    border-width: var(--spacing-2);
   }
   img.loading {
     visibility: hidden;
@@ -125,11 +143,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: var(--color-bg-2);
-    opacity: var(--opacity-85);
     width: 100vw;
     height: var(--100pvh, 100vh);
     z-index: 1;
+    backdrop-filter: blur(5px);
+    filter: brightness(0.5);
   }
   .image-container {
     display: grid;
@@ -142,20 +160,19 @@
 
   /* important to override style attribute set by macy */
   .lightbox.open {
-    display: grid;
-    place-items: center;
-    position: fixed !important;
-    top: 50% !important;
-    transform: translateY(-50%);
-    left: 0 !important;
-    z-index: 2;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    z-index: 2;
     height: var(--100pvh, 100vh);
     width: 100vw !important;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: auto;
+  }
+  :global(.lightbox.open::-webkit-scrollbar) {
+    width: 10px !important;
   }
   .loader {
     grid-column: 1/2;
