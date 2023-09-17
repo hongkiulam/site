@@ -34,14 +34,6 @@
   const minimumImageLoadingTime = 500; //ms
 
   $: {
-    // trigger loading stuff when we are about to show in lightbox
-    if (showInLightbox) {
-      realImageLoading = true;
-      imageLoadingLock = true;
-      setTimeout(() => {
-        imageLoadingLock = false;
-      }, minimumImageLoadingTime);
-    }
   }
 
   const dismissLightbox = () => {
@@ -123,8 +115,18 @@
     loading="lazy"
     on:keydown={() => {}}
     on:click|stopPropagation={() => {
-      const newUrl = new URL($page.url);
+      // trigger loading stuff when we are about to show in lightbox
+      if (!showInLightbox) {
+        realImageLoading = true;
+        imageLoadingLock = true;
+        setTimeout(() => {
+          imageLoadingLock = false;
+        }, minimumImageLoadingTime);
+      }
+      const newUrl = $page.url;
       newUrl.searchParams.set('detail', getUIDForImage(behanceImage['size_disp']['url']));
+      // eagerly set the state, without it there's a weird bug where the $page store doesnt pickup the new url
+      showInLightbox = true;
       goto(newUrl);
     }}
   />

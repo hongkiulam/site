@@ -20,10 +20,12 @@
     | BehanceProfileProject
     | undefined;
 
-  beforeNavigate(() => {
-    // strange behaviour when selectedProjectId is defined and navigating away
-    // the layout would persist, clearing the variable here seems to fix that issue
-    selectedProjectId = undefined;
+  beforeNavigate(({ to }) => {
+    if (!to.url.pathname.includes('/photos')) {
+      // strange behaviour when selectedProjectId is defined and navigating away
+      // the layout would persist, clearing the variable here seems to fix that issue
+      selectedProjectId = undefined;
+    }
   });
 </script>
 
@@ -34,7 +36,7 @@
 </svelte:head>
 
 <SidebarLayout class={!!selectedProject ? ' photo-view' : ''}>
-  <Sidebar>
+  <Sidebar class={selectedProjectId ? 'sidebar-hidden' : ''}>
     {#each projects || [] as project}
       <SidebarItem
         title={project.name}
@@ -106,6 +108,9 @@
       display: none;
     }
     .photo-content:not(.photo-view) {
+      display: none;
+    }
+    :global(.sidebar-hidden) {
       display: none;
     }
   }
