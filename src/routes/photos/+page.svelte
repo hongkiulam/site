@@ -2,6 +2,7 @@
   import { ExternalLink, Image } from 'lucide-svelte';
   import Masonry from 'svelte-bricks';
   import { beforeNavigate, goto } from '$app/navigation';
+  import { building } from '$app/environment';
   import { page } from '$app/stores';
   import type { BehanceProfileProject } from '$types/behance';
   import BehanceImage from '$lib/components/photos/BehanceImage.svelte';
@@ -15,7 +16,7 @@
   $: projects = (data?.projects as BehanceProfileProject[]).filter((project) =>
     project.fields.some((field) => field.id === PHOTOGRAPHY_FIELD_ID)
   );
-  $: selectedProjectId = Number($page.url.searchParams.get('id'));
+  $: selectedProjectId = building ? undefined : Number($page.url.searchParams.get('id'));
   $: selectedProject = projects?.find((project) => project.id === selectedProjectId) as
     | BehanceProfileProject
     | undefined;
