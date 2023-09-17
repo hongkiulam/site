@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import type { ImageSizes } from '$types/behance';
   import Loader from '../shared/Loader.svelte';
   export let behanceImage: ImageSizes;
@@ -15,13 +17,38 @@
     .filter((x) => !!x)
     .join(', ');
 
-  let showInLightbox = false;
+  const getUIDForImage = (imageUrl: string) => {
+    const urlParts = imageUrl.split('/');
+    const lastSegment = urlParts[urlParts.length - 1];
+    const [id, _extension] = lastSegment.split('.');
+    return id;
+  };
+
+  $: showInLightbox =
+    $page.url.searchParams.get('detail') === getUIDForImage(behanceImage['size_disp'].url);
+
   let realImageLoading = false;
   let imageLoadingLock = false;
   /** Will always load for a minimum amount of time artificially */
   $: artificalImageLoading = realImageLoading || imageLoadingLock;
   const minimumImageLoadingTime = 500; //ms
 
+  $: {
+    // trigger loading stuff when we are about to show in lightbox
+    if (showInLightbox) {
+      realImageLoading = true;
+      imageLoadingLock = true;
+      setTimeout(() => {
+        imageLoadingLock = false;
+      }, minimumImageLoadingTime);
+    }
+  }
+
+  const dismissLightbox = () => {
+    const newUrl = new URL($page.url);
+    newUrl.searchParams.delete('detail');
+    goto(newUrl);
+  };
   // let imageZoom = 1;
   // $: if (!showInLightbox) {
   //   // reset image zoom when closing lightbox
@@ -32,7 +59,7 @@
 <svelte:window
   on:keydown={(e) => {
     if (e.key === 'Escape' && showInLightbox) {
-      showInLightbox = false;
+      dismissLightbox();
     }
   }}
 />
@@ -46,7 +73,7 @@
     class:open={showInLightbox}
     on:keydown={() => {}}
     on:click={() => {
-      showInLightbox = false;
+      dismissLightbox();
     }}
   >
     <img
@@ -96,15 +123,9 @@
     loading="lazy"
     on:keydown={() => {}}
     on:click|stopPropagation={() => {
-      // trigger loading stuff when we are about to show in lightbox
-      if (!showInLightbox) {
-        realImageLoading = true;
-        imageLoadingLock = true;
-        setTimeout(() => {
-          imageLoadingLock = false;
-        }, minimumImageLoadingTime);
-      }
-      showInLightbox = !showInLightbox;
+      const newUrl = new URL($page.url);
+      newUrl.searchParams.set('detail', getUIDForImage(behanceImage['size_disp']['url']));
+      goto(newUrl);
     }}
   />
 </div>

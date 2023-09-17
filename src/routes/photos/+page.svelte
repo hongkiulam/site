@@ -1,7 +1,8 @@
 <script lang="ts">
   import { ExternalLink, Image } from 'lucide-svelte';
   import Masonry from 'svelte-bricks';
-  import { beforeNavigate } from '$app/navigation';
+  import { beforeNavigate, goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import type { BehanceProfileProject } from '$types/behance';
   import BehanceImage from '$lib/components/photos/BehanceImage.svelte';
   import SidebarItem from '$lib/components/shared/SidebarItem.svelte';
@@ -14,13 +15,15 @@
   $: projects = (data?.projects as BehanceProfileProject[]).filter((project) =>
     project.fields.some((field) => field.id === PHOTOGRAPHY_FIELD_ID)
   );
-  let selectedProject: BehanceProfileProject | undefined;
+  $: selectedProjectId = Number($page.url.searchParams.get('id'));
+  $: selectedProject = projects?.find((project) => project.id === selectedProjectId) as
+    | BehanceProfileProject
+    | undefined;
 
-  beforeNavigate(({ cancel }) => {
-    if (selectedProject && window.innerWidth <= 600) {
-      cancel();
-      selectedProject = undefined;
-    }
+  beforeNavigate(() => {
+    // strange behaviour when selectedProjectId is defined and navigating away
+    // the layout would persist, clearing the variable here seems to fix that issue
+    selectedProjectId = undefined;
   });
 </script>
 
@@ -36,9 +39,13 @@
       <SidebarItem
         title={project.name}
         iconHref={project.url}
-        active={project?.id === selectedProject?.id}
+        active={project?.id === selectedProjectId}
         on:click={() => {
-          selectedProject = selectedProject?.id === project.id ? undefined : project;
+          if (selectedProjectId === project.id) {
+            goto('/photos');
+          } else {
+            goto(`?id=${project.id}`);
+          }
         }}
       >
         <svelte:fragment slot="icon">
@@ -54,10 +61,10 @@
       </SidebarItem>
     {/each}
   </Sidebar>
-  <section class="photo-content" class:photo-view={!!selectedProject}>
-    {#if selectedProject}
+  <section class="photo-content" class:photo-view={!!selectedProjectId}>
+    {#if selectedProjectId}
       <div class="masonry-container">
-        {#key selectedProject?.id}
+        {#key selectedProjectId}
           <Masonry
             animate={false}
             minColWidth={250}
