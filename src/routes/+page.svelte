@@ -15,12 +15,18 @@
   <title>home | haydon lam</title>
 </svelte:head>
 
-{#if fakeLoading}
-  <div class="loading-container">
+<div class="loading-container" class:animate-in={!fakeLoading}>
+  {#if fakeLoading}
     <Loader />
-  </div>
-{/if}
-<div class="canvas-container" class:hidden={fakeLoading} out:fade={{ duration: 0.1 }}>
+  {/if}
+</div>
+
+<div
+  class="canvas-container"
+  class:hidden={fakeLoading}
+  class:animate-in={!fakeLoading}
+  out:fade={{ duration: 0.1 }}
+>
   <LandingScene
     on:splinedataloaded={() => {
       // after spline data loaded, give some buffer time for canvas to render to page
@@ -146,11 +152,14 @@
 <style>
   .loading-container {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--100pvh, 100vh);
     display: grid;
     place-items: center;
+    pointer-events: none;
+    z-index: -1;
   }
   .canvas-container {
     transition: transform 0.3s ease;
@@ -160,12 +169,28 @@
     width: 100vw;
     height: var(--100pvh, 100vh);
     /* so that it sits below navbar */
-    z-index: -1;
+    z-index: -2;
+  }
+
+  .loading-container.animate-in {
+    --mask-image: radial-gradient(circle at center, transparent, transparent 10%, black 10%, black);
+    mask-image: var(--mask-image);
+    -webkit-mask-image: var(--mask-image);
+    background: var(--color-bg-1);
+    animation: expand-circle 0.8s ease-out forwards;
+  }
+  @keyframes expand-circle {
+    0% {
+      transform: scale(1);
+    }
+
+    100% {
+      transform: scale(10);
+    }
   }
   .hidden {
     opacity: 0;
     pointer-events: none;
-    transform: scale(0);
   }
 
   .spline-controls {
