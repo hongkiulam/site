@@ -1,6 +1,73 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "aws-shell@latest": {
+      "last_modified": "2025-03-11T17:52:14Z",
+      "resolved": "github:NixOS/nixpkgs/0d534853a55b5d02a4ababa1d71921ce8f0aee4c#aws-shell",
+      "source": "devbox-search",
+      "version": "0.2.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/xdc67dza2zqyki0qdfy7qmvai610dl5q-aws-shell-0.2.2",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/6vxshvshp6d867m657x89syaddd9w6l7-aws-shell-0.2.2-dist"
+            }
+          ],
+          "store_path": "/nix/store/xdc67dza2zqyki0qdfy7qmvai610dl5q-aws-shell-0.2.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/c865v8acq55r0br9hxrsg7gx1hc8acz3-aws-shell-0.2.2",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/3dirfqy3rb02n3a6yzz7xcsl7wmi4fw3-aws-shell-0.2.2-dist"
+            }
+          ],
+          "store_path": "/nix/store/c865v8acq55r0br9hxrsg7gx1hc8acz3-aws-shell-0.2.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8clmaz3g2l981vmavl7qil6l1bmjfc35-aws-shell-0.2.2",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/mq5z4v99k5qkjmcj7s1wsxkdz57h7p4y-aws-shell-0.2.2-dist"
+            }
+          ],
+          "store_path": "/nix/store/8clmaz3g2l981vmavl7qil6l1bmjfc35-aws-shell-0.2.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/3jacv7h3b9i4wkzkn2vcvgr96gycqipw-aws-shell-0.2.2",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/ys62rpvj832303x6vqqz31p2xn6ssj7n-aws-shell-0.2.2-dist"
+            }
+          ],
+          "store_path": "/nix/store/3jacv7h3b9i4wkzkn2vcvgr96gycqipw-aws-shell-0.2.2"
+        }
+      }
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "resolved": "github:NixOS/nixpkgs/94c4dbe77c0740ebba36c173672ca15a7926c993?lastModified=1742578646&narHash=sha256-GiQ40ndXRnmmbDZvuv762vS%2Bgew1uDpFwOfgJ8tLiEs%3D"
+    },
     "nodejs@latest": {
       "last_modified": "2025-03-16T16:17:41Z",
       "plugin_version": "0.0.2",
