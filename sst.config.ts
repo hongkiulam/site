@@ -10,6 +10,6 @@ export default $config({
     };
   },
   async run() {
-    new sst.aws.Astro("MyWeb");
+    new sst.aws.Astro("site-v2");
   },
 });
