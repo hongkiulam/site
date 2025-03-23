@@ -34,14 +34,31 @@ To learn more about the folder structure of an Astro project, refer to [our guid
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
+| Command                | Action                                           |
+| :--------------------- | :----------------------------------------------- |
+| `pnpm install`         | Installs dependencies                            |
 | `pnpm dev`             | Starts local dev server at `localhost:4321`      |
 | `pnpm build`           | Build your production site to `./dist/`          |
 | `pnpm preview`         | Preview your build locally, before deploying     |
 | `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `pnpm astro -- --help` | Get help using the Astro CLI                     |
+
+### SST
+
+Development stage is automatically set to the computer username e.g. `haydonlam`
+
+Can remove resources by removing them from the stack. For astro:
+
+```diff
+async run() {
+-    new sst.aws.Astro("site-v2");
++    // new sst.aws.Astro("site-v2");
+},
+```
+
+`pnpm sst dev`
+`pnpm sst deploy --stage production`
+`pnpm sst remove` removes the personal environment/ stage
 
 ## 👀 Want to learn more?
 
