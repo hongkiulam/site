@@ -6,7 +6,9 @@
     "astro": "astro",
     "build": "astro build",
     "dev": "astro dev",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "sst:dev": "sst dev",
+    "sst:deploy:prod": "sst deploy --stage production"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.15",
