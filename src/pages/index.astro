@@ -1,12 +1,11 @@
 ---
-export const prerender = false;
 import Home from "../components/Home.astro";
 import WeatherIndicator from "../components/WeatherIndicator.astro";
 import Layout from "../layouts/Layout.astro";
 
 const ONE_DAY = 24 * 60 * 60; // 1 day in seconds
 Astro.response.headers.set(
-  "CDN-Cache-Control",
+  "Cache-Control",
   `public, max-age=${ONE_DAY}, must-revalidate`
 );
 ---
