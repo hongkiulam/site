@@ -7,7 +7,6 @@ declare module "sst" {
   export interface Resource {
     "site-v2": {
       "type": "sst.aws.Astro"
-      "url": string
     }
   }
 }
