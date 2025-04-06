@@ -1,10 +1,12 @@
 ---
-
+import ClampedContainer from "./ClampedContainer.astro";
+import SocialLinks from "./SocialLinks.astro";
 ---
 
-<main class="w-screen h-screen flex flex-col items-center">
+<main class="w-screen flex flex-col items-center">
   <nav
-    class="grid grid-cols-[1fr_auto_1fr] h-[90px] w-full px-12 py-4 max-w-7xl mx-auto"
+    class="grid grid-cols-[1fr_auto_1fr] h-[90px] w-full px-12 py-4 max-w-[1440px] mx-auto
+    max-sm:px-6 max-sm:opacity-0"
   >
     <div class="flex flex-col items-start justify-center">
       <span>Haydon Lam</span>
@@ -12,35 +14,73 @@
         >London, United Kingdom, <slot />
       </small>
     </div>
-    <div
+    <menu
       class="flex items-center gap-4 px-4 pb-[8px] pt-[13px] bg-white/20 rounded-full justify-self-auto"
     >
-      <span>Photos</span>
+      WIP 🚧
+      <!-- <span>Photos</span>
       <span>London</span>
       <span>London</span>
-      <span>London</span>
-    </div>
+      <span>London</span> -->
+    </menu>
     <div class="flex items-end flex-col justify-center">
       <small class="text-muted-foreground text-sm">Socials</small>
       <div class="flex gap-2">
-        <a href="">Instagram</a>
-        <a href="">Github</a>
-        <a href="">LinkedIn</a>
+        <SocialLinks />
       </div>
     </div>
   </nav>
-  <section class="h-full w-full grid place-items-center mb-[90px]">
-    <div>
-      <small class="text-sm text-muted-foreground"
-        >Welcome, I&apos;m Haydon</small
+  <section class="h-[768px] max-sm:h-[500px] w-full grid place-items-center">
+    <ClampedContainer>
+      <div
+        class="relative flex flex-col items-center justify-center translate-y-[-45px]
+        max-sm:items-start"
       >
-      <h1 class="text-5xl max-w-3xl text-center">
-        Fullstack Software Engineer currently based in London.
-      </h1>
-      <span class="text-lg max-w-md block"
-        >Here you'll find my projects, photography, and whatever else I&apos;m
-        experimenting with.</span
-      >
-    </div>
+        <p class="text-muted-foreground self-start">Welcome, I&apos;m Haydon</p>
+        <h1 class="text-center max-sm:hidden">Fullstack Software Engineer</h1>
+        <h1 class="text-center max-sm:hidden">currently based in London.</h1>
+        <h1 class="min-sm:hidden">
+          Fullstack Software Engineer currently based in London.
+        </h1>
+      </div>
+    </ClampedContainer>
   </section>
+  <section class="bg-muted-background w-full">
+    <ClampedContainer>
+      <h2 class="mb-3" id="more-about-me">More about me</h2>
+      <p class="max-w-xl text-xl">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis
+        delectus, dolores facilis, obcaecati sequi, reiciendis quia ab
+        voluptatem sunt culpa amet. Voluptatibus et id accusantium quos, earum
+        doloribus qui architecto praesentium! Vitae quibusdam fugit, voluptas
+        hic nisi illo, maiores fugiat tenetur iste eveniet quas molestias
+        facilis cum magni! Omnis illum, sed pariatur quas voluptate assumenda
+        minus voluptates, dicta cumque id quae, cum animi facere quo! Ratione,
+        reprehenderit explicabo distinctio rem, laudantium adipisci, repellendus
+        asperiores dolore eveniet impedit vero inventore minima doloribus ad nam
+        eligendi. Delectus, totam molestiae ipsam quisquam soluta magnam
+        assumenda eum dolor dolorum eligendi vel fugiat libero nostrum.
+      </p>
+    </ClampedContainer>
+  </section>
+  <section class="w-full">
+    <ClampedContainer>
+      <h2 class="mb-3">Discover</h2>
+      <ul class="flex flex-col gap-3">
+        <li><h4 class="">Photography</h4></li>
+        <li><h4 class="">Github Projects</h4></li>
+        <li><h4 class="">Lab/ Experiments</h4></li>
+        <li><h4 class="">Spoon Carving</h4></li>
+      </ul>
+    </ClampedContainer>
+  </section>
+  <footer class="bg-muted-background w-full pb-12">
+    <ClampedContainer>
+      <h3>Socials</h3>
+      <div class="flex gap-2">
+        <SocialLinks />
+      </div>
+      <p class="text-center mt-3">Made with ❤️ by me!</p>
+    </ClampedContainer>
+  </footer>
 </main>
