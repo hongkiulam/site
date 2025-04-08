@@ -16,6 +16,7 @@ export default $config({
     new sst.aws.Astro("site-v2", {
       domain: {
         name: "haydonlam.com",
+        redirects: ["www.haydonlam.com"],
         dns: sst.cloudflare.dns(),
       },
     });
