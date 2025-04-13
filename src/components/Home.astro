@@ -1,6 +1,7 @@
 ---
 import ClampedContainer from "./ClampedContainer.astro";
 import SocialLinks from "./SocialLinks.astro";
+import Tooltip from "./home/Tooltip.svelte";
 ---
 
 <main class="w-screen flex flex-col items-center">
@@ -48,19 +49,46 @@ import SocialLinks from "./SocialLinks.astro";
   <section class="bg-muted-background w-full">
     <ClampedContainer>
       <h2 class="mb-3" id="more-about-me">More about me</h2>
-      <p class="max-w-xl text-xl">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis
-        delectus, dolores facilis, obcaecati sequi, reiciendis quia ab
-        voluptatem sunt culpa amet. Voluptatibus et id accusantium quos, earum
-        doloribus qui architecto praesentium! Vitae quibusdam fugit, voluptas
-        hic nisi illo, maiores fugiat tenetur iste eveniet quas molestias
-        facilis cum magni! Omnis illum, sed pariatur quas voluptate assumenda
-        minus voluptates, dicta cumque id quae, cum animi facere quo! Ratione,
-        reprehenderit explicabo distinctio rem, laudantium adipisci, repellendus
-        asperiores dolore eveniet impedit vero inventore minima doloribus ad nam
-        eligendi. Delectus, totam molestiae ipsam quisquam soluta magnam
-        assumenda eum dolor dolorum eligendi vel fugiat libero nostrum.
-      </p>
+      <div class="max-w-2xl text-xl max-lg:max-w-full">
+        <p>
+          Outside of my professional life as a <span
+            id="software-engineer-tooltip"
+            class="underline cursor-help underline-offset-4 decoration-dashed"
+            >software engineer</span
+          >, I spend a lot of time <span
+            id="lifting-weights-tooltip"
+            class="underline cursor-help underline-offset-4 decoration-dashed"
+            >lifting weights</span
+          >, recently started running, and try bouldering every now and then.
+        </p>
+        <br />
+        <p>
+          I&apos;ve also gotten into wood carving as a creative endeavour—and as
+          a bonus, it cuts down my screen time, even if just a little. I enjoy
+          photography too, especially when I&apos;m travelling.
+        </p>
+        <br />
+        <p>
+          According to 16Personalities, I&apos;m a <a
+            href="https://www.16personalities.com/istj-personality"
+            target="_blank"
+            rel="noopener noreferer"
+          >
+            Logistician (ISTJ)</a
+          >
+          , which honestly feels pretty accurate.
+        </p>
+      </div>
+      <Tooltip tooltipId="software-engineer-tooltip" client:idle>
+        <span>@ starlingbank</span>
+      </Tooltip>
+      <Tooltip tooltipId="lifting-weights-tooltip" client:idle>
+        <p>
+          <span>Current goals:</span>
+        </p>
+        <p>Bench Press: 110kg</p>
+        <p>Weighted Pull-ups: 30kg</p>
+      </Tooltip>
     </ClampedContainer>
   </section>
   <section class="w-full">

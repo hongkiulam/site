@@ -3,7 +3,7 @@
 :root {
   --background: hsl(0 0% 93%);
   --foreground: hsl(0 0% 13%);
-  --muted-foreground: hsl(0 0% 47%);
+  --muted-foreground: hsl(0, 0%, 17%);
   --muted-background: hsl(0, 0%, 90%);
   --primary: hsl(0 0% 13%);
   --primary-foreground: hsl(0 0% 93%);
@@ -78,7 +78,7 @@
   }
 
   a {
-    @apply underline-offset-2 no-underline relative transition-colors;
+    @apply underline-offset-2 underline relative transition-colors;
   }
 
   a:hover {
