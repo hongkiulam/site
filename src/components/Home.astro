@@ -2,6 +2,8 @@
 import ClampedContainer from "./ClampedContainer.astro";
 import SocialLinks from "./SocialLinks.astro";
 import Tooltip from "./home/Tooltip.svelte";
+import StarlingLogo from "../assets/starling-bank.svg";
+import { Image } from "astro:assets";
 ---
 
 <main class="w-screen flex flex-col items-center">
@@ -59,7 +61,11 @@ import Tooltip from "./home/Tooltip.svelte";
             id="lifting-weights-tooltip"
             class="underline cursor-help underline-offset-4 decoration-dashed"
             >lifting weights</span
-          >, recently started running, and try bouldering every now and then.
+          >, recently started <span
+            id="running-tooltip"
+            class="underline cursor-help underline-offset-4 decoration-dashed"
+            >running</span
+          >, and try bouldering every now and then.
         </p>
         <br />
         <p>
@@ -80,14 +86,26 @@ import Tooltip from "./home/Tooltip.svelte";
         </p>
       </div>
       <Tooltip tooltipId="software-engineer-tooltip" client:idle>
-        <span>@ starlingbank</span>
+        <p class="flex flex-col gap-2">
+          <small>Currently working at</small>
+          <span class="flex items-center gap-2">
+            Starling Bank
+            <Image width={24} src={StarlingLogo} alt="Starling Bank Logo" />
+          </span>
+        </p>
       </Tooltip>
       <Tooltip tooltipId="lifting-weights-tooltip" client:idle>
         <p>
-          <span>Current goals:</span>
+          <small>Current goals</small>
         </p>
         <p>Bench Press: 110kg</p>
         <p>Weighted Pull-ups: 30kg</p>
+      </Tooltip>
+      <Tooltip tooltipId="running-tooltip" client:idle>
+        <p>
+          <small>Current goals</small>
+        </p>
+        <p>Run 10K</p>
       </Tooltip>
     </ClampedContainer>
   </section>
@@ -95,8 +113,8 @@ import Tooltip from "./home/Tooltip.svelte";
     <ClampedContainer>
       <h2 class="mb-3">Discover</h2>
       <ul class="flex flex-col gap-3">
-        <li><h4 class="">Photography</h4></li>
         <li><h4 class="">Github Projects</h4></li>
+        <li><h4 class="">Photography</h4></li>
         <li><h4 class="">Lab/ Experiments</h4></li>
         <li><h4 class="">Spoon Carving</h4></li>
       </ul>
