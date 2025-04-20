@@ -1,27 +1,26 @@
 <script lang="ts">
-  import { flip, offset } from "@floating-ui/dom";
+  import { flip, inline, offset } from "@floating-ui/dom";
   import { computePosition } from "@floating-ui/dom";
   import { onMount, type Snippet } from "svelte";
-
-  let { children, tooltipId }: { tooltipId: string; children: Snippet } =
+  import { createAnimatable, utils } from "animejs";
+  let { children, linkedElId }: { linkedElId: string; children: Snippet } =
     $props();
+
   let popover: HTMLElement | null = null;
-  let tooltipLeft = $state<string>();
-  let tooltipTop = $state<string>();
+  let rotateInertiaTimeout = $state<number>(0);
+
   const isMobileDevice =
     typeof window !== "undefined" &&
     ("ontouchstart" in window || navigator.maxTouchPoints > 0);
 
-  const computeAndSetTooltipPosition = (
+  const computeTooltipPosition = async (
     referenceElement: Pick<HTMLElement, "getBoundingClientRect">
   ) => {
-    computePosition(referenceElement, popover!, {
-      placement: "top-end",
-      middleware: [flip(), offset(10)],
-    }).then(({ x, y }) => {
-      tooltipLeft = `${x}px`;
-      tooltipTop = `${y}px`;
+    const { x, y } = await computePosition(referenceElement, popover!, {
+      placement: "top",
+      middleware: [flip(), offset(10), isMobileDevice ? inline() : undefined],
     });
+    return { left: x, top: y };
   };
 
   const createVirtualElementFromMouseEvent = (
@@ -47,27 +46,62 @@
     };
   };
 
-  onMount(() => {
-    const tooltipRoot = document.getElementById(tooltipId);
-
-    if (!tooltipRoot) {
-      throw new Error(`Tooltip root element with id "${tooltipId}" not found.`);
+  let prevCursorX = $state<number>(0);
+  const lateralMoveDirectionFromMouseEvent = (
+    e: MouseEvent
+  ): "left" | "right" | "stable" => {
+    const currentCursorX = e.clientX;
+    const direction = currentCursorX > prevCursorX ? "right" : "left";
+    if (Math.abs(currentCursorX - prevCursorX) < 30) {
+      return "stable";
     }
+    prevCursorX = currentCursorX;
+    return direction;
+  };
+
+  onMount(() => {
+    const linkedElement = document.getElementById(linkedElId);
+
+    if (!linkedElement) {
+      throw new Error(
+        `Tooltip root element with id "${linkedElId}" not found.`
+      );
+    }
+
+    if (!popover) {
+      throw new Error(
+        "Popover element not found. Make sure to bind the popover element correctly."
+      );
+    }
+
+    const animatableTooltip = createAnimatable(popover, {
+      x: 400,
+      y: 400,
+      rotate: 0,
+    });
 
     const abortController = new AbortController();
 
+    const establishInitialPosition = async () => {
+      const { left, top } = await computeTooltipPosition(linkedElement);
+      animatableTooltip.x(left, 0);
+      animatableTooltip.y(top + 20, 0);
+      animatableTooltip.y(top, 400);
+    };
+
     if (isMobileDevice) {
-      tooltipRoot.addEventListener(
+      linkedElement.addEventListener(
         "click",
         (e) => {
           e.stopPropagation();
 
+          establishInitialPosition();
           popover?.showPopover();
         },
         { signal: abortController.signal }
       );
     } else {
-      tooltipRoot.addEventListener(
+      linkedElement.addEventListener(
         "mouseleave",
         () => {
           popover?.hidePopover();
@@ -75,18 +109,41 @@
         { signal: abortController.signal }
       );
 
-      tooltipRoot.addEventListener(
+      linkedElement.addEventListener(
         "mousemove",
         (e) => {
-          computeAndSetTooltipPosition(createVirtualElementFromMouseEvent(e));
+          const direction = lateralMoveDirectionFromMouseEvent(e);
+          computeTooltipPosition(createVirtualElementFromMouseEvent(e)).then(
+            ({ left, top }) => {
+              animatableTooltip.x(left, 1000, "outBack");
+              animatableTooltip.y(top, 400, "out(3)");
+            }
+          );
+
+          window.clearTimeout(rotateInertiaTimeout);
+          switch (direction) {
+            case "left":
+              animatableTooltip.rotate(4, 1000);
+              break;
+            case "right":
+              animatableTooltip.rotate(-4, 1000);
+              break;
+            case "stable":
+            default:
+              // do nothing, timeout will handle it
+              break;
+          }
+          rotateInertiaTimeout = window.setTimeout(() => {
+            animatableTooltip.rotate(0, 1000, "outBack");
+          }, 100);
         },
         { signal: abortController.signal }
       );
 
-      tooltipRoot.addEventListener(
+      linkedElement.addEventListener(
         "mouseenter",
         (e) => {
-          computeAndSetTooltipPosition(createVirtualElementFromMouseEvent(e));
+          establishInitialPosition();
           popover?.showPopover();
         },
         { signal: abortController.signal }
@@ -102,8 +159,6 @@
 <aside
   class="tooltip"
   class:mobile={isMobileDevice}
-  style:left={tooltipLeft}
-  style:top={tooltipTop}
   popover={isMobileDevice ? "auto" : "manual"}
   bind:this={popover}
 >
@@ -115,58 +170,24 @@
 
   /* applies to both mobile and desktop */
   .tooltip {
-    @apply p-3 rounded-sm shadow text-muted-foreground bg-muted-background border-accent border-2;
+    @apply p-3 rounded-sm shadow text-muted-foreground bg-muted-background border-accent border-2 pointer-events-none overflow-hidden
+    left-0 top-0;
   }
 
   /* Desktop */
-  .tooltip:not(.mobile) {
+  .tooltip {
     @apply absolute;
     transition:
       opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 1s cubic-bezier(0.16, 1, 0.3, 1),
       display 0.5s allow-discrete,
       overlay 0.5s allow-discrete;
     opacity: 0;
-    transform: translateX(-20px) translateY(16px) rotate(-5deg);
   }
-  .tooltip:not(.mobile):popover-open {
+  .tooltip:popover-open {
     opacity: 1;
-    transform: translate(0, 0) rotate(2deg);
 
     @starting-style {
       opacity: 0;
-      transform: translateX(-20px) translateY(16px) rotate(-5deg);
-    }
-  }
-
-  /* Mobile */
-  .tooltip.mobile {
-    @apply fixed;
-    transition:
-      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      display 0.5s allow-discrete,
-      overlay 0.5s allow-discrete;
-    opacity: 0;
-    top: unset;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform: translateY(100%);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    max-height: 70vh;
-  }
-
-  .tooltip.mobile:popover-open {
-    opacity: 1;
-    transform: translateY(0);
-
-    @starting-style {
-      opacity: 0;
-      transform: translateY(100%);
     }
   }
 </style>
