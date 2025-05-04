@@ -1,43 +1,23 @@
 ---
 import ClampedContainer from "./ClampedContainer.astro";
-import SocialLinks from "./SocialLinks.astro";
+import Header from "./Header.astro";
 ---
 
-<main class="w-screen flex flex-col items-center">
-  <nav
-    class="grid grid-cols-[1fr_auto_1fr] h-[90px] w-full px-12 py-4 max-w-[1440px] mx-auto
-    max-sm:px-6 max-sm:opacity-0"
-  >
-    <div class="flex flex-col items-start justify-center">
-      <span>Haydon Lam</span>
-      <small class="text-muted-foreground text-sm"
-        >London, United Kingdom,
-      </small>
-    </div>
-    <menu
-      class="flex items-center gap-4 px-4 pb-[8px] pt-[13px] bg-white/20 rounded-full justify-self-auto"
-    >
-      WIP 🚧
-      <!-- <span>Photos</span>
-      <span>London</span>
-      <span>London</span>
-      <span>London</span> -->
-    </menu>
-    <div class="flex items-end flex-col justify-center">
-      <small class="text-muted-foreground text-sm">Socials</small>
-      <div class="flex gap-2">
-        <SocialLinks />
+<main class="w-full flex flex-col items-center bg-amber-200">
+  <Header />
+  <ClampedContainer>
+    <section class="h-[768px] max-sm:h-[500px] w-full grid place-items-center">
+      <div
+        class="relative flex flex-col items-center justify-center translate-y-[-45px]
+        max-sm:items-start"
+      >
+        <p class="text-muted-foreground self-start">Welcome, I&apos;m Haydon</p>
+        <h1 class="text-center max-sm:hidden">Fullstack Software Engineer</h1>
+        <h1 class="text-center max-sm:hidden">currently based in London.</h1>
+        <h1 class="min-sm:hidden">
+          Fullstack Software Engineer currently based in London.
+        </h1>
       </div>
-    </div>
-  </nav>
-
-  <footer class="bg-muted-background w-full pb-12">
-    <ClampedContainer>
-      <h3>Socials</h3>
-      <div class="flex gap-2">
-        <SocialLinks />
-      </div>
-      <p class="text-center mt-3">Made with ❤️ by me!</p>
-    </ClampedContainer>
-  </footer>
+    </section>
+  </ClampedContainer>
 </main>

@@ -4,35 +4,13 @@ import SocialLinks from "./SocialLinks.astro";
 import Tooltip from "./home/Tooltip.svelte";
 import StarlingLogo from "../assets/starling-bank.svg";
 import { Image } from "astro:assets";
+import Header from "./Header.astro";
+import HeaderSpacer from "./HeaderSpacer.astro";
 ---
 
-<main class="w-screen flex flex-col items-center">
-  <nav
-    class="grid grid-cols-[1fr_auto_1fr] h-[90px] w-full px-12 py-4 max-w-[1440px] mx-auto
-    max-sm:px-6 max-sm:opacity-0"
-  >
-    <div class="flex flex-col items-start justify-center">
-      <span>Haydon Lam</span>
-      <small class="text-muted-foreground text-sm"
-        >London, United Kingdom, <slot />
-      </small>
-    </div>
-    <menu
-      class="flex items-center gap-4 px-4 pb-[8px] pt-[13px] bg-white/20 rounded-full justify-self-auto"
-    >
-      WIP 🚧
-      <!-- <span>Photos</span>
-      <span>London</span>
-      <span>London</span>
-      <span>London</span> -->
-    </menu>
-    <div class="flex items-end flex-col justify-center">
-      <small class="text-muted-foreground text-sm">Socials</small>
-      <div class="flex gap-2">
-        <SocialLinks />
-      </div>
-    </div>
-  </nav>
+<main class="w-full flex flex-col items-center">
+  <Header />
+  <HeaderSpacer />
   <section class="h-[768px] max-sm:h-[500px] w-full grid place-items-center">
     <ClampedContainer>
       <div
@@ -113,7 +91,7 @@ import { Image } from "astro:assets";
     <ClampedContainer>
       <h2 class="mb-3">Discover</h2>
       <ul class="flex flex-col gap-3">
-        <li><h4 class="">Github Projects</h4></li>
+        <li><h4 class="">Projects</h4></li>
         <li><h4 class=""><a href="/photos">Photography</a></h4></li>
         <li><h4 class="">Lab/ Experiments</h4></li>
         <li><h4 class="">Spoon Carving</h4></li>

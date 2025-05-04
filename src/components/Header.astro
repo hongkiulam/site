@@ -1,0 +1,27 @@
+---
+import MobileNav from "./MobileNav";
+---
+
+<nav
+  class="grid grid-cols-[1fr_1fr] h-[90px] w-full px-12 py-4 max-w-[1440px] mx-auto
+max-sm:px-6 absolute top-0"
+>
+  <div class="flex flex-col items-start justify-center max-sm:opacity-0">
+    <span>Haydon Lam</span>
+    <small class="text-muted-foreground text-sm">London, United Kingdom </small>
+  </div>
+  <!-- <div class="flex items-end flex-col justify-center max-sm:hidden">
+    <small class="text-muted-foreground text-sm">Navigation</small>
+    <menu class="flex gap-2">
+      <a href="/">Home</a>
+      <a href="/">Projects</a>
+      <a href="/photos">Photography</a>
+    </menu>
+  </div> -->
+  <div class="flex items-end flex-col justify-center">
+    <small class="text-muted-foreground text-sm">Open Navigation</small>
+    <menu>
+      <MobileNav client:load />
+    </menu>
+  </div>
+</nav>

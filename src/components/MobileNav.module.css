@@ -1,0 +1,38 @@
+.mobile-nav {
+  --animejs-duration: 0.5s;
+  --transition-duration: 0.55s;
+  --transition-easing: ease-out;
+  --transform-transition: transform var(--transition-duration)
+    var(--transition-easing) allow-discrete;
+  --opacity-transition: opacity var(--transition-duration)
+    var(--transition-easing) allow-discrete;
+  --display-transition: display var(--transition-duration)
+    var(--transition-easing) allow-discrete;
+  --overlay-transition: overlay var(--transition-duration)
+    var(--transition-easing) allow-discrete;
+}
+
+.mobile-nav:not(:open) {
+  --transition-duration: 0.45s;
+  transition: var(--transform-transition), var(--opacity-transition),
+    var(--display-transition), var(--overlay-transition);
+  opacity: 0;
+}
+
+.mobile-nav:open {
+  transition: var(--transform-transition), var(--opacity-transition),
+    var(--display-transition), var(--overlay-transition);
+  transform: translateX(-100%);
+  opacity: 1;
+}
+
+@starting-style {
+  .mobile-nav:open {
+    transform: translateX(0px);
+    opacity: 0;
+  }
+}
+
+.mobile-nav::backdrop {
+  opacity: 0;
+}
