@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as PIXI from "pixi.js";
 import { createTimeline } from "animejs";
-import { useIsFirstMount } from "../lib/hooks/useIsFirstMount";
+import { useIsFirstMount } from "@lib/hooks/useIsFirstMount";
 
 interface MobileNavPageWipeProps {
   isOpen: boolean;

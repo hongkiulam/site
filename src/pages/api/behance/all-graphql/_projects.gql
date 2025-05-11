@@ -1,0 +1,165 @@
+query GetProfileProjects($username: String, $after: String) {
+  user(username: $username) {
+    profileProjects(first: 24, after: $after) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      nodes {
+        __typename
+        colors {
+          r
+          g
+          b
+        }
+        covers {
+          size_202 {
+            url
+          }
+          size_404 {
+            url
+          }
+          size_808 {
+            url
+          }
+        }
+        fields {
+          id
+          label
+          slug
+          url
+        }
+        id
+        modifiedOn
+        name
+        publishedOn
+        slug
+        url
+        allModules {
+          __typename
+          ... on ImageModule {
+            ...projectImageModuleFields
+          }
+          ... on MediaCollectionModule {
+            ...projectMediaCollectionModuleFields
+          }
+        }
+      }
+    }
+  }
+}
+fragment projectImageModuleFields on ImageModule {
+  alignment
+  altText
+  altTextForEditor
+  caiData
+  hasCaiData
+  caption
+  captionAlignment
+  captionPlain
+  flexHeight
+  flexWidth
+  fullBleed
+  height
+  id
+  isCaiVersion1
+  projectId
+  src
+  tags
+  width
+  imageSizes {
+    ...projectImageSizesFields
+  }
+}
+fragment projectMediaCollectionModuleFields on MediaCollectionModule {
+  alignment
+  captionAlignment
+  captionPlain
+  collectionType
+  components {
+    filename
+    flexHeight
+    flexWidth
+    height
+    id
+    imageSizes {
+      size_disp {
+        height
+        url
+        width
+      }
+      size_fs {
+        height
+        url
+        width
+      }
+      size_max_1200 {
+        height
+        url
+        width
+      }
+      size_1400_opt_1 {
+        height
+        url
+        width
+      }
+      size_2800_opt_1 {
+        height
+        url
+        width
+      }
+    }
+    position
+    width
+  }
+  id
+  fullBleed
+  sortType
+}
+fragment projectImageSizesFields on ProjectModuleImageSizes {
+  size_disp {
+    height
+    url
+    width
+  }
+  size_fs {
+    height
+    url
+    width
+  }
+  size_max_1200 {
+    height
+    url
+    width
+  }
+  # size_original {
+  #   height
+  #   url
+  #   width
+  # }
+  # size_1400 {
+  #   height
+  #   url
+  #   width
+  # }
+  size_1400_opt_1 {
+    height
+    url
+    width
+  }
+  size_2800_opt_1 {
+    height
+    url
+    width
+  }
+  # size_max_3840 {
+  #   height
+  #   url
+  #   width
+  # }
+  # size_disp_still {
+  #   height
+  #   url
+  #   width
+  # }
+}

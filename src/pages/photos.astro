@@ -1,8 +1,14 @@
 ---
-import View from "../components/Photos.astro";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
+import View from "@components/Photos.astro";
+import { GET } from "../pages/api/behance/all-graphql";
+import type { SanitisedBehancePhotographyProject } from "@@types/behance";
+
+const allProjectsResponse = await GET(Astro);
+const allProjects: SanitisedBehancePhotographyProject[] =
+  await allProjectsResponse.json();
 ---
 
 <Layout>
-  <View />
+  <View allProjects={allProjects} />
 </Layout>
