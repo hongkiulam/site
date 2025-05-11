@@ -1,4 +1,6 @@
-[
+import type { BehanceProfileProject } from "@@types/behance";
+
+export const projectMock: BehanceProfileProject[] = [
   {
     "__typename": "Project",
     "colors": {

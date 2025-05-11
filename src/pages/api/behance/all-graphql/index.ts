@@ -7,6 +7,7 @@ import type {
 import type { APIRoute } from "astro";
 import fs from "node:fs";
 import path from "node:path";
+import { projectMock } from "../all-graphql/_projects";
 
 const PHOTOGRAPHY_FIELD_ID = 73;
 
@@ -53,15 +54,7 @@ export const GET: APIRoute = (async () => {
     // if (process.env.NODE_ENV === "development") {
     if (true) {
       // TODO: pregenerate the data during build to speed things up
-      allProjects = JSON.parse(
-        fs.readFileSync(
-          path.join(
-            process.cwd(),
-            "src/pages/api/behance/all-graphql/_projects.json"
-          ),
-          "utf-8"
-        )
-      ) as BehanceProfileProject[];
+      allProjects = projectMock;
     } else {
       let after = Buffer.from("0").toString("base64");
       while (after) {

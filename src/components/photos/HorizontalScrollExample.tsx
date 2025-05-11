@@ -1,17 +1,23 @@
-import * as THREE from "three";
 import { useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Image, ScrollControls, Scroll, useScroll } from "@react-three/drei";
 import { proxy, useSnapshot } from "valtio";
 import { easing } from "maath";
-import projects from "../../pages/api/behance/all-graphql/_projects.json";
+import { projectMock } from "../../pages/api/behance/all-graphql/_projects";
+import {
+  BufferGeometry,
+  Color,
+  Group,
+  LineBasicMaterial,
+  Vector3,
+} from "three";
 
-const images = projects[2].allModules[0].components;
+const images = projectMock[2].allModules[0].components;
 
-const material = new THREE.LineBasicMaterial({ color: "black" });
-const geometry = new THREE.BufferGeometry().setFromPoints([
-  new THREE.Vector3(0, -0.5, 0),
-  new THREE.Vector3(0, 0.5, 0),
+const material = new LineBasicMaterial({ color: "black" });
+const geometry = new BufferGeometry().setFromPoints([
+  new Vector3(0, -0.5, 0),
+  new Vector3(0, 0.5, 0),
 ]);
 const state = proxy({
   clicked: null,
@@ -22,7 +28,7 @@ const state = proxy({
 });
 
 function Minimap() {
-  const ref = useRef<THREE.Group | null>(null);
+  const ref = useRef<Group | null>(null);
   const scroll = useScroll();
   const { urls } = useSnapshot(state);
   const { height } = useThree((state) => state.viewport);
@@ -53,7 +59,7 @@ function Minimap() {
   );
 }
 
-function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
+function Item({ index, position, scale, c = new Color(), ...props }) {
   const ref = useRef();
   const scroll = useScroll();
   const { clicked, urls } = useSnapshot(state);
