@@ -1,12 +1,13 @@
 ---
-import Home from "@components/Home.astro";
-import Layout from "@layouts/Layout.astro";
+import Home from '@components/Home.astro';
+import Layout from '@layouts/Layout.astro';
 
-const TWO_HOURS_IN_SECONDS = 2 * 60 * 60;
-Astro.response.headers.set(
-  "Cache-Control",
-  `public, max-age=${TWO_HOURS_IN_SECONDS}, must-revalidate`
-);
+export const prerender = true;
+// const TWO_HOURS_IN_SECONDS = 2 * 60 * 60;
+// Astro.response.headers.set(
+//   "Cache-Control",
+//   `public, max-age=${TWO_HOURS_IN_SECONDS}, must-revalidate`
+// );
 ---
 
 <Layout>
