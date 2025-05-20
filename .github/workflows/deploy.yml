@@ -14,16 +14,17 @@ jobs:
       - name: 🛒 Checkout code
         uses: actions/checkout@v4
 
+      - name: 📦 Setup PNPM
+        uses: pnpm/action-setup@v3
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: 📦 Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          run_install: true
+      - name: 📥 Install Dependencies
+        run: pnpm install
 
       - name: 🔒 Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
