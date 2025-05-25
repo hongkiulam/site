@@ -1,14 +1,27 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import View from "@components/Photos.astro";
-import { GET } from "../pages/api/behance/all-graphql";
-import type { SanitisedBehancePhotographyProject } from "@@types/behance";
+export const prerender = true;
+
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/_shared/Header.astro';
+import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+import HorizontalScrollExample from '@components/photos/HorizontalScrollExample';
+import { GET } from '../pages/api/behance/all-graphql';
+import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import ProjectSelectorIsland from '@components/photos/ProjectSelectorIsland.astro';
+import ProjectCanvasIsland from '@components/photos/ProjectCanvasIsland.astro';
 
 const allProjectsResponse = await GET(Astro);
-const allProjects: SanitisedBehancePhotographyProject[] =
-  await allProjectsResponse.json();
+const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsResponse.json();
 ---
 
 <Layout>
-  <View allProjects={allProjects} />
+  <main class="w-full h-full flex flex-col items-center bg-muted-background">
+    <Header />
+    <HeaderSpacer />
+    <ProjectSelectorIsland server:defer allProjects={allProjects} />
+    <section class="h-full w-full grid place-items-center">
+      <!-- <PhotosScene client:load /> -->
+      <ProjectCanvasIsland server:defer allProjects={allProjects} />
+    </section>
+  </main>
 </Layout>
