@@ -5,6 +5,8 @@ import { proxy, useSnapshot } from 'valtio';
 import { easing } from 'maath';
 import { BufferGeometry, Color, Group, LineBasicMaterial, Vector3 } from 'three';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import { useStore } from '@nanostores/react';
+import { projectSlugState } from './state/photos-state';
 
 const material = new LineBasicMaterial({ color: 'black' });
 const geometry = new BufferGeometry().setFromPoints([
@@ -124,17 +126,13 @@ function Items({ w = 0.7, gap = 0.15, images }: ItemsProps) {
 
 interface HorizontalScrollExampleProps {
   allProjects: SanitisedBehancePhotographyProject[];
-  initialProjectSlug: string;
 }
-const HorizontalScrollExample = ({
-  allProjects,
-  initialProjectSlug
-}: HorizontalScrollExampleProps) => {
-  const [selectedProjectSlug, setSelectedProjectSlug] = useState(initialProjectSlug);
+const HorizontalScrollExample = ({ allProjects }: HorizontalScrollExampleProps) => {
+  const selectedProjectSlug = useStore(projectSlugState);
 
   const images = useMemo(() => {
     return allProjects.find((project) => project.slug === selectedProjectSlug);
-  }, [allProjects, initialProjectSlug, selectedProjectSlug]);
+  }, [allProjects, selectedProjectSlug]);
 
   return (
     <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} onPointerMissed={() => (state.clicked = null)}>
