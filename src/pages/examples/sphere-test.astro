@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SphereTestComponent from '../../components/examples/SphereTest';
+---
+
+<Layout title="Infinite Grid">
+  <main>
+    <div class="infinite-grid-container">
+      <SphereTestComponent client:load />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .infinite-grid-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+</style>
