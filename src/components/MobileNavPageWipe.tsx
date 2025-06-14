@@ -29,14 +29,14 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
       return window.innerWidth / ratio > max ? max : window.innerWidth / ratio;
     };
 
-    const amplitudeVariation = Math.random() * 50;
+    const randomAmplitudeVariation = Math.random() * 50;
     if (isOpen) {
       const timeline = createTimeline();
       timeline
         .add(
           animationStateRef.current,
           {
-            amplitude: scaledAmplitude(50) + amplitudeVariation,
+            amplitude: scaledAmplitude(50) + randomAmplitudeVariation,
             duration: 200,
           },
           0
@@ -62,7 +62,7 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
         .add(
           animationStateRef.current,
           {
-            amplitude: scaledAmplitude(50) + amplitudeVariation,
+            amplitude: scaledAmplitude(50) + randomAmplitudeVariation,
             duration: 200,
           },
           0
