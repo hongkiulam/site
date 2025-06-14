@@ -216,7 +216,8 @@ enum CameraControlsActions {
   TRUCK = 2,
   DOLLY = 16,
   TOUCH_TRUCK = 128,
-  TOUCH_DOLLY = 1024
+  TOUCH_DOLLY = 1024,
+  TOUCH_DOLLY_TRUCK = 4096
 }
 const SphereTest: React.FC = () => {
   const cameraControlsRef = useRef<CameraControls>(null);
@@ -240,7 +241,7 @@ const SphereTest: React.FC = () => {
             }}
             touches={{
               one: CameraControlsActions.TOUCH_TRUCK,
-              two: CameraControlsActions.TOUCH_DOLLY,
+              two: CameraControlsActions.TOUCH_DOLLY_TRUCK,
               three: CameraControlsActions.NONE
             }}
             maxDistance={8}
