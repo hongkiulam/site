@@ -2,6 +2,9 @@
 import { ClientRouter } from 'astro:transitions';
 
 import '../styles/global.css';
+
+const { title } = Astro.props;
+const pageTitle = title ? `${title} | Haydon Lam` : 'Haydon Lam';
 ---
 
 <!doctype html>
@@ -11,7 +14,7 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Haydon Lam</title>
+    <title>{pageTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
