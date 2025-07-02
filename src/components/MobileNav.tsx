@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
-import S from "./MobileNav.module.css";
-import MobileNavPageWipe from "./MobileNavPageWipe";
-import { X, ChevronLeft } from "lucide-react";
+import { useRef, useState } from 'react';
+import S from './MobileNav.module.css';
+import MobileNavPageWipe from './MobileNavPageWipe';
+import { X, Menu } from 'lucide-react';
 
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
@@ -21,28 +21,31 @@ const MobileNav = () => {
 
   return (
     <>
-      <menu className="flex items-end flex-col justify-center">
+      <menu className="flex items-end flex-col justify-center group">
         <button
           tabIndex={-1}
-          className="text-muted-foreground text-sm cursor-pointer"
+          className="text-muted-foreground text-sm cursor-pointer overflow-clip h-auto max-h-0 group-hover:max-h-6 transition-all"
           onClick={showModal}
         >
-          Open Navigation
+          Menu
         </button>
         <button
           onClick={showModal}
           aria-label="Open Navigation"
-          className="-mr-2 cursor-pointer pl-20"
+          className="-mr-1 cursor-pointer pl-20"
         >
-          <ChevronLeft />
+          <Menu />
         </button>
         <dialog
           ref={dialogRef}
           onClose={hideModal}
-          className={`${S["mobile-nav"]} w-full min-w-full left-full min-h-screen bg-transparent h-screen fixed top-0 text-muted-background
+          className={`${S['mobile-nav']} w-full min-w-full left-full min-h-screen bg-transparent h-screen fixed top-0 text-muted-background
         `}
         >
-          <form className="h-[90px] flex flex-col justify-center items-start px-12 py-4 max-w-[1440px] mx-auto max-sm:px-6">
+          <form
+            className="h-[90px] flex flex-col justify-center items-start px-12 py-4 max-w-[1440px] mx-auto max-sm:px-6"
+            method="dialog"
+          >
             <menu className="flex items-start flex-col justify-center">
               <button
                 onClick={hideModal}
@@ -50,7 +53,7 @@ const MobileNav = () => {
                 tabIndex={-1}
                 id="close-navigation-label"
               >
-                Close Navigation
+                Close Menu
               </button>
               <button
                 autoFocus
