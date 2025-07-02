@@ -81,7 +81,9 @@ const MobileNav = () => {
                 </h2>
               </li>
               <li>
-                <h2>Lab/ Experiments</h2>
+                <h2>
+                  <a href="/experiments">Lab/ Experiments</a>
+                </h2>
               </li>
               <li>
                 <h2>Spoon Carving</h2>

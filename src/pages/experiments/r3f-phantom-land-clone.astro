@@ -1,15 +1,13 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import R3FPhantomLandComponent from '../../components/experiments/R3FPhantomLandClone';
+import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
 ---
 
-<Layout title="R3F Phantom Land Clone">
-  <main>
-    <div class="infinite-grid-container">
-      <R3FPhantomLandComponent client:load />
-    </div>
-  </main>
-</Layout>
+<ExperimentPageLayout>
+  <div class="infinite-grid-container">
+    <R3FPhantomLandComponent client:load />
+  </div>
+</ExperimentPageLayout>
 
 <style>
   .infinite-grid-container {

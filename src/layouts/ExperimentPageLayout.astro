@@ -1,0 +1,13 @@
+---
+import Header from '@components/_shared/Header.astro';
+import Layout from './Layout.astro';
+import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+---
+
+<Layout>
+  <main class="bg-yellow-100 flex items-center flex-col">
+    <Header />
+    <HeaderSpacer />
+    <slot />
+  </main>
+</Layout>
