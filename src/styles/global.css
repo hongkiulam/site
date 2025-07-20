@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: hsl(0 0% 93%);
@@ -55,8 +55,8 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
 
-  --font-body: "DM Sans", sans-serif;
-  --font-display: "DM Serif Display", serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'DM Serif Display', serif;
   --text-*: initial;
   --text-sm: var(--font-size-sm);
   --text-base: var(--font-size-base);
@@ -67,7 +67,8 @@
   --text-4xl: var(--font-size-4xl);
   --text-5xl: var(--font-size-5xl);
 
-  --z-index-header: calc(var(--z-above) + var(--z-base));
+  --z-index-header: calc(var(--z-above) + var(--z-index-header-backdrop));
+  --z-index-header-backdrop: calc(var(--z-above) + var(--z-base));
 }
 
 @layer base {
@@ -91,11 +92,11 @@
     @apply underline;
   }
 
-  a[href^="http"]:hover {
+  a[href^='http']:hover {
     @apply text-muted-foreground;
   }
 
-  a[target^="_blank"]:hover {
+  a[target^='_blank']:hover {
     @apply text-accent;
   }
 
