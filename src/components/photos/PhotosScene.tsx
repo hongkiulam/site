@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
 import { useDrag } from '@use-gesture/react';
-import { TextureLoader, type Group, MOUSE, PerspectiveCamera } from 'three';
+import { TextureLoader, type Group, MOUSE, TOUCH, PerspectiveCamera } from 'three';
 import { Scroll, ScrollControls, Image, OrbitControls, MapControls } from '@react-three/drei';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
 
@@ -49,13 +49,22 @@ const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
   return (
     <Canvas>
       <ambientLight intensity={1} />
-      {/* <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN }} /> */}
-      <MapControls />
-      {/* <ScrollControls horizontal damping={0.1} pages={2} infinite> */}
-      {/* <Scroll> */}
-      {/* <Scene /> */}
-      {/* </Scroll> */}
-      {/* </ScrollControls> */}
+      <MapControls
+        mouseButtons={{
+          LEFT: MOUSE.PAN,
+          MIDDLE: MOUSE.DOLLY,
+          RIGHT: MOUSE.ROTATE
+        }}
+        touches={{
+          ONE: TOUCH.PAN,
+          TWO: TOUCH.DOLLY_PAN
+        }}
+        enableDamping={true}
+        dampingFactor={0.1}
+        minDistance={1}
+        maxDistance={10}
+        screenSpacePanning={true}
+      />
       {allProjects.map((project, index) => {
         const imageSize = 1.4;
         const gap = 0.2;
