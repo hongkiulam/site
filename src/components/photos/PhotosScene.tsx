@@ -77,12 +77,22 @@ const ResponsiveImageGrid: React.FC<{ allProjects: SanitisedBehancePhotographyPr
         const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
 
         return (
-          <Image
-            key={project.id}
-            url={TEMP_LOCAL_IMAGE}
-            scale={[imageSize, imageSize]}
-            position={[x, y - yAxisPadding, 0]}
-          />
+          <group key={project.id} position={[x, y - yAxisPadding, 0]}>
+            {/* Shadow plane behind the image, kinda shit */}
+            <mesh position={[0, 0, -0.001]}>
+              <boxGeometry args={[imageSize, imageSize, 0.001]} />
+              <meshBasicMaterial color="#000000" transparent opacity={0.2} />
+            </mesh>
+
+            {/* TODO convert to plastic sleeve */}
+            {/*<mesh position={[0, 0, 0.005]}>
+              <planeGeometry args={[imageSize * 1.02, imageSize * 1.02]} />
+              <meshBasicMaterial color="#f8f8f8" />
+            </mesh>*/}
+
+            {/* Main photo with slight forward position for 3D effect */}
+            <Image url={TEMP_LOCAL_IMAGE} scale={[imageSize, imageSize]} position={[0, 0, 0.01]} />
+          </group>
         );
       })}
     </>
