@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import {
   Scroll,
@@ -10,36 +10,30 @@ import {
   Instance,
   AccumulativeShadows,
   RandomizedLight,
-  PerformanceMonitor
+  PerformanceMonitor,
+  useScroll,
+  PerspectiveCamera,
+  Merged,
+  MeshTransmissionMaterial,
+  PositionMesh
 } from '@react-three/drei';
-import { Group } from 'three';
+import {
+  BoxGeometry,
+  BufferGeometry,
+  Color,
+  DoubleSide,
+  FrontSide,
+  Group,
+  Mesh,
+  MeshPhysicalMaterial
+} from 'three';
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
-// import useSpline from '@splinetool/r3f-spline';
 
 interface PhotosSceneProps {
   allProjects: SanitisedBehancePhotographyProject[];
 }
-
-// Utility function to calculate GLTF scale based on desired size
-const calculateGLTFScale = (gltf: any, targetSize: number): number => {
-  // Get the bounding box of the GLTF mesh to determine its original size
-  // You may need to adjust this based on your specific GLTF structure
-  const geometry = gltf.meshes.case.geometry;
-  geometry.computeBoundingBox();
-  const boundingBox = geometry.boundingBox;
-
-  if (boundingBox) {
-    const originalSize = Math.max(
-      boundingBox.max.x - boundingBox.min.x,
-      boundingBox.max.y - boundingBox.min.y,
-      boundingBox.max.z - boundingBox.min.z
-    );
-    return targetSize / originalSize;
-  }
-
-  // Fallback if bounding box calculation fails
-  return targetSize;
-};
 
 const useResponsiveGridLayout = () => {
   const { viewport, size } = useThree();
@@ -56,18 +50,17 @@ const useResponsiveGridLayout = () => {
   let imageSizePx: number;
 
   if (isMobile) {
-    // Mobile: max 800px or 80% screen width
-    imageSizePx = Math.min(500, size.width * 0.75);
+    // Mobile: max 800px or 60% screen width
+    imageSizePx = Math.max(Math.min(500, size.width * 0.6), 250);
   } else {
     // Multi-column: divide available width by columns, with some padding
-    // Use 90% of available width, divide by columns, with max 600px per image
-    const availableWidth = size.width * 0.75;
+    // Use 50% of available width, divide by columns, with max 600px per image
+    const availableWidth = size.width * 0.5;
     const maxImageWidth = availableWidth / columns;
-    imageSizePx = Math.min(500, maxImageWidth);
+    imageSizePx = Math.max(Math.min(500, maxImageWidth), 300);
   }
 
   const imageSize = imageSizePx * pixelToThreeUnitsRatio;
-  console.log(imageSize);
   const gap = imageSize * 0.14; // 10% of image size for gap
   const imageRealEstate = imageSize + gap;
 
@@ -107,24 +100,14 @@ const InteractiveImage: React.FC<{
       const lerpFactor = 1 - Math.exp(-10 * delta); // Smooth interpolation
       currentY.current += (targetY.current - currentY.current) * lerpFactor;
       groupRef.current.position.set(position[0], currentY.current, position[2]);
+
+      groupRef.current.rotation.x =
+        ((hovered ? 0 : Math.PI / 36) - groupRef.current.rotation.x) * lerpFactor;
     }
   });
 
   return (
-    <group ref={groupRef} position={position}>
-      {/* Shadow plane behind the image, kinda shit */}
-      {/*<mesh position={[0, 0, -0.001]}>
-        <boxGeometry args={[imageSize, imageSize, 0.001]} />
-        <meshBasicMaterial color="#000000" transparent opacity={0.2} />
-      </mesh>*/}
-
-      {/* TODO convert to plastic sleeve */}
-      {/*<mesh position={[0, 0, 0.005]}>
-        <planeGeometry args={[imageSize * 1.02, imageSize * 1.02]} />
-        <meshBasicMaterial color="#f8f8f8" />
-      </mesh>*/}
-
-      {/* Main photo positioned behind the case */}
+    <group ref={groupRef} position={position} rotateX={Math.PI / 36}>
       <Image
         url={imageUrl}
         scale={[imageSize, imageSize]}
@@ -137,63 +120,146 @@ const InteractiveImage: React.FC<{
   );
 };
 
+const InteractiveCaseInstance = (props: {
+  position: [x: number, y: number, z: number];
+  imageSize: number;
+  caseTopInset: number;
+}) => {
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef<PositionMesh | null>(null);
+
+  useFrame((_, delta) => {
+    if (ref.current) {
+      const targetRotationX = hovered ? Math.PI / 36 : 0; // 5 degrees in radians
+      const caseHeight = props.imageSize - props.caseTopInset;
+      const halfHeight = caseHeight / 2;
+
+      // Smoothly interpolate rotation
+      ref.current.rotation.x += (targetRotationX - ref.current.rotation.x) * delta * 8;
+
+      // Adjust position to keep bottom of mesh fixed during rotation
+      // When rotating around X-axis, the Y position needs to be adjusted
+      const rotationOffset = halfHeight * (1 - Math.cos(ref.current.rotation.x));
+      ref.current.position.y = props.position[1] - rotationOffset;
+    }
+  });
+
+  return (
+    <Instance
+      ref={ref}
+      position={props.position}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+    />
+  );
+};
+
 // Component to render responsive grid of images
 const ResponsiveImageGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject[] }> = ({
   allProjects
 }) => {
-  const { viewport, columns, yAxisPadding, imageSize, imageRealEstate } = useResponsiveGridLayout();
-  const gltf = useGLTF('/album_plastic_playground.gltf');
+  const {
+    viewport,
+    columns,
+    yAxisPadding,
+    imageSize: IMAGE_SIZE,
+    imageRealEstate
+  } = useResponsiveGridLayout();
+  // const gltf = useGLTF('/album_plastic_playground.gltf');
+  const CASE_GUTTER = 0.1;
+  const CASE_TOP_INSET = 0.1;
+  const CASE_THICKNESS = 0.05;
 
-  // Calculate total height needed for scrolling
-  const rows = Math.ceil(allProjects.length / columns);
-  const totalContentHeight = rows * imageRealEstate + yAxisPadding;
+  const basicCaseGeometry = useMemo(() => {
+    const front = new RoundedBoxGeometry(
+      IMAGE_SIZE + CASE_GUTTER * 2,
+      IMAGE_SIZE - CASE_TOP_INSET,
+      CASE_THICKNESS
+    );
+    const leftSide = new RoundedBoxGeometry(
+      CASE_GUTTER, // so that image doesn't touch the side, a little breathing room
+      IMAGE_SIZE - CASE_TOP_INSET,
+      CASE_THICKNESS
+    );
+    const rightSide = new RoundedBoxGeometry(
+      CASE_GUTTER, // so that image doesn't touch the side, a little breathing room
+      IMAGE_SIZE - CASE_TOP_INSET,
+      CASE_THICKNESS
+    );
 
-  // Calculate the scale factor needed to match imageSize using the utility function
-  const scaleFactorForCase = calculateGLTFScale(gltf, imageSize * 1.1);
+    // Position the side geometries relative to the front
+    const frontHalfWidth = (IMAGE_SIZE + CASE_GUTTER) / 2;
+
+    // Position left side to the left of the front panel
+    leftSide.translate(
+      -frontHalfWidth, // Move to left edge
+      0,
+      -CASE_THICKNESS
+    );
+
+    // Position right side to the right of the front panel
+    rightSide.translate(
+      frontHalfWidth, // Move to right edge
+      0,
+      -CASE_THICKNESS
+    );
+
+    // Merge all geometries into one
+    const mergedGeometry = BufferGeometryUtils.mergeGeometries([front, leftSide, rightSide]);
+
+    return mergedGeometry;
+  }, [IMAGE_SIZE]);
 
   return (
-    <>
-      {/* Instanced GLTF cases for performance */}
-      <Instances geometry={gltf.meshes.case.geometry} frustumCulled={false}>
-        <meshPhysicalMaterial
-          transparent
-          thickness={0.1}
-          reflectivity={0.9}
+    <group>
+      <Instances geometry={basicCaseGeometry} frustumCulled={false}>
+        <MeshTransmissionMaterial
+          background={new Color('#' + 'e0dce6')}
+          backside={true}
           transmission={1}
-          roughness={0}
+          roughness={0.5}
+          thickness={0.05}
+          reflectivity={0.5}
+          // ior={1.5}
+          chromaticAberration={0.06}
+          wireframe={false}
         />
-        {allProjects.map((project, index) => {
-          // Calculate grid position
-          const col = index % columns;
-          const row = Math.floor(index / columns);
 
-          // Center the grid horizontally
-          const totalGridWidth = (columns - 1) * imageRealEstate;
-          const xOffset = -totalGridWidth / 2;
-          const x = col * imageRealEstate + xOffset;
+        <>
+          {allProjects.map((project, index) => {
+            // Calculate grid position
+            const col = index % columns;
+            const row = Math.floor(index / columns);
 
-          // Position from top to bottom
-          const y = viewport.height / 2 - row * imageRealEstate - imageSize / 2;
+            // Center the grid horizontally
+            const totalGridWidth = (columns - 1) * imageRealEstate;
+            const xOffset = -totalGridWidth / 2;
+            const x = col * imageRealEstate + xOffset;
 
-          const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
+            // Position from top to bottom
+            const y = viewport.height / 2 - row * imageRealEstate - IMAGE_SIZE / 2;
 
-          return (
-            <group key={project.id} position={[x, y - yAxisPadding, 0]}>
-              <Instance
-                key={`case-${project.id}`}
-                position={[0, 0, 0]}
-                scale={scaleFactorForCase}
-              />
-              <InteractiveImage
-                position={[0, 0, 0]}
-                imageUrl={TEMP_LOCAL_IMAGE}
-                imageSize={imageSize}
-              />
-            </group>
-          );
-        })}
+            const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
+
+            return (
+              <group key={project.id} position={[x, y - yAxisPadding, 0]}>
+                <InteractiveCaseInstance
+                  key={`case-${project.id}`}
+                  position={[0, -(CASE_TOP_INSET * 1.5), 0.05]}
+                  imageSize={IMAGE_SIZE}
+                  caseTopInset={CASE_TOP_INSET}
+                />
+                <InteractiveImage
+                  position={[0, 0, 0]}
+                  imageUrl={TEMP_LOCAL_IMAGE}
+                  imageSize={IMAGE_SIZE}
+                />
+              </group>
+            );
+          })}
+        </>
       </Instances>
-    </>
+    </group>
   );
 };
 
@@ -208,11 +274,11 @@ const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
   return (
     <>
       <ambientLight intensity={1} />
-      {/*<OrbitControls />*/}
-      <AccumulativeShadows temporal frames={100} scale={10}>
+      {/*<OrbitControls enableZoom={true} />*/}
+      {/*<AccumulativeShadows temporal frames={100} scale={10}>
         <RandomizedLight amount={8} position={[5, 5, -10]} />
-      </AccumulativeShadows>
-      <ScrollControls horizontal={false} pages={pages} damping={0.2}>
+      </AccumulativeShadows>*/}
+      <ScrollControls horizontal={false} pages={pages} damping={0.1}>
         <Scroll>
           <ResponsiveImageGrid allProjects={allProjects} />
         </Scroll>
