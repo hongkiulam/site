@@ -1,34 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import {
   Scroll,
   ScrollControls,
   Image,
-  OrbitControls,
-  useGLTF,
   Instances,
   Instance,
-  AccumulativeShadows,
-  RandomizedLight,
-  PerformanceMonitor,
-  useScroll,
-  PerspectiveCamera,
-  Merged,
   MeshTransmissionMaterial,
   PositionMesh
 } from '@react-three/drei';
-import {
-  BoxGeometry,
-  BufferGeometry,
-  Color,
-  DoubleSide,
-  FrontSide,
-  Group,
-  Mesh,
-  MeshPhysicalMaterial
-} from 'three';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils';
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry';
+import { Color, Group } from 'three';
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
 
 interface PhotosSceneProps {
