@@ -7,12 +7,14 @@ import {
   Instances,
   Instance,
   MeshTransmissionMaterial,
-  PositionMesh
+  PositionMesh,
+  useScroll
 } from '@react-three/drei';
 import { Color, Group } from 'three';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import { easing } from 'maath';
 
 interface PhotosSceneProps {
   allProjects: SanitisedBehancePhotographyProject[];
@@ -68,24 +70,37 @@ const InteractiveImage: React.FC<{
 }> = ({ position, imageUrl, imageSize }) => {
   const [hovered, setHovered] = useState(false);
   const groupRef = useRef<Group>(null);
-  const targetY = useRef(position[1]);
-  const currentY = useRef(position[1]);
-
-  // Update target position when hover state changes
-  React.useEffect(() => {
-    targetY.current = hovered ? position[1] + 0.2 : position[1];
-  }, [hovered, position[1]]);
+  const scroll = useScroll();
+  const scrollVelocityRef = useRef(0);
+  const lastScrollRef = useRef(0);
 
   // Smooth animation using useFrame
   useFrame((state, delta) => {
     if (groupRef.current) {
-      // Lerp towards target position
-      const lerpFactor = 1 - Math.exp(-10 * delta); // Smooth interpolation
-      currentY.current += (targetY.current - currentY.current) * lerpFactor;
-      groupRef.current.position.set(position[0], currentY.current, position[2]);
+      // Calculate scroll velocity for wind effect
+      const currentScroll = scroll.offset;
+      const scrollDelta = currentScroll - lastScrollRef.current;
+      scrollVelocityRef.current = scrollDelta / delta;
+      lastScrollRef.current = currentScroll;
 
-      groupRef.current.rotation.x =
-        ((hovered ? 0 : Math.PI / 36) - groupRef.current.rotation.x) * lerpFactor;
+      // Wind tilt effect based on scroll velocity
+      const maxTilt = 60 /* degrees */ * (Math.PI / 180);
+      const targetTiltX = Math.max(-maxTilt, Math.min(maxTilt, scrollVelocityRef.current * 0.5));
+
+      // Smooth hover animation
+      easing.damp(
+        groupRef.current.position,
+        'z',
+        hovered ? position[2] + 0.2 : position[2],
+        0.15,
+        delta
+      );
+
+      // Apply wind tilt on X-axis
+      easing.dampAngle(groupRef.current.rotation, 'x', targetTiltX, 0.1, delta);
+
+      // Gradually return to neutral when not scrolling
+      scrollVelocityRef.current *= 0.95; // Decay velocity
     }
   });
 
@@ -195,7 +210,7 @@ const ResponsiveImageGrid: React.FC<{ allProjects: SanitisedBehancePhotographyPr
 
   return (
     <group>
-      <Instances geometry={basicCaseGeometry} frustumCulled={false}>
+      {/*<Instances geometry={basicCaseGeometry} frustumCulled={false}>
         <MeshTransmissionMaterial
           background={new Color('#' + 'e0dce6')}
           backside={true}
@@ -208,40 +223,37 @@ const ResponsiveImageGrid: React.FC<{ allProjects: SanitisedBehancePhotographyPr
           wireframe={false}
         />
 
-        <>
-          {allProjects.map((project, index) => {
-            // Calculate grid position
-            const col = index % columns;
-            const row = Math.floor(index / columns);
+        <>*/}
+      {allProjects.map((project, index) => {
+        // Calculate grid position
+        const col = index % columns;
+        const row = Math.floor(index / columns);
 
-            // Center the grid horizontally
-            const totalGridWidth = (columns - 1) * imageRealEstate;
-            const xOffset = -totalGridWidth / 2;
-            const x = col * imageRealEstate + xOffset;
+        // Center the grid horizontally
+        const totalGridWidth = (columns - 1) * imageRealEstate;
+        const xOffset = -totalGridWidth / 2;
+        const x = col * imageRealEstate + xOffset;
 
-            // Position from top to bottom
-            const y = viewport.height / 2 - row * imageRealEstate - IMAGE_SIZE / 2;
+        // Position from top to bottom
+        const y = viewport.height / 2 - row * imageRealEstate - IMAGE_SIZE / 2;
 
-            const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
+        const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
+        const image = import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.covers.size_404?.url;
 
-            return (
-              <group key={project.id} position={[x, y - yAxisPadding, 0]}>
-                <InteractiveCaseInstance
-                  key={`case-${project.id}`}
-                  position={[0, -(CASE_TOP_INSET * 1.5), 0.05]}
-                  imageSize={IMAGE_SIZE}
-                  caseTopInset={CASE_TOP_INSET}
-                />
-                <InteractiveImage
-                  position={[0, 0, 0]}
-                  imageUrl={TEMP_LOCAL_IMAGE}
-                  imageSize={IMAGE_SIZE}
-                />
-              </group>
-            );
-          })}
-        </>
-      </Instances>
+        return (
+          <group key={project.id} position={[x, y - yAxisPadding, 0]}>
+            {/*<InteractiveCaseInstance
+              key={`case-${project.id}`}
+              position={[0, -(CASE_TOP_INSET * 1.5), 0.05]}
+              imageSize={IMAGE_SIZE}
+              caseTopInset={CASE_TOP_INSET}
+            />*/}
+            <InteractiveImage position={[0, 0, 0]} imageUrl={image || ''} imageSize={IMAGE_SIZE} />
+          </group>
+        );
+      })}
+      {/*</>
+      </Instances>*/}
     </group>
   );
 };
@@ -261,7 +273,7 @@ const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
       {/*<AccumulativeShadows temporal frames={100} scale={10}>
         <RandomizedLight amount={8} position={[5, 5, -10]} />
       </AccumulativeShadows>*/}
-      <ScrollControls horizontal={false} pages={pages} damping={0.1}>
+      <ScrollControls horizontal={false} pages={pages} damping={0.3}>
         <Scroll>
           <ResponsiveImageGrid allProjects={allProjects} />
         </Scroll>
@@ -277,7 +289,7 @@ const withProviders =
   <Props extends object>(Component: React.ComponentType<Props>) =>
   (props: Props) => {
     return (
-      <Canvas>
+      <Canvas shadows>
         <Component {...props} />
       </Canvas>
     );
