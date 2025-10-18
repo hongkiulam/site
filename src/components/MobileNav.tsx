@@ -1,7 +1,39 @@
 import { useRef, useState } from 'react';
 import S from './MobileNav.module.css';
 import MobileNavPageWipe from './MobileNavPageWipe';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, Home } from 'lucide-react';
+
+const LabelledIconButton = ({
+  onClick,
+  Icon,
+  label
+}: {
+  onClick: () => void;
+  Icon: React.ComponentType;
+  label: string;
+}) => {
+  return (
+    <div className="group flex items-end flex-col justify-center">
+      <button
+        className="relative text-muted-foreground text-sm cursor-pointer overflow-clip h-auto max-h-0 focus:max-h-6 group-hover:max-h-6 transition-all"
+        onClick={onClick}
+        aria-label={label}
+      >
+        <span className="absolute">{label}</span>
+        &nbsp;
+        {/*<span className="opacity-0">{label}</span>*/}
+      </button>
+      <button
+        tabIndex={-1}
+        onClick={onClick}
+        aria-label="Open Navigation"
+        className="-mr-1 cursor-pointer"
+      >
+        <Icon />
+      </button>
+    </div>
+  );
+};
 
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
@@ -21,19 +53,8 @@ const MobileNav = () => {
 
   return (
     <>
-      <menu className="flex items-end flex-col justify-center group">
-        <button
-          tabIndex={-1}
-          className="text-muted-foreground text-sm cursor-pointer overflow-clip h-auto max-h-0 group-hover:max-h-6 transition-all"
-          onClick={showModal}
-        >
-          Menu
-        </button>
-        <button
-          onClick={showModal}
-          aria-label="Open Navigation"
-          className="-mr-1 cursor-pointer pl-20"
-        >
+      <menu className="flex items-center flex-row justify-end pl-20 gap-2">
+        <button className="-mr-1 cursor-pointer" onClick={showModal}>
           <Menu />
         </button>
         <dialog
