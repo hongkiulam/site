@@ -1,298 +1,193 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { Canvas, useThree, useFrame } from '@react-three/fiber';
-import {
-  Scroll,
-  ScrollControls,
-  Image,
-  Instances,
-  Instance,
-  MeshTransmissionMaterial,
-  PositionMesh,
-  useScroll
-} from '@react-three/drei';
-import { Color, Group } from 'three';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import React, { useRef, useState } from 'react';
+import { Canvas, useFrame, useLoader, type Vector3 } from '@react-three/fiber';
+import { Flex, Box } from '@react-three/flex';
+import { OrbitControls, Image, Grid, Box as BoxDrei, Text, useTexture } from '@react-three/drei';
+import * as THREE from 'three';
 import { easing } from 'maath';
+import type { SanitisedBehancePhotographyProject } from '@@types/behance';
 
-interface PhotosSceneProps {
-  allProjects: SanitisedBehancePhotographyProject[];
-}
-
-const useResponsiveGridLayout = () => {
-  const { viewport, size } = useThree();
-  const mobileColumns = 1;
-  const desktopColumns = 2;
-  const yAxisPadding = 0.5;
-
-  // Determine columns based on viewport width (mobile breakpoint at 768px)
-  const isMobile = size.width <= 768;
-  const pixelToThreeUnitsRatio = viewport.width / size.width;
-  const columns = isMobile ? mobileColumns : desktopColumns;
-
-  // Calculate image sizes based on pixel constraints and dynamic columns
-  let imageSizePx: number;
-
-  if (isMobile) {
-    // Mobile: max 800px or 60% screen width
-    imageSizePx = Math.max(Math.min(500, size.width * 0.6), 250);
-  } else {
-    // Multi-column: divide available width by columns, with some padding
-    // Use 50% of available width, divide by columns, with max 600px per image
-    const availableWidth = size.width * 0.5;
-    const maxImageWidth = availableWidth / columns;
-    imageSizePx = Math.max(Math.min(500, maxImageWidth), 300);
-  }
-
-  const imageSize = imageSizePx * pixelToThreeUnitsRatio;
-  const gap = imageSize * 0.14; // 10% of image size for gap
-  const imageRealEstate = imageSize + gap;
-
-  return {
-    isMobile,
-    pixelToThreeUnitsRatio,
-    viewport,
-    size,
-    columns,
-    imageSize,
-    gap,
-    yAxisPadding,
-    imageRealEstate
-  };
-};
-
-// Interactive image component with hover animation
-const InteractiveImage: React.FC<{
-  position: [number, number, number];
-  imageUrl: string;
-  imageSize: number;
-}> = ({ position, imageUrl, imageSize }) => {
-  const [hovered, setHovered] = useState(false);
-  const groupRef = useRef<Group>(null);
-  const scroll = useScroll();
-  const scrollVelocityRef = useRef(0);
-  const lastScrollRef = useRef(0);
-
-  // Smooth animation using useFrame
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      // Calculate scroll velocity for wind effect
-      const currentScroll = scroll.offset;
-      const scrollDelta = currentScroll - lastScrollRef.current;
-      scrollVelocityRef.current = scrollDelta / delta;
-      lastScrollRef.current = currentScroll;
-
-      // Wind tilt effect based on scroll velocity
-      const maxTilt = 60 /* degrees */ * (Math.PI / 180);
-      const targetTiltX = Math.max(-maxTilt, Math.min(maxTilt, scrollVelocityRef.current * 0.5));
-
-      // Smooth hover animation
-      easing.damp(
-        groupRef.current.position,
-        'z',
-        hovered ? position[2] + 0.2 : position[2],
-        0.15,
-        delta
-      );
-
-      // Apply wind tilt on X-axis
-      easing.dampAngle(groupRef.current.rotation, 'x', targetTiltX, 0.1, delta);
-
-      // Gradually return to neutral when not scrolling
-      scrollVelocityRef.current *= 0.95; // Decay velocity
-    }
-  });
-
-  return (
-    <group ref={groupRef} position={position} rotateX={Math.PI / 36}>
-      <Image
-        url={imageUrl}
-        scale={[imageSize, imageSize]}
-        position={[0, 0, -0.01]}
-        side={2} // DoubleSide
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-      />
-    </group>
-  );
-};
-
-const InteractiveCaseInstance = (props: {
-  position: [x: number, y: number, z: number];
-  imageSize: number;
-  caseTopInset: number;
-}) => {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef<PositionMesh | null>(null);
-
-  useFrame((_, delta) => {
-    if (ref.current) {
-      const targetRotationX = hovered ? Math.PI / 36 : 0; // 5 degrees in radians
-      const caseHeight = props.imageSize - props.caseTopInset;
-      const halfHeight = caseHeight / 2;
-
-      // Smoothly interpolate rotation
-      ref.current.rotation.x += (targetRotationX - ref.current.rotation.x) * delta * 8;
-
-      // Adjust position to keep bottom of mesh fixed during rotation
-      // When rotating around X-axis, the Y position needs to be adjusted
-      const rotationOffset = halfHeight * (1 - Math.cos(ref.current.rotation.x));
-      ref.current.position.y = props.position[1] - rotationOffset;
-    }
-  });
-
-  return (
-    <Instance
-      ref={ref}
-      position={props.position}
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-    />
-  );
-};
-
-// Component to render responsive grid of images
-const ResponsiveImageGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject[] }> = ({
-  allProjects
-}) => {
-  const {
-    viewport,
-    columns,
-    yAxisPadding,
-    imageSize: IMAGE_SIZE,
-    imageRealEstate
-  } = useResponsiveGridLayout();
-  // const gltf = useGLTF('/album_plastic_playground.gltf');
-  const CASE_GUTTER = 0.1;
-  const CASE_TOP_INSET = 0.1;
-  const CASE_THICKNESS = 0.05;
-
-  const basicCaseGeometry = useMemo(() => {
-    const front = new RoundedBoxGeometry(
-      IMAGE_SIZE + CASE_GUTTER * 2,
-      IMAGE_SIZE - CASE_TOP_INSET,
-      CASE_THICKNESS
-    );
-    const leftSide = new RoundedBoxGeometry(
-      CASE_GUTTER, // so that image doesn't touch the side, a little breathing room
-      IMAGE_SIZE - CASE_TOP_INSET,
-      CASE_THICKNESS
-    );
-    const rightSide = new RoundedBoxGeometry(
-      CASE_GUTTER, // so that image doesn't touch the side, a little breathing room
-      IMAGE_SIZE - CASE_TOP_INSET,
-      CASE_THICKNESS
-    );
-
-    // Position the side geometries relative to the front
-    const frontHalfWidth = (IMAGE_SIZE + CASE_GUTTER) / 2;
-
-    // Position left side to the left of the front panel
-    leftSide.translate(
-      -frontHalfWidth, // Move to left edge
-      0,
-      -CASE_THICKNESS
-    );
-
-    // Position right side to the right of the front panel
-    rightSide.translate(
-      frontHalfWidth, // Move to right edge
-      0,
-      -CASE_THICKNESS
-    );
-
-    // Merge all geometries into one
-    const mergedGeometry = BufferGeometryUtils.mergeGeometries([front, leftSide, rightSide]);
-
-    return mergedGeometry;
-  }, [IMAGE_SIZE]);
-
-  return (
-    <group>
-      {/*<Instances geometry={basicCaseGeometry} frustumCulled={false}>
-        <MeshTransmissionMaterial
-          background={new Color('#' + 'e0dce6')}
-          backside={true}
-          transmission={1}
-          roughness={0.5}
-          thickness={0.05}
-          reflectivity={0.5}
-          // ior={1.5}
-          chromaticAberration={0.06}
-          wireframe={false}
-        />
-
-        <>*/}
-      {allProjects.map((project, index) => {
-        // Calculate grid position
-        const col = index % columns;
-        const row = Math.floor(index / columns);
-
-        // Center the grid horizontally
-        const totalGridWidth = (columns - 1) * imageRealEstate;
-        const xOffset = -totalGridWidth / 2;
-        const x = col * imageRealEstate + xOffset;
-
-        // Position from top to bottom
-        const y = viewport.height / 2 - row * imageRealEstate - IMAGE_SIZE / 2;
-
-        const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
-        const image = import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.covers.size_404?.url;
-
-        return (
-          <group key={project.id} position={[x, y - yAxisPadding, 0]}>
-            {/*<InteractiveCaseInstance
-              key={`case-${project.id}`}
-              position={[0, -(CASE_TOP_INSET * 1.5), 0.05]}
-              imageSize={IMAGE_SIZE}
-              caseTopInset={CASE_TOP_INSET}
-            />*/}
-            <InteractiveImage position={[0, 0, 0]} imageUrl={image || ''} imageSize={IMAGE_SIZE} />
-          </group>
-        );
-      })}
-      {/*</>
-      </Instances>*/}
-    </group>
-  );
-};
-
-const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
-  const { viewport, columns, imageRealEstate, yAxisPadding } = useResponsiveGridLayout();
-
-  // Calculate scroll pages using the grid layout values
-  const rows = Math.ceil(allProjects.length / columns);
-  const totalContentHeight = rows * imageRealEstate + yAxisPadding * 2;
-  const pages = Math.max(1, totalContentHeight / viewport.height);
-
+const DebugHelpers: React.FC = () => {
   return (
     <>
-      <ambientLight intensity={1} />
-      {/*<OrbitControls enableZoom={true} />*/}
-      {/*<AccumulativeShadows temporal frames={100} scale={10}>
-        <RandomizedLight amount={8} position={[5, 5, -10]} />
-      </AccumulativeShadows>*/}
-      <ScrollControls horizontal={false} pages={pages} damping={0.3}>
-        <Scroll>
-          <ResponsiveImageGrid allProjects={allProjects} />
-        </Scroll>
-      </ScrollControls>
+      {/* Debug helpers */}
+      <Grid args={[20, 20]} position={[0, -2.01, 0]} />
+
+      {/* Axis helper - red=X, green=Y, blue=Z */}
+      <primitive object={new THREE.AxesHelper(5)} />
+
+      {/* Position markers with labels */}
+      <BoxDrei args={[0.1, 0.1, 0.1]} position={[0, 0, 0]}>
+        <meshBasicMaterial color="red" />
+      </BoxDrei>
+      <Text position={[0.3, 0, 0]} fontSize={0.3} color="red" anchorX="left" anchorY="middle">
+        Origin
+      </Text>
+
+      <BoxDrei args={[0.1, 0.1, 0.1]} position={[1, 0, 0]}>
+        <meshBasicMaterial color="green" />
+      </BoxDrei>
+      <Text position={[1.3, 0, 0]} fontSize={0.3} color="green" anchorX="left" anchorY="middle">
+        X
+      </Text>
+
+      <BoxDrei args={[0.1, 0.1, 0.1]} position={[0, 1, 0]}>
+        <meshBasicMaterial color="blue" />
+      </BoxDrei>
+      <Text position={[0, 1.3, 0]} fontSize={0.3} color="blue" anchorX="center" anchorY="bottom">
+        Y
+      </Text>
+
+      <BoxDrei args={[0.1, 0.1, 0.1]} position={[0, 0, 1]}>
+        <meshBasicMaterial color="purple" />
+      </BoxDrei>
+      <Text position={[0, 0, 1.3]} fontSize={0.3} color="purple" anchorX="center" anchorY="middle">
+        Z
+      </Text>
     </>
   );
 };
 
-/**
- * So that we have access to Three.js hooks within {@link PhotosScene}
- */
-const withProviders =
-  <Props extends object>(Component: React.ComponentType<Props>) =>
-  (props: Props) => {
-    return (
-      <Canvas shadows>
-        <Component {...props} />
-      </Canvas>
-    );
-  };
-export default withProviders(PhotosScene);
-// https://codesandbox.io/p/sandbox/l4klb?file=%2Fsrc%2FApp.js
+const IMAGE_SIZE = 1;
+
+interface InteractiveImageProps {
+  position: [number, number, number];
+  rotation: [number, number, number];
+  width: number;
+  height: number;
+  url: string;
+}
+const InteractiveImage = ({ position, rotation, width, height, url }: InteractiveImageProps) => {
+  const texture = useTexture(url);
+  const [hover, setHover] = useState(false);
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      easing.damp(
+        groupRef.current.position,
+        'y',
+        hover ? position[1] + 0.1 : position[1],
+        0.15,
+        delta
+      );
+      easing.damp(
+        groupRef.current.rotation,
+        'z',
+        hover ? rotation[2] + 0.05 : rotation[2],
+        0.15,
+        delta
+      );
+    }
+  });
+
+  return (
+    <group
+      position={position}
+      rotation={rotation}
+      scale={[width, height, 0.01]}
+      ref={groupRef}
+      onPointerEnter={() => {
+        setHover(true);
+      }}
+      onPointerLeave={() => {
+        setHover(false);
+      }}
+    >
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry attach="geometry" />
+        <meshBasicMaterial attach="material" map={texture} />
+      </mesh>
+      {/* Shadow casting box under image */}
+      <mesh position={[0, 0, -0.5]} castShadow>
+        <boxGeometry args={[1, 1, 0.5]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+    </group>
+  );
+};
+
+interface SceneProps {
+  allProjects: SanitisedBehancePhotographyProject[];
+}
+
+const Scene: React.FC<SceneProps> = ({ allProjects }) => {
+  console.log(allProjects);
+  return (
+    <>
+      {/* Floor plane to receive shadows */}
+      <mesh position={[0, 0, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[5, 20]} />
+        <meshStandardMaterial color="#ffedcf" />
+      </mesh>
+
+      <Flex
+        position={[0, 0, -IMAGE_SIZE]}
+        flexDirection="row"
+        // justifyContent="flex-start"
+        // alignItems="center"
+        wrap="wrap-reverse"
+        plane="xz"
+        size={[5, 20, 0]}
+      >
+        {allProjects.map((project, index) => {
+          return (
+            <Box key={project.id} margin={0.1}>
+              <InteractiveImage
+                url="/images/0fa300155951063.635e8c3d9ff67.jpg"
+                // url={project.covers.size_202?.url || ''}
+                width={IMAGE_SIZE}
+                height={IMAGE_SIZE}
+                position={[0, 0.02, 0]}
+                rotation={[-Math.PI / 2, 0, 0]}
+              />
+              <Text fontSize={0.5} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
+                {index}
+              </Text>
+            </Box>
+          );
+        })}
+      </Flex>
+
+      {/* Debug helpers */}
+      <DebugHelpers />
+
+      {/* Orbit controls for debugging */}
+      <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+    </>
+  );
+};
+
+const Lighting = () => {
+  return (
+    <>
+      {/* Soft ambient lighting */}
+      <ambientLight intensity={0.4} color="#ffffff" />
+
+      {/* Main directional light for shadows */}
+      <directionalLight position={[-5, 10, -5]} intensity={0.8} color="#ffffff" castShadow />
+
+      {/* Fill light from opposite side */}
+      <directionalLight position={[3, 5, -3]} intensity={0.3} color="#f0f8ff" />
+    </>
+  );
+};
+
+interface PhotosSceneProps {
+  allProjects: SanitisedBehancePhotographyProject[];
+}
+const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
+  return (
+    <Canvas
+      shadows
+      // [_, look down, tilt slightly forward]
+      camera={{ position: [0, 8, 0.5], fov: 45 }}
+      gl={{ antialias: true }}
+      style={{ width: '100%', height: '100vh' }}
+    >
+      <Lighting />
+      <Scene allProjects={allProjects} />
+    </Canvas>
+  );
+};
+
+export default PhotosScene;
