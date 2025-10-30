@@ -1,7 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { Canvas, useFrame, useLoader, type Vector3 } from '@react-three/fiber';
+import React, { useRef, useState, useEffect } from 'react';
+import { Canvas, useFrame, useLoader, type Vector3, useThree } from '@react-three/fiber';
 import { Flex, Box } from '@react-three/flex';
-import { OrbitControls, Image, Grid, Box as BoxDrei, Text, useTexture } from '@react-three/drei';
+import {
+  OrbitControls,
+  Image,
+  Grid,
+  Box as BoxDrei,
+  Text,
+  useTexture,
+  ScrollControls,
+  Scroll,
+  useScroll
+} from '@react-three/drei';
 import * as THREE from 'three';
 import { easing } from 'maath';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
@@ -73,7 +83,14 @@ const InteractiveImage = ({ position, rotation, width, height, url }: Interactiv
       easing.damp(
         groupRef.current.rotation,
         'z',
-        hover ? rotation[2] + 0.05 : rotation[2],
+        hover ? rotation[2] + 0.02 : rotation[2],
+        0.15,
+        delta
+      );
+      easing.damp(
+        groupRef.current.rotation,
+        'x',
+        hover ? rotation[0] + 0.05 : rotation[0],
         0.15,
         delta
       );
@@ -109,50 +126,123 @@ const InteractiveImage = ({ position, rotation, width, height, url }: Interactiv
 interface SceneProps {
   allProjects: SanitisedBehancePhotographyProject[];
 }
+const useResponsiveGridLayout = () => {
+  const { viewport, size } = useThree();
+  const mobileColumns = 1;
+  const desktopColumns = 2;
+  const yAxisPadding = 0.5;
+
+  // Determine columns based on viewport width (mobile breakpoint at 768px)
+  const isMobile = size.width <= 768;
+  const pixelToThreeUnitsRatio = viewport.width / size.width;
+  const columns = isMobile ? mobileColumns : desktopColumns;
+
+  // Calculate image sizes based on pixel constraints and dynamic columns
+  let imageSizePx: number;
+
+  if (isMobile) {
+    // Mobile: max 800px or 60% screen width
+    imageSizePx = Math.max(Math.min(500, size.width * 0.6), 250);
+  } else {
+    // Multi-column: divide available width by columns, with some padding
+    // Use 50% of available width, divide by columns, with max 600px per image
+    const availableWidth = size.width * 0.5;
+    const maxImageWidth = availableWidth / columns;
+    imageSizePx = Math.max(Math.min(500, maxImageWidth), 300);
+  }
+
+  const imageSize = imageSizePx * pixelToThreeUnitsRatio;
+  const gap = imageSize * 0.14; // 10% of image size for gap
+  const imageRealEstate = imageSize + gap;
+
+  return {
+    isMobile,
+    pixelToThreeUnitsRatio,
+    viewport,
+    size,
+    columns,
+    imageSize,
+    gap,
+    yAxisPadding,
+    imageRealEstate
+  };
+};
+
+const ResponsiveGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject[] }> = ({
+  allProjects
+}) => {
+  const groupRef = useRef<THREE.Group>(null);
+  const {
+    columns: COLUMN_COUNT,
+    imageSize,
+    imageRealEstate,
+    yAxisPadding,
+    viewport
+  } = useResponsiveGridLayout();
+  // Split projects into rows
+  const rows = [];
+  for (let i = 0; i < allProjects.length; i += COLUMN_COUNT) {
+    rows.push(allProjects.slice(i, i + COLUMN_COUNT));
+  }
+
+  const scroll = useScroll();
+  useFrame(() => {
+    if (!groupRef.current) return;
+    groupRef.current.position.x = scroll.horizontal
+      ? -viewport.width * (scroll.pages - 1) * scroll.offset
+      : 0;
+    groupRef.current.position.z = scroll.horizontal
+      ? 0
+      : viewport.height * (scroll.pages - 1) * -scroll.offset;
+  });
+
+  return (
+    <group ref={groupRef}>
+      {rows.map((columns, row) => {
+        return columns.map((item, column) => {
+          const yOrigin = -viewport.height / 2 + imageRealEstate / 2 + yAxisPadding;
+          const xOrigin = (COLUMN_COUNT - 1) * (-imageRealEstate / 2);
+          return (
+            <InteractiveImage
+              key={row + column}
+              // url="/images/0fa300155951063.635e8c3d9ff67.jpg"
+              url={item.covers.size_808?.url || ''}
+              width={imageSize}
+              height={imageSize}
+              position={[xOrigin + imageRealEstate * column, 0.02, yOrigin + imageRealEstate * row]}
+              rotation={[-Math.PI / 2, 0, 0]}
+            />
+          );
+        });
+      })}
+    </group>
+  );
+};
 
 const Scene: React.FC<SceneProps> = ({ allProjects }) => {
-  console.log(allProjects);
+  const { viewport, columns, imageRealEstate, yAxisPadding } = useResponsiveGridLayout();
+
+  // Calculate scroll pages using the grid layout values
+  const rows = Math.ceil(allProjects.length / columns);
+  const totalContentHeight = rows * imageRealEstate + yAxisPadding * 2;
+  const pages = Math.max(1, totalContentHeight / viewport.height);
+
   return (
     <>
       {/* Floor plane to receive shadows */}
       <mesh position={[0, 0, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[5, 20]} />
-        <meshStandardMaterial color="#ffedcf" />
+        <planeGeometry args={[viewport.width + 1, viewport.height + 1]} />
+        <meshStandardMaterial color={0xffffff} />
       </mesh>
-
-      <Flex
-        position={[0, 0, -IMAGE_SIZE]}
-        flexDirection="row"
-        // justifyContent="flex-start"
-        // alignItems="center"
-        wrap="wrap-reverse"
-        plane="xz"
-        size={[5, 20, 0]}
-      >
-        {allProjects.map((project, index) => {
-          return (
-            <Box key={project.id} margin={0.1}>
-              <InteractiveImage
-                url="/images/0fa300155951063.635e8c3d9ff67.jpg"
-                // url={project.covers.size_202?.url || ''}
-                width={IMAGE_SIZE}
-                height={IMAGE_SIZE}
-                position={[0, 0.02, 0]}
-                rotation={[-Math.PI / 2, 0, 0]}
-              />
-              <Text fontSize={0.5} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
-                {index}
-              </Text>
-            </Box>
-          );
-        })}
-      </Flex>
+      <ScrollControls horizontal={false} pages={pages} damping={0.15}>
+        <ResponsiveGrid allProjects={allProjects} />
+      </ScrollControls>
 
       {/* Debug helpers */}
-      <DebugHelpers />
+      {/*<DebugHelpers />*/}
 
       {/* Orbit controls for debugging */}
-      <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+      {/*<OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />*/}
     </>
   );
 };
@@ -161,10 +251,13 @@ const Lighting = () => {
   return (
     <>
       {/* Soft ambient lighting */}
-      <ambientLight intensity={0.4} color="#ffffff" />
+      {/*<ambientLight intensity={0.4} color="#ffffff" />*/}
+
+      {/* A light source positioned directly above the scene, with color fading from the sky color to the ground color.*/}
+      <hemisphereLight intensity={2} color={0xdebda4} groundColor={0xffffff} />
 
       {/* Main directional light for shadows */}
-      <directionalLight position={[-5, 10, -5]} intensity={0.8} color="#ffffff" castShadow />
+      <directionalLight position={[-15, 10, -5]} intensity={4} color={0xdebda4} castShadow />
 
       {/* Fill light from opposite side */}
       <directionalLight position={[3, 5, -3]} intensity={0.3} color="#f0f8ff" />
@@ -180,7 +273,7 @@ const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
     <Canvas
       shadows
       // [_, look down, tilt slightly forward]
-      camera={{ position: [0, 8, 0.5], fov: 45 }}
+      camera={{ position: [0, 8, 1], fov: 45 }}
       gl={{ antialias: true }}
       style={{ width: '100%', height: '100vh' }}
     >

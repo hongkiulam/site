@@ -88,15 +88,12 @@
     @apply underline-offset-2 underline relative transition-colors;
   }
 
-  a:hover {
-    @apply underline;
+  a:hover,
+  a:focus {
+    @apply underline underline-offset-4 decoration-accent;
   }
 
   a[href^='http']:hover {
-    @apply text-muted-foreground;
-  }
-
-  a[target^='_blank']:hover {
     @apply text-accent;
   }
 
