@@ -1,15 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useLoader, type Vector3, useThree } from '@react-three/fiber';
-import { Flex, Box } from '@react-three/flex';
+import React, { useRef, useState } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
-  OrbitControls,
-  Image,
   Grid,
   Box as BoxDrei,
   Text,
   useTexture,
   ScrollControls,
-  Scroll,
   useScroll
 } from '@react-three/drei';
 import * as THREE from 'three';
@@ -199,14 +195,18 @@ const ResponsiveGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject
   return (
     <group ref={groupRef}>
       {rows.map((columns, row) => {
-        return columns.map((item, column) => {
+        return columns.map((project, column) => {
           const yOrigin = -viewport.height / 2 + imageRealEstate / 2 + yAxisPadding;
           const xOrigin = (COLUMN_COUNT - 1) * (-imageRealEstate / 2);
+
+          const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
+          const image = import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.covers.size_404?.url;
+
           return (
             <InteractiveImage
               key={row + column}
               // url="/images/0fa300155951063.635e8c3d9ff67.jpg"
-              url={item.covers.size_808?.url || ''}
+              url={image || ''}
               width={imageSize}
               height={imageSize}
               position={[xOrigin + imageRealEstate * column, 0.02, yOrigin + imageRealEstate * row]}

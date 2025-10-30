@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import * as PIXI from "pixi.js";
-import { createTimeline } from "animejs";
-import { useIsFirstMount } from "@lib/hooks/useIsFirstMount";
+import { useEffect, useRef } from 'react';
+import * as PIXI from 'pixi.js';
+import { createTimeline } from 'animejs';
+import { useIsFirstMount } from '@lib/hooks/useIsFirstMount';
 
 interface MobileNavPageWipeProps {
   isOpen: boolean;
@@ -15,11 +15,10 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
   const animationStateRef = useRef({
     amplitude: 0,
     width: 0,
-    frequency: 0,
+    frequency: 0
   });
 
-  const baseFrequency =
-    typeof window !== "undefined" ? 5 / window.innerHeight : 0;
+  const baseFrequency = typeof window !== 'undefined' ? 5 / window.innerHeight : 0;
 
   useEffect(() => {
     const scaledAmplitude = (max: number) => {
@@ -37,7 +36,7 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
           animationStateRef.current,
           {
             amplitude: scaledAmplitude(50) + randomAmplitudeVariation,
-            duration: 200,
+            duration: 200
           },
           0
         )
@@ -45,15 +44,11 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
           animationStateRef.current,
           {
             frequency: Math.random() / 200,
-            duration: 500,
+            duration: 500
           },
           0
         )
-        .add(
-          animationStateRef.current,
-          { width: window.innerWidth, duration: 500 },
-          0
-        )
+        .add(animationStateRef.current, { width: window.innerWidth, duration: 500 }, 0)
         .add(animationStateRef.current, { amplitude: 0, duration: 250 }, 250);
     } else if (!isFirstMount) {
       // do not animate on first mount
@@ -63,16 +58,12 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
           animationStateRef.current,
           {
             amplitude: scaledAmplitude(50) + randomAmplitudeVariation,
-            duration: 200,
+            duration: 200
           },
           0
         )
         .add(animationStateRef.current, { amplitude: 0, duration: 100 }, 350)
-        .add(
-          animationStateRef.current,
-          { width: 0, frequency: 0, duration: 500 },
-          0
-        );
+        .add(animationStateRef.current, { width: 0, frequency: 0, duration: 500 }, 0);
     }
   }, [isOpen]);
 
@@ -87,7 +78,7 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
         resizeTo: window,
         resolution: window.devicePixelRatio || 1,
         autoDensity: true,
-        backgroundAlpha: 0,
+        backgroundAlpha: 0
       });
       if (!rootRef.current) return;
       // Add view to the DOM
@@ -112,22 +103,14 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
     };
   }, []);
 
-  const drawWaves = (
-    graphics: PIXI.Graphics,
-    height: number,
-    width: number
-  ) => {
+  const drawWaves = (graphics: PIXI.Graphics, height: number, width: number) => {
     // extra drawing height to ensure we fill the screen
     const heightPadding = 50;
     // Clear previous drawing
     graphics.clear();
 
     graphics.moveTo(width, -heightPadding);
-    const {
-      amplitude,
-      width: waveWidth,
-      frequency,
-    } = animationStateRef.current;
+    const { amplitude, width: waveWidth, frequency } = animationStateRef.current;
     const waveFrequency = baseFrequency + frequency; // Frequency of the wave
     for (let y = 0; y <= height + heightPadding * 2; y += 5) {
       const x = width - waveWidth - Math.sin(waveFrequency * y) * amplitude;
@@ -135,9 +118,7 @@ const MobileNavPageWipe = ({ isOpen = false }: MobileNavPageWipeProps) => {
     }
 
     graphics.lineTo(width, height + heightPadding);
-    graphics.fill(
-      getComputedStyle(document.body).getPropertyValue("--muted-foreground")
-    );
+    graphics.fill(getComputedStyle(document.body).getPropertyValue('--muted-foreground'));
   };
 
   return (

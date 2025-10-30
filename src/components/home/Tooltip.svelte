@@ -1,31 +1,29 @@
 <script lang="ts">
-  import { flip, inline, offset } from "@floating-ui/dom";
-  import { computePosition } from "@floating-ui/dom";
-  import { onMount, type Snippet } from "svelte";
-  import { createAnimatable, utils } from "animejs";
-  let { children, linkedElId }: { linkedElId: string; children: Snippet } =
-    $props();
+  import { flip, inline, offset } from '@floating-ui/dom';
+  import { computePosition } from '@floating-ui/dom';
+  import { onMount, type Snippet } from 'svelte';
+  import { createAnimatable } from 'animejs';
+  let { children, linkedElId }: { linkedElId: string; children: Snippet } = $props();
 
   let popover: HTMLElement | null = null;
   let rotateInertiaTimeout = $state<number>(0);
 
   const isMobileDevice =
-    typeof window !== "undefined" &&
-    ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+    typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
   const computeTooltipPosition = async (
-    referenceElement: Pick<HTMLElement, "getBoundingClientRect">
+    referenceElement: Pick<HTMLElement, 'getBoundingClientRect'>
   ) => {
     const { x, y } = await computePosition(referenceElement, popover!, {
-      placement: "top",
-      middleware: [flip(), offset(10), isMobileDevice ? inline() : undefined],
+      placement: 'top',
+      middleware: [flip(), offset(10), isMobileDevice ? inline() : undefined]
     });
     return { left: x, top: y };
   };
 
   const createVirtualElementFromMouseEvent = (
     e: MouseEvent
-  ): Pick<HTMLElement, "getBoundingClientRect"> => {
+  ): Pick<HTMLElement, 'getBoundingClientRect'> => {
     return {
       getBoundingClientRect: () => {
         const rect = {
@@ -39,21 +37,19 @@
           left: e.clientX,
           toJSON: function () {
             return this;
-          },
+          }
         };
         return rect as DOMRect;
-      },
+      }
     };
   };
 
   let prevCursorX = $state<number>(0);
-  const lateralMoveDirectionFromMouseEvent = (
-    e: MouseEvent
-  ): "left" | "right" | "stable" => {
+  const lateralMoveDirectionFromMouseEvent = (e: MouseEvent): 'left' | 'right' | 'stable' => {
     const currentCursorX = e.clientX;
-    const direction = currentCursorX > prevCursorX ? "right" : "left";
+    const direction = currentCursorX > prevCursorX ? 'right' : 'left';
     if (Math.abs(currentCursorX - prevCursorX) < 30) {
-      return "stable";
+      return 'stable';
     }
     prevCursorX = currentCursorX;
     return direction;
@@ -63,21 +59,19 @@
     const linkedElement = document.getElementById(linkedElId);
 
     if (!linkedElement) {
-      throw new Error(
-        `Tooltip root element with id "${linkedElId}" not found.`
-      );
+      throw new Error(`Tooltip root element with id "${linkedElId}" not found.`);
     }
 
     if (!popover) {
       throw new Error(
-        "Popover element not found. Make sure to bind the popover element correctly."
+        'Popover element not found. Make sure to bind the popover element correctly.'
       );
     }
 
     const animatableTooltip = createAnimatable(popover, {
       x: 400,
       y: 400,
-      rotate: 0,
+      rotate: 0
     });
 
     const abortController = new AbortController();
@@ -91,7 +85,7 @@
 
     if (isMobileDevice) {
       linkedElement.addEventListener(
-        "click",
+        'click',
         (e) => {
           e.stopPropagation();
 
@@ -102,7 +96,7 @@
       );
     } else {
       linkedElement.addEventListener(
-        "mouseleave",
+        'mouseleave',
         () => {
           popover?.hidePopover();
         },
@@ -110,38 +104,36 @@
       );
 
       linkedElement.addEventListener(
-        "mousemove",
+        'mousemove',
         (e) => {
           const direction = lateralMoveDirectionFromMouseEvent(e);
-          computeTooltipPosition(createVirtualElementFromMouseEvent(e)).then(
-            ({ left, top }) => {
-              animatableTooltip.x(left, 1000, "outBack");
-              animatableTooltip.y(top, 400, "out(3)");
-            }
-          );
+          computeTooltipPosition(createVirtualElementFromMouseEvent(e)).then(({ left, top }) => {
+            animatableTooltip.x(left, 1000, 'outBack');
+            animatableTooltip.y(top, 400, 'out(3)');
+          });
 
           window.clearTimeout(rotateInertiaTimeout);
           switch (direction) {
-            case "left":
+            case 'left':
               animatableTooltip.rotate(4, 1000);
               break;
-            case "right":
+            case 'right':
               animatableTooltip.rotate(-4, 1000);
               break;
-            case "stable":
+            case 'stable':
             default:
               // do nothing, timeout will handle it
               break;
           }
           rotateInertiaTimeout = window.setTimeout(() => {
-            animatableTooltip.rotate(0, 1000, "outBack");
+            animatableTooltip.rotate(0, 1000, 'outBack');
           }, 100);
         },
         { signal: abortController.signal }
       );
 
       linkedElement.addEventListener(
-        "mouseenter",
+        'mouseenter',
         (e) => {
           establishInitialPosition();
           popover?.showPopover();
@@ -159,7 +151,7 @@
 <aside
   class="tooltip"
   class:mobile={isMobileDevice}
-  popover={isMobileDevice ? "auto" : "manual"}
+  popover={isMobileDevice ? 'auto' : 'manual'}
   bind:this={popover}
 >
   {@render children?.()}

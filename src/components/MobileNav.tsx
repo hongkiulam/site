@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import S from './MobileNav.module.css';
 import MobileNavPageWipe from './MobileNavPageWipe';
-import { X, Menu, Home } from 'lucide-react';
+import { X, Menu } from 'lucide-react';
 
 const LabelledIconButton = ({
   onClick,
