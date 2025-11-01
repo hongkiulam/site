@@ -198,7 +198,7 @@ const ResponsiveGrid: React.FC<{ project: SanitisedBehancePhotographyProject }> 
           const xOrigin = (COLUMN_COUNT - 1) * (-imageRealEstate / 2);
 
           const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
-          const image = !import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.size_max_1200.url;
+          const image = import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.size_max_1200.url;
 
           return (
             <InteractiveImage
