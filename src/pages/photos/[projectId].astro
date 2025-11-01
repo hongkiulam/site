@@ -1,0 +1,31 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/_shared/Header.astro';
+import PhotosScene from '@components/photos/PhotosScene';
+import { GET } from '../../pages/api/behance/all-graphql';
+import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import HeaderBackdrop from '@components/_shared/HeaderBackdrop.astro';
+
+export const prerender = true;
+export async function getStaticPaths() {
+  const allProjectsResponse = await GET(Astro);
+  const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsResponse.json();
+  return allProjects.map((project) => ({
+    params: { projectId: project.id },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout>
+  <main class="w-full h-full flex flex-col items-center bg-muted-background">
+    <Header />
+    <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
+    <!-- <HeaderSpacer /> -->
+    <section class="h-full w-full grid place-items-center">
+      <PhotosScene client:load project={project} />
+    </section>
+  </main>
+</Layout>

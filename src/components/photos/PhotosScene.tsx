@@ -10,7 +10,7 @@ import {
 } from '@react-three/drei';
 import * as THREE from 'three';
 import { easing } from 'maath';
-import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import type { ImageSizes, SanitisedBehancePhotographyProject } from '@@types/behance';
 
 const DebugHelpers: React.FC = () => {
   return (
@@ -120,7 +120,7 @@ const InteractiveImage = ({ position, rotation, width, height, url }: Interactiv
 };
 
 interface SceneProps {
-  allProjects: SanitisedBehancePhotographyProject[];
+  project: SanitisedBehancePhotographyProject;
 }
 const useResponsiveGridLayout = () => {
   const { viewport, size } = useThree();
@@ -164,9 +164,7 @@ const useResponsiveGridLayout = () => {
   };
 };
 
-const ResponsiveGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject[] }> = ({
-  allProjects
-}) => {
+const ResponsiveGrid: React.FC<{ project: SanitisedBehancePhotographyProject }> = ({ project }) => {
   const groupRef = useRef<THREE.Group>(null);
   const {
     columns: COLUMN_COUNT,
@@ -176,9 +174,9 @@ const ResponsiveGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject
     viewport
   } = useResponsiveGridLayout();
   // Split projects into rows
-  const rows = [];
-  for (let i = 0; i < allProjects.length; i += COLUMN_COUNT) {
-    rows.push(allProjects.slice(i, i + COLUMN_COUNT));
+  const rows: ImageSizes[][] = [];
+  for (let i = 0; i < project.imageSizes.length; i += COLUMN_COUNT) {
+    rows.push(project.imageSizes.slice(i, i + COLUMN_COUNT));
   }
 
   const scroll = useScroll();
@@ -200,7 +198,7 @@ const ResponsiveGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject
           const xOrigin = (COLUMN_COUNT - 1) * (-imageRealEstate / 2);
 
           const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
-          const image = import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.covers.size_404?.url;
+          const image = !import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.size_max_1200.url;
 
           return (
             <InteractiveImage
@@ -219,11 +217,11 @@ const ResponsiveGrid: React.FC<{ allProjects: SanitisedBehancePhotographyProject
   );
 };
 
-const Scene: React.FC<SceneProps> = ({ allProjects }) => {
+const Scene: React.FC<SceneProps> = ({ project }) => {
   const { viewport, columns, imageRealEstate, yAxisPadding } = useResponsiveGridLayout();
 
   // Calculate scroll pages using the grid layout values
-  const rows = Math.ceil(allProjects.length / columns);
+  const rows = Math.ceil(project.imageSizes.length / columns);
   const totalContentHeight = rows * imageRealEstate + yAxisPadding * 2;
   const pages = Math.max(1, totalContentHeight / viewport.height);
 
@@ -235,7 +233,7 @@ const Scene: React.FC<SceneProps> = ({ allProjects }) => {
         <meshStandardMaterial color={0xffffff} />
       </mesh>
       <ScrollControls horizontal={false} pages={pages} damping={0.15}>
-        <ResponsiveGrid allProjects={allProjects} />
+        <ResponsiveGrid project={project} />
       </ScrollControls>
 
       {/* Debug helpers */}
@@ -266,9 +264,9 @@ const Lighting = () => {
 };
 
 interface PhotosSceneProps {
-  allProjects: SanitisedBehancePhotographyProject[];
+  project: SanitisedBehancePhotographyProject;
 }
-const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
+const PhotosScene: React.FC<PhotosSceneProps> = ({ project }) => {
   return (
     <Canvas
       shadows
@@ -278,7 +276,7 @@ const PhotosScene: React.FC<PhotosSceneProps> = ({ allProjects }) => {
       style={{ width: '100%', height: '100vh' }}
     >
       <Lighting />
-      <Scene allProjects={allProjects} />
+      <Scene project={project} />
     </Canvas>
   );
 };

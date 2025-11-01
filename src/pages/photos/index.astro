@@ -1,0 +1,40 @@
+---
+export const prerender = true;
+
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/_shared/Header.astro';
+import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+import { GET } from '../../pages/api/behance/all-graphql';
+import type { SanitisedBehancePhotographyProject } from '@@types/behance';
+import HeaderBackdrop from '@components/_shared/HeaderBackdrop.astro';
+import ClampedContainer from '@components/_shared/ClampedContainer.astro';
+
+const allProjectsResponse = await GET(Astro);
+const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsResponse.json();
+---
+
+<Layout>
+  <main class="w-full min-h-full flex flex-col items-center bg-muted-background">
+    <Header />
+    <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
+    <HeaderSpacer />
+    <ClampedContainer>
+      <h1>Photography</h1>
+    </ClampedContainer>
+    <section class="pb-12">
+      <ClampedContainer>
+        <ul>
+          {
+            allProjects.map((project) => (
+              <li>
+                <a href={`/photos/${project.id}`}>
+                  <h2>{project.name}</h2>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </ClampedContainer>
+    </section>
+  </main>
+</Layout>
