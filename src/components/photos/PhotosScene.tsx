@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   Grid,
@@ -53,8 +53,6 @@ const DebugHelpers: React.FC = () => {
   );
 };
 
-const IMAGE_SIZE = 1;
-
 interface InteractiveImageProps {
   position: [number, number, number];
   rotation: [number, number, number];
@@ -63,33 +61,29 @@ interface InteractiveImageProps {
   url: string;
 }
 const InteractiveImage = ({ position, rotation, width, height, url }: InteractiveImageProps) => {
-  const texture = useTexture(url);
+  const { camera } = useThree();
   const [hover, setHover] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state, delta) => {
     if (groupRef.current) {
-      easing.damp(
-        groupRef.current.position,
-        'y',
-        hover ? position[1] + 0.1 : position[1],
-        0.15,
-        delta
-      );
-      easing.damp(
-        groupRef.current.rotation,
-        'z',
-        hover ? rotation[2] + 0.02 : rotation[2],
-        0.15,
-        delta
-      );
-      easing.damp(
-        groupRef.current.rotation,
-        'x',
-        hover ? rotation[0] + 0.05 : rotation[0],
-        0.15,
-        delta
-      );
+      // if (clicked) {
+      //   easing.damp(groupRef.current.position, 'x', 0, 0.15, delta);
+      //   easing.damp(groupRef.current.position, 'y', 8 - 2, 0.15, delta);
+      //   easing.damp(groupRef.current.position, 'z', 1, 0.15, delta);
+      //   easing.damp(camera.position, 'z', 0, 0.15, delta);
+      //   return;
+      // }
+      if (hover) {
+        easing.damp(groupRef.current.position, 'y', position[1] + 0.1, 0.15, delta);
+        easing.damp(groupRef.current.rotation, 'z', rotation[2] + 0.02, 0.15, delta);
+        easing.damp(groupRef.current.rotation, 'x', rotation[0] + 0.05, 0.15, delta);
+        return;
+      }
+
+      easing.damp3(groupRef.current.position, position, 0.15, delta);
+      easing.dampE(groupRef.current.rotation, rotation, 0.15, delta);
     }
   });
 
@@ -106,16 +100,59 @@ const InteractiveImage = ({ position, rotation, width, height, url }: Interactiv
         setHover(false);
       }}
     >
-      <mesh position={[0, 0, 0]}>
-        <planeGeometry attach="geometry" />
-        <meshBasicMaterial attach="material" map={texture} />
-      </mesh>
+      <Suspense fallback={<ImageTexturePlaneGeometry url="/images/photo-image-placeholder.png" />}>
+        <ImageTexturePlaneGeometry
+          url={url}
+          onClick={() => {
+            setClicked((c) => !c);
+            setHover(false);
+            if (groupRef.current) {
+              // const worldPosition = new THREE.Vector3();
+              // camera.getWorldPosition(worldPosition);
+              // groupRef.current.lookAt(worldPosition);
+            }
+          }}
+        />
+      </Suspense>
       {/* Shadow casting box under image */}
       <mesh position={[0, 0, -0.5]} castShadow>
         <boxGeometry args={[1, 1, 0.5]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
     </group>
+  );
+};
+
+const ImageTexturePlaneGeometry = ({ url, onClick }: { url: string; onClick?: () => void }) => {
+  const texture = useTexture(url);
+
+  // Calculate cover behavior similar to CSS background-size: cover
+  React.useEffect(() => {
+    if (texture && texture.image) {
+      const imageAspect = texture.image.width / texture.image.height;
+      const planeAspect = 1; // Our plane is square (1:1)
+
+      if (imageAspect > planeAspect) {
+        // Image is wider than plane - scale to fit height, crop width
+        const scale = planeAspect / imageAspect;
+        texture.repeat.set(scale, 1);
+        texture.offset.set((1 - scale) / 2, 0);
+      } else {
+        // Image is taller than plane - scale to fit width, crop height
+        const scale = imageAspect / planeAspect;
+        texture.repeat.set(1, scale);
+        texture.offset.set(0, (1 - scale) / 2);
+      }
+
+      texture.needsUpdate = true;
+    }
+  }, [texture]);
+
+  return (
+    <mesh position={[0, 0, 0]} onClick={onClick}>
+      <planeGeometry attach="geometry" />
+      <meshBasicMaterial attach="material" map={texture} />
+    </mesh>
   );
 };
 
@@ -271,9 +308,9 @@ const PhotosScene: React.FC<PhotosSceneProps> = ({ project }) => {
     <Canvas
       shadows
       // [_, look down, tilt slightly forward]
-      camera={{ position: [0, 8, 1], fov: 45 }}
+      camera={{ position: [0, 8, 0.5], fov: 45 }}
       gl={{ antialias: true }}
-      style={{ width: '100%', height: '100vh' }}
+      className="w-full h-screen"
     >
       <Lighting />
       <Scene project={project} />

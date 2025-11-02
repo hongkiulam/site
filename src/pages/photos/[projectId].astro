@@ -1,6 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import Header from '@components/_shared/Header.astro';
+import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+import ClampedContainer from '@components/_shared/ClampedContainer.astro';
 import PhotosScene from '@components/photos/PhotosScene';
 import { GET } from '../../pages/api/behance/all-graphql';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
@@ -24,8 +26,20 @@ const { project } = Astro.props;
     <Header />
     <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
     <!-- <HeaderSpacer /> -->
-    <section class="h-full w-full grid place-items-center">
-      <PhotosScene client:load project={project} />
+    <section class="h-full w-full relative flex items-center justify-center">
+      <h2>Loading images...</h2>
+      <div class="absolute w-full h-full">
+        <PhotosScene client:load project={project} />
+      </div>
     </section>
+    <aside class="fixed top-0 left-0 w-full">
+      <HeaderSpacer />
+      <ClampedContainer>
+        <a
+          href="/photos"
+          class="inline-block text-lg px-3 py-1.5 bg-white/50 rounded-md -translate-y-4">Back</a
+        >
+      </ClampedContainer>
+    </aside>
   </main>
 </Layout>
