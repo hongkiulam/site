@@ -267,7 +267,13 @@ const Scene: React.FC<SceneProps> = ({ project }) => {
       {/* Floor plane to receive shadows */}
       <mesh position={[0, 0, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[viewport.width + 1, viewport.height + 1]} />
-        <meshStandardMaterial color={0xffffff} />
+        <shadowMaterial transparent opacity={0.1} />
+      </mesh>
+
+      {/* Background plane with solid color unaffected by lighting */}
+      <mesh position={[0, -0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[viewport.width + 1, viewport.height + 1]} />
+        <meshBasicMaterial color={'white'} />
       </mesh>
       <ScrollControls horizontal={false} pages={pages} damping={0.15}>
         <ResponsiveGrid project={project} />
