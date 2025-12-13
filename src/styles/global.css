@@ -2,8 +2,8 @@
 
 :root {
   --background: hsl(0 0% 93%);
-  --foreground: hsl(0 0% 13%);
-  --muted-foreground: hsl(0, 0%, 17%);
+  --foreground: hsl(0 0% 10%);
+  --muted-foreground: hsl(0, 0%, 14%);
   --muted-background: hsl(0, 0%, 90%);
   --primary: hsl(0 0% 13%);
   --primary-foreground: hsl(0 0% 93%);
@@ -56,7 +56,7 @@
   --color-accent: var(--accent);
 
   --font-body: 'DM Sans', sans-serif;
-  --font-display: 'DM Serif Display', serif;
+  --font-display: 'Gilda Display', serif;
   --text-*: initial;
   --text-sm: var(--font-size-sm);
   --text-base: var(--font-size-base);
