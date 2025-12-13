@@ -1,13 +1,13 @@
 @import 'tailwindcss';
 
 :root {
-  --background: hsl(0 0% 93%);
-  --foreground: hsl(0 0% 10%);
-  --muted-foreground: hsl(0, 0%, 14%);
-  --muted-background: hsl(0, 0%, 90%);
-  --primary: hsl(0 0% 13%);
-  --primary-foreground: hsl(0 0% 93%);
-  --accent: hsl(21 52% 57%);
+  --background: oklch(0.94 0 0);
+  --foreground: oklch(0.17 0 0);
+  --muted-foreground: oklch(0.21 0 0);
+  --muted-background: oklch(0.91 0 0);
+  --primary: oklch(0.19 0 0);
+  --primary-foreground: oklch(0.94 0 0);
+  --accent: oklch(0.67 0.09 45);
   --font-size-sm: 0.75rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.25rem;
