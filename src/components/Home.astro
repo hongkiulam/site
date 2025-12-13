@@ -1,5 +1,4 @@
 ---
-import ClampedContainer from '@components/_shared/ClampedContainer.astro';
 import SocialLinks from './SocialLinks.astro';
 import Tooltip from './home/Tooltip.svelte';
 import StarlingLogo from '../assets/starling-bank.jpg';
@@ -12,7 +11,7 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
   <Header />
   <HeaderSpacer />
   <section class="h-[768px] max-sm:h-[500px] w-full grid place-items-center">
-    <ClampedContainer>
+    <div class="clamped">
       <div
         class="relative flex flex-col items-center justify-center translate-y-[-45px]
         max-sm:items-start"
@@ -22,10 +21,10 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
         <h1 class="text-center max-sm:hidden">based in London.</h1>
         <h1 class="min-sm:hidden">Fullstack Software Engineer based in London.</h1>
       </div>
-    </ClampedContainer>
+    </div>
   </section>
   <section class="bg-muted-background w-full">
-    <ClampedContainer>
+    <div class="clamped">
       <h2 class="mb-3" id="more-about-me">More about me</h2>
       <div class="max-w-2xl text-xl max-lg:max-w-full">
         <p>
@@ -81,10 +80,10 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
         </p>
         <p>Run 10K</p>
       </Tooltip>
-    </ClampedContainer>
+    </div>
   </section>
   <section class="w-full">
-    <ClampedContainer>
+    <div class="clamped">
       <h2 class="mb-3">Discover</h2>
       <ul class="flex flex-col gap-3">
         <li><h4 class="">Projects</h4></li>
@@ -92,15 +91,15 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
         <li><h4 class=""><a href="/experiments">Lab/ Experiments</a></h4></li>
         <li><h4 class="">Spoon Carving</h4></li>
       </ul>
-    </ClampedContainer>
+    </div>
   </section>
   <footer class="bg-muted-background w-full pb-12">
-    <ClampedContainer>
+    <div class="clamped">
       <h3>Socials</h3>
       <div class="flex gap-2">
         <SocialLinks />
       </div>
       <p class="text-center mt-3">Made with ❤️ by me!</p>
-    </ClampedContainer>
+    </div>
   </footer>
 </main>

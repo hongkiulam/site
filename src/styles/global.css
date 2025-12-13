@@ -125,4 +125,9 @@
     @apply mx-auto max-w-5xl w-full px-12 py-6
     max-sm:px-6 max-sm:py-6;
   }
+
+  .clamped-header {
+    @apply mx-auto max-w-5xl w-full px-12 py-4
+    max-sm:px-6;
+  }
 }

@@ -7,7 +7,6 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
 import { GET } from '../../pages/api/behance/all-graphql';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
 import HeaderBackdrop from '@components/_shared/HeaderBackdrop.astro';
-import ClampedContainer from '@components/_shared/ClampedContainer.astro';
 
 const allProjectsResponse = await GET(Astro);
 const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsResponse.json();
@@ -18,11 +17,11 @@ const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsRespo
     <Header />
     <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
     <HeaderSpacer />
-    <ClampedContainer>
+    <div class="clamped">
       <h1>Photography</h1>
-    </ClampedContainer>
+    </div>
     <section class="pb-12">
-      <ClampedContainer>
+      <div class="clamped">
         <ul>
           {
             allProjects.map((project) => (
@@ -34,7 +33,7 @@ const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsRespo
             ))
           }
         </ul>
-      </ClampedContainer>
+      </div>
     </section>
   </main>
 </Layout>

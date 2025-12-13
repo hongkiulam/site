@@ -2,7 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import Header from '@components/_shared/Header.astro';
 import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
-import ClampedContainer from '@components/_shared/ClampedContainer.astro';
+
 import PhotosScene from '@components/photos/PhotosScene';
 import { GET } from '../../pages/api/behance/all-graphql';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
@@ -34,12 +34,12 @@ const { project } = Astro.props;
     </section>
     <aside class="fixed top-0 left-0 w-full">
       <HeaderSpacer />
-      <ClampedContainer>
+      <div class="clamped">
         <a
           href="/photos"
           class="inline-block text-lg px-3 py-1.5 bg-white/50 rounded-md -translate-y-4">Back</a
         >
-      </ClampedContainer>
+      </div>
     </aside>
   </main>
 </Layout>

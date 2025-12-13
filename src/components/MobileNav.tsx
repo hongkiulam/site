@@ -64,7 +64,7 @@ const MobileNav = () => {
         `}
         >
           <form
-            className="h-[90px] flex flex-col justify-center items-start px-12 py-4 max-w-[1440px] mx-auto max-sm:px-6"
+            className="h-[90px] flex flex-col justify-center items-start clamped-header"
             method="dialog"
           >
             <menu className="flex items-start flex-col justify-center">
