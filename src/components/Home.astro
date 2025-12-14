@@ -4,6 +4,8 @@ import Tooltip from './home/Tooltip.svelte';
 import { Image } from 'astro:assets';
 import Header from '@components/_shared/Header.astro';
 import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+import StarlingCard3D from './home/StarlingCard3D';
+import WeightPlate3D from './home/WeightPlate3D';
 ---
 
 <main class="w-full flex flex-col items-center">
@@ -35,14 +37,10 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
             <p class="text-base">Currently working at Starling Bank.</p>
           </div>
           <div
-            class="p-6 flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
+            class="flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
           >
-            <div
-              class="w-full h-32 bg-muted-foreground/10 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center"
-            >
-              <div class="text-center text-muted-foreground">
-                <p class="text-xs">3D Render</p>
-              </div>
+            <div class="w-64 aspect-square">
+              <StarlingCard3D client:only={'react'} />
             </div>
           </div>
         </div>
@@ -59,14 +57,10 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
             </p>
           </div>
           <div
-            class="p-6 flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
+            class="flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
           >
-            <div
-              class="w-full h-32 bg-muted-foreground/10 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center"
-            >
-              <div class="text-center text-muted-foreground">
-                <p class="text-xs">3D Render</p>
-              </div>
+            <div class="w-64 aspect-square">
+              <WeightPlate3D client:only={'react'} />
             </div>
           </div>
         </div>
@@ -83,14 +77,10 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
             </p>
           </div>
           <div
-            class="p-6 flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
+            class="flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
           >
-            <div
-              class="w-full h-32 bg-muted-foreground/10 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center"
-            >
-              <div class="text-center text-muted-foreground">
-                <p class="text-xs">3D Render</p>
-              </div>
+            <div class="w-64 aspect-square">
+              <StarlingCard3D client:only={'react'} />
             </div>
           </div>
         </div>
@@ -104,18 +94,13 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
             <p class="text-base">I enjoy photography too, especially when I'm travelling.</p>
           </div>
           <div
-            class="p-6 flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
+            class="flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
           >
-            <div
-              class="w-full h-32 bg-muted-foreground/10 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center"
-            >
-              <div class="text-center text-muted-foreground">
-                <p class="text-xs">3D Render</p>
-              </div>
+            <div class="w-64 aspect-square">
+              <StarlingCard3D client:only={'react'} />
             </div>
           </div>
         </div>
-
         <!-- Personality -->
         <div
           class="grid grid-cols-1 lg:grid-cols-2 border-b border-muted-foreground/20 last:border-b-0"
@@ -133,14 +118,10 @@ import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
             </p>
           </div>
           <div
-            class="p-6 flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
+            class="flex items-center justify-center bg-muted-background/50 lg:border-l border-muted-foreground/20"
           >
-            <div
-              class="w-full h-32 bg-muted-foreground/10 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center"
-            >
-              <div class="text-center text-muted-foreground">
-                <p class="text-xs">3D Render</p>
-              </div>
+            <div class="w-64 aspect-square">
+              <StarlingCard3D client:only={'react'} />
             </div>
           </div>
         </div>
