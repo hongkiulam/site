@@ -15,6 +15,7 @@
     "@astrojs/svelte": "7.0.9",
     "@floating-ui/dom": "1.6.13",
     "@nanostores/react": "github:nanostores/react",
+    "@react-three/csg": "^4.0.0",
     "@react-three/drei": "10.0.7",
     "@react-three/fiber": "9.1.2",
     "@react-three/flex": "1.0.1",
