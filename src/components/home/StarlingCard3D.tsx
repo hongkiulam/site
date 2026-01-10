@@ -1,7 +1,23 @@
-import { GradientTexture, useGLTF, PresentationControls } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { useMemo } from 'react';
+import { GradientTexture, useGLTF, PresentationControls, Edges } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useMemo, useRef } from 'react';
 
+const PulsingEdges = ({ color, maxScale, ...props }) => {
+  const ref = useRef();
+
+  useFrame((state) => {
+    if (ref.current) {
+      const pulse = (Math.sin(state.clock.elapsedTime * 5) + 1) * 0.5; // 0 to 1
+      // ref.current.material.opacity = 0.5 + pulse * 0.7; // 0.3 to 1
+      ref.current.scale.y = 1.01 + pulse * (maxScale - 1);
+      ref.current.scale.x = 1.01 + pulse * (maxScale - 1);
+    }
+  });
+
+  return <Edges ref={ref} color={color} {...props} linewidth={1} />;
+};
+
+// remove pulsing edge animation. add animation on scroll, animation is like tapping card.
 const StarlingCard3D = () => {
   const gltf = useGLTF('/website_homepage_assets.gltf');
   const mastercardRed = '#eb001b';
@@ -10,13 +26,18 @@ const StarlingCard3D = () => {
   const chipGold = '#d4af37';
 
   const cameraPosition = useMemo(() => [0, 0, 400] as const, []);
-  const textMaterial = useMemo(() => <meshBasicMaterial color={textColor} />, []);
+  const textMaterial = useMemo(
+    () => <meshBasicMaterial color={textColor} transparent opacity={0.5} />,
+    []
+  );
 
   return (
     <Canvas
       className="w-full h-full"
+      orthographic
       camera={{
-        position: cameraPosition
+        position: cameraPosition,
+        zoom: 0.5
       }}
       gl={{ antialias: true }}
     >
@@ -36,19 +57,15 @@ const StarlingCard3D = () => {
       />
       <PresentationControls
         snap={true}
-        rotation={[0, -0.3, -0.05]}
+        rotation={[-0.5, -0.3, -0.3]}
         polar={[-Math.PI / 3, Math.PI / 3]}
         azimuth={[-Math.PI / 1.4, Math.PI / 2]}
       >
         <group>
           <mesh {...gltf.nodes.Card}>
-            <meshBasicMaterial>
-              <GradientTexture
-                stops={[0, 1]}
-                colors={['#82DDC3', '#4EC4A2']}
-                rotation={60 * (180 / Math.PI)}
-              />
-            </meshBasicMaterial>
+            <meshBasicMaterial color="#82DDC3" />
+            <PulsingEdges color="#82DDC3" maxScale={1.05} />
+            <PulsingEdges color="#82DDC3" maxScale={1.1} />
           </mesh>
           <mesh {...gltf.nodes.CardBrand}>{textMaterial}</mesh>
           <mesh {...gltf.nodes.CardType}>{textMaterial}</mesh>
@@ -56,13 +73,16 @@ const StarlingCard3D = () => {
           <mesh {...gltf.nodes.WorldDebit}>{textMaterial}</mesh>
           <mesh {...gltf.nodes.Chip}>
             <meshBasicMaterial color={chipGold} />
+            {/*<Edges color={chipGold} linewidth={3} />*/}
           </mesh>
           {/*<mesh {...gltf.nodes.ChipOutlineBacking}></mesh>*/}
           <mesh {...gltf.nodes.MastercardLeft}>
-            <meshBasicMaterial color={mastercardRed} />
+            <meshBasicMaterial color={mastercardRed} opacity={0.5} transparent />
+            {/*<Edges color={mastercardRed} linewidth={3} />*/}
           </mesh>
           <mesh {...gltf.nodes.MastercardRight}>
-            <meshBasicMaterial color={mastercardYellow} />
+            <meshBasicMaterial color={mastercardYellow} opacity={0.5} transparent />
+            {/*<Edges color={mastercardYellow} linewidth={3} />*/}
           </mesh>
         </group>
       </PresentationControls>
