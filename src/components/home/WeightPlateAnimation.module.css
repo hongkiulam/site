@@ -1,0 +1,32 @@
+.plate_wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 15%;
+}
+
+.plate {
+  --plate-fill-color: #fc5d5d;
+  --stroke-color: black;
+  --trim-fill-color: #ededed;
+  --text-color: white;
+  --hole-color: #d3d3d3;
+  /*50px centres the plate horizontally by (viewbox width (400px) - plate width (300px)) / 2*/
+  --vertical-translate: 100px;
+  transform: translate(50px, var(--vertical-translate));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bounce {
+    animation: bounce infinite alternate-reverse 2s ease-in-out;
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translate(50px, calc(var(--vertical-translate) - 10px));
+  }
+  to {
+    transform: translate(50px, 30px);
+  }
+}
