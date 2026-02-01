@@ -3,15 +3,7 @@ import MobileNav from '@components/MobileNav';
 ---
 
 <nav class="grid grid-cols-[1fr_1fr] h-[90px] w-full clamped-header absolute top-0 z-header">
-  <a
-    href="/"
-    class="flex flex-col items-start justify-center max-sm:opacity-0 group no-underline"
-    aria-label="Return to homepage"
-  >
-    <span>Haydon Lam</span>
-    <div class="relative text-sm text-muted-foreground">
-      <small class="overflow-hidden inline-block">London, United Kingdom </small>
-    </div>
-  </a>
+  <slot />
+
   <MobileNav client:load />
 </nav>

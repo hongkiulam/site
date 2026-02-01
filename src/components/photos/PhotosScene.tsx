@@ -275,7 +275,7 @@ const Scene: React.FC<SceneProps> = ({ project }) => {
         <planeGeometry args={[viewport.width + 1, viewport.height + 1]} />
         <meshBasicMaterial color={'white'} />
       </mesh>
-      <ScrollControls horizontal={false} pages={pages} damping={0.15}>
+      <ScrollControls horizontal={false} pages={pages} damping={0}>
         <ResponsiveGrid project={project} />
       </ScrollControls>
 

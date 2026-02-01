@@ -11,7 +11,18 @@ import PersonalityType from './home/PersonalityType.astro';
 ---
 
 <main class="w-full flex flex-col items-center">
-  <Header />
+  <Header>
+    <a
+      href="/"
+      class="flex flex-col items-start justify-center max-sm:opacity-0 group no-underline"
+      aria-label="Return to homepage"
+    >
+      <span>Haydon Lam</span>
+      <div class="relative text-sm text-muted-foreground">
+        <small class="overflow-hidden inline-block">London, United Kingdom </small>
+      </div>
+    </a>
+  </Header>
   <HeaderSpacer />
   <section class="h-[768px] max-sm:h-[500px] w-full grid place-items-center">
     <div class="clamped">
