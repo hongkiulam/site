@@ -8,17 +8,25 @@ export default $config({
       home: "aws",
       providers: {
         aws: { region: "eu-west-2" },
-        cloudflare: "5.49.1",
+        ...(input?.stage === "production" ? { cloudflare: "5.49.1" } : {}),
       },
     };
   },
   async run() {
-    new sst.aws.Astro("site-v2", {
-      domain: {
-        name: "haydonlam.com",
-        redirects: ["www.haydonlam.com"],
-        dns: sst.cloudflare.dns(),
-      },
+    const site = new sst.aws.Astro("site-v2", {
+      ...($app.stage === "production"
+        ? {
+            domain: {
+              name: "haydonlam.com",
+              redirects: ["www.haydonlam.com"],
+              dns: sst.cloudflare.dns(),
+            },
+          }
+        : {}),
     });
+
+    return {
+      url: site.url,
+    };
   },
 });
