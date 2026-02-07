@@ -11,6 +11,7 @@ import {
 import * as THREE from 'three';
 import { easing } from 'maath';
 import type { ImageSizes, SanitisedBehancePhotographyProject } from '@@types/behance';
+import Lightbox from './Lightbox';
 
 const DebugHelpers: React.FC = () => {
   return (
@@ -59,22 +60,14 @@ interface InteractiveImageProps {
   width: number;
   height: number;
   url: string;
+  onImageClick?: () => void;
 }
-const InteractiveImage = ({ position, rotation, width, height, url }: InteractiveImageProps) => {
-  const { camera } = useThree();
+const InteractiveImage = ({ position, rotation, width, height, url, onImageClick }: InteractiveImageProps) => {
   const [hover, setHover] = useState(false);
-  const [clicked, setClicked] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state, delta) => {
     if (groupRef.current) {
-      // if (clicked) {
-      //   easing.damp(groupRef.current.position, 'x', 0, 0.15, delta);
-      //   easing.damp(groupRef.current.position, 'y', 8 - 2, 0.15, delta);
-      //   easing.damp(groupRef.current.position, 'z', 1, 0.15, delta);
-      //   easing.damp(camera.position, 'z', 0, 0.15, delta);
-      //   return;
-      // }
       if (hover) {
         easing.damp(groupRef.current.position, 'y', position[1] + 0.1, 0.15, delta);
         easing.damp(groupRef.current.rotation, 'z', rotation[2] + 0.02, 0.15, delta);
@@ -95,22 +88,20 @@ const InteractiveImage = ({ position, rotation, width, height, url }: Interactiv
       ref={groupRef}
       onPointerEnter={() => {
         setHover(true);
+        document.body.style.cursor = 'pointer';
       }}
       onPointerLeave={() => {
         setHover(false);
+        document.body.style.cursor = 'auto';
       }}
     >
       <Suspense fallback={<ImageTexturePlaneGeometry url="/images/photo-image-placeholder.png" />}>
         <ImageTexturePlaneGeometry
           url={url}
           onClick={() => {
-            setClicked((c) => !c);
             setHover(false);
-            if (groupRef.current) {
-              // const worldPosition = new THREE.Vector3();
-              // camera.getWorldPosition(worldPosition);
-              // groupRef.current.lookAt(worldPosition);
-            }
+            document.body.style.cursor = 'auto';
+            onImageClick?.();
           }}
         />
       </Suspense>
@@ -201,7 +192,10 @@ const useResponsiveGridLayout = () => {
   };
 };
 
-const ResponsiveGrid: React.FC<{ project: SanitisedBehancePhotographyProject }> = ({ project }) => {
+const ResponsiveGrid: React.FC<{
+  project: SanitisedBehancePhotographyProject;
+  onImageClick: (imageIndex: number) => void;
+}> = ({ project, onImageClick }) => {
   const groupRef = useRef<THREE.Group>(null);
   const {
     columns: COLUMN_COUNT,
@@ -237,15 +231,16 @@ const ResponsiveGrid: React.FC<{ project: SanitisedBehancePhotographyProject }> 
           const TEMP_LOCAL_IMAGE = '/images/0fa300155951063.635e8c3d9ff67.jpg';
           const image = import.meta.env.DEV ? TEMP_LOCAL_IMAGE : project.size_max_1200.url;
 
+          const imageIndex = row * COLUMN_COUNT + column;
           return (
             <InteractiveImage
               key={row + column}
-              // url="/images/0fa300155951063.635e8c3d9ff67.jpg"
               url={image || ''}
               width={imageSize}
               height={imageSize}
               position={[xOrigin + imageRealEstate * column, 0.02, yOrigin + imageRealEstate * row]}
               rotation={[-Math.PI / 2, 0, 0]}
+              onImageClick={() => onImageClick(imageIndex)}
             />
           );
         });
@@ -254,7 +249,7 @@ const ResponsiveGrid: React.FC<{ project: SanitisedBehancePhotographyProject }> 
   );
 };
 
-const Scene: React.FC<SceneProps> = ({ project }) => {
+const Scene: React.FC<SceneProps & { onImageClick: (imageIndex: number) => void }> = ({ project, onImageClick }) => {
   const { viewport, columns, imageRealEstate, yAxisPadding } = useResponsiveGridLayout();
 
   // Calculate scroll pages using the grid layout values
@@ -276,7 +271,7 @@ const Scene: React.FC<SceneProps> = ({ project }) => {
         <meshBasicMaterial color={'white'} />
       </mesh>
       <ScrollControls horizontal={false} pages={pages} damping={0}>
-        <ResponsiveGrid project={project} />
+        <ResponsiveGrid project={project} onImageClick={onImageClick} />
       </ScrollControls>
 
       {/* Debug helpers */}
@@ -310,17 +305,34 @@ interface PhotosSceneProps {
   project: SanitisedBehancePhotographyProject;
 }
 const PhotosScene: React.FC<PhotosSceneProps> = ({ project }) => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const lightboxSrc =
+    selectedImageIndex !== null
+      ? import.meta.env.DEV
+        ? '/images/0fa300155951063.635e8c3d9ff67.jpg'
+        : project.imageSizes[selectedImageIndex].size_fs.url
+      : null;
+
   return (
-    <Canvas
-      shadows
-      // [_, look down, tilt slightly forward]
-      camera={{ position: [0, 8, 0.5], fov: 45 }}
-      gl={{ antialias: true }}
-      className="w-full h-screen"
-    >
-      <Lighting />
-      <Scene project={project} />
-    </Canvas>
+    <>
+      <Canvas
+        shadows
+        // [_, look down, tilt slightly forward]
+        camera={{ position: [0, 8, 0.5], fov: 45 }}
+        gl={{ antialias: true }}
+        className="w-full h-screen"
+      >
+        <Lighting />
+        <Scene project={project} onImageClick={setSelectedImageIndex} />
+      </Canvas>
+      {lightboxSrc && (
+        <Lightbox
+          imageSrc={lightboxSrc}
+          onClose={() => setSelectedImageIndex(null)}
+        />
+      )}
+    </>
   );
 };
 
