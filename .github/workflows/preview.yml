@@ -40,6 +40,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
+      - name: Unlock SST (clear any stale lock from cancelled runs)
+        run: pnpm sst unlock --stage pr-${{ github.event.pull_request.number }} || true
+
       - name: Deploy Preview
         id: deploy
         run: |
