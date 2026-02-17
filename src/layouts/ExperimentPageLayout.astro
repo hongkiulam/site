@@ -2,13 +2,15 @@
 import Header from '@components/_shared/Header.astro';
 import Layout from './Layout.astro';
 import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+import HeaderBackdrop from '@components/_shared/HeaderBackdrop.astro';
 ---
 
 <Layout>
-  <main class="bg-yellow-100 flex items-center flex-col">
+  <main class="w-full min-h-full flex flex-col items-center bg-muted-background">
     <Header>
       <h1>Experiments</h1>
     </Header>
+    <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
     <HeaderSpacer />
     <slot />
   </main>
