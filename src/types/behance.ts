@@ -1,8 +1,16 @@
+export interface SanitisedBehancePhotographyProject
+  extends Pick<
+    BehanceProfileProject,
+    "covers" | "fields" | "id" | "name" | "publishedOn" | "slug" | "url"
+  > {
+  imageSizes: ImageSizes[];
+}
+
 export interface BehanceProfileProject {
   __typename: string;
   colors: { r: number; g: number; b: number };
   covers: {
-    [key in 'size_202' | 'size_404' | 'size_808']: { url: string } | null;
+    [key in "size_202" | "size_404" | "size_808"]: { url: string } | null;
   };
   fields: { id: number; label: string; slug: string; url: string }[];
   id: number;
@@ -17,7 +25,7 @@ export interface BehanceProfileProject {
 export type AllModules = (ProjectImageModule | ProjectMediaCollectionModule)[];
 
 interface ProjectImageModule {
-  __typename: 'ImageModule';
+  __typename: "ImageModule";
   alignment: string;
   altText: string;
   altTextForEditor: string;
@@ -40,7 +48,7 @@ interface ProjectImageModule {
 }
 
 interface ProjectMediaCollectionModule {
-  __typename: 'MediaCollectionModule';
+  __typename: "MediaCollectionModule";
   alignment: string;
   captionAlignment: string;
   captionPlain: string;
