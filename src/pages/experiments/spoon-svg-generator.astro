@@ -1,5 +1,93 @@
 ---
 import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
+
+// Coordinate system: origin at top-centre of spoon
+//   x: horizontal offset from centre (negative = left, positive = right)
+//   y: vertical distance from top (positive = down)
+//
+//         0,0  ← bowlTop
+//        /    \
+// -60,50        60,50  ← bowlMiddle
+//        \    /
+//    -20,100  20,100  ← bowlBase
+//       |        |
+//   -11,113  11,113  ← handleMiddle
+//       |        |
+//    -9,212    9,212  ← handleBottom
+//          \/
+//       (rounded tip)
+
+const SVG_ORIGIN = { x: 150, y: 50 };
+
+const bowlTop = { x: 0, y: 0 };
+
+const bowlMiddleRight = { x: 60, y: 50 };
+const bowlMiddleLeft  = { x: -60, y: 50 };
+
+const bowlBaseRight = { x: 20, y: 100 };
+const bowlBaseLeft  = { x: -20, y: 100 };
+
+const handleMiddleRight = { x: 11, y: 113 };
+const handleMiddleLeft  = { x: -11, y: 113 };
+
+const handleBottomRight = { x: 9, y: 212 };
+const handleBottomLeft  = { x: -9, y: 212 };
+
+// Convert a param-space point to an SVG coordinate string "x y"
+function s({ x, y }: { x: number; y: number }) {
+  return `${SVG_ORIGIN.x + x} ${SVG_ORIGIN.y + y}`;
+}
+
+// Cubic bezier segment helper
+function C(
+  cp1: { x: number; y: number },
+  cp2: { x: number; y: number },
+  end: { x: number; y: number },
+) {
+  return `C ${s(cp1)} ${s(cp2)} ${s(end)}`;
+}
+
+const bT  = bowlTop;
+const bMR = bowlMiddleRight;
+const bML = bowlMiddleLeft;
+const bBR = bowlBaseRight;
+const bBL = bowlBaseLeft;
+const hMR = handleMiddleRight;
+const hML = handleMiddleLeft;
+const hBR = handleBottomRight;
+const hBL = handleBottomLeft;
+
+// Control points are derived from the named anchors so the curve shape
+// scales naturally when you adjust the anchor values.
+const spoonPath = [
+  `M ${s(bT)}`,
+  // right side of bowl — top to widest point
+  C({ x: bMR.x * 0.75,                         y: bT.y                          },
+     { x: bMR.x,                                y: bMR.y * 0.6                   }, bMR),
+  // right side of bowl — widest point to base
+  C({ x: bMR.x,                                 y: bMR.y + (bBR.y - bMR.y) * 0.5 },
+     { x: bBR.x + (bMR.x - bBR.x) * 0.625,    y: bBR.y - 5                     }, bBR),
+  // right side — bowl base to handle middle
+  C({ x: bBR.x - 5,                             y: bBR.y + 2                     },
+     { x: hMR.x + 1,                            y: hMR.y - 6                     }, hMR),
+  // right side of handle (straight)
+  `L ${s(hBR)}`,
+  // rounded handle tip
+  C({ x: hBR.x,                                 y: hBR.y + 8                     },
+     { x: hBL.x,                                y: hBL.y + 8                     }, hBL),
+  // left side of handle (straight)
+  `L ${s(hML)}`,
+  // left side — handle middle to bowl base
+  C({ x: hML.x - 1,                             y: hML.y - 6                     },
+     { x: bBL.x + 5,                            y: bBL.y + 2                     }, bBL),
+  // left side of bowl — base to widest point
+  C({ x: bBL.x + (bML.x - bBL.x) * 0.625,     y: bBL.y - 5                     },
+     { x: bML.x,                                y: bML.y + (bBL.y - bML.y) * 0.5 }, bML),
+  // left side of bowl — widest point back to top
+  C({ x: bML.x,                                 y: bML.y * 0.6                   },
+     { x: bML.x * 0.75,                         y: bT.y                          }, bT),
+  'Z',
+].join('\n             ');
 ---
 
 <ExperimentPageLayout>
@@ -21,17 +109,7 @@ import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
           </linearGradient>
         </defs>
         <path
-          d="M 150 50
-             C 195 50 210 80 210 100
-             C 210 125 195 145 170 150
-             C 165 152 162 157 161 163
-             L 159 262
-             C 159 270 141 270 141 262
-             L 139 163
-             C 138 157 135 152 130 150
-             C 105 145 90 125 90 100
-             C 90 80 105 50 150 50
-             Z"
+          d={spoonPath}
           fill="url(#spoon-gradient)"
           stroke="#888"
           stroke-width="1"
