@@ -1,0 +1,6 @@
+@import 'microtip/microtip';
+
+[aria-label][role~='tooltip']::after {
+	line-height: initial;
+	color: var(--color-primary-light);
+}
