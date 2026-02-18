@@ -12,13 +12,29 @@ import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
         height="300"
         viewBox="0 0 300 300"
       >
-        <circle
-          cx="150"
-          cy="150"
-          r="120"
-          fill="none"
-          stroke="black"
-          stroke-width="2"
+        <defs>
+          <linearGradient id="spoon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#aaa" />
+            <stop offset="35%" style="stop-color:#eee" />
+            <stop offset="65%" style="stop-color:#ccc" />
+            <stop offset="100%" style="stop-color:#999" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 150 50
+             C 195 50 210 80 210 100
+             C 210 125 195 145 170 150
+             C 165 152 162 157 161 163
+             L 159 262
+             C 159 270 141 270 141 262
+             L 139 163
+             C 138 157 135 152 130 150
+             C 105 145 90 125 90 100
+             C 90 80 105 50 150 50
+             Z"
+          fill="url(#spoon-gradient)"
+          stroke="#888"
+          stroke-width="1"
         />
       </svg>
     </div>
