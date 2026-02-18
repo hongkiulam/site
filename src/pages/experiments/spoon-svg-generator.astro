@@ -66,7 +66,7 @@ const spoonPath = [
   // flat top edge (zero-length when bTL === bTR, becomes a flat line when spread apart)
   `L ${s(bTR)}`,
   // right side of bowl — top to widest point
-  C({ x: bMR.x * 0.75,                         y: bTR.y                         },
+  C({ x: bTR.x + (bMR.x - bTR.x) * 0.75,      y: bTR.y                         },
      { x: bMR.x,                                y: bMR.y * 0.6                   }, bMR),
   // right side of bowl — widest point to base
   C({ x: bMR.x,                                 y: bMR.y + (bBR.y - bMR.y) * 0.5 },
@@ -89,7 +89,7 @@ const spoonPath = [
      { x: bML.x,                                y: bML.y + (bBL.y - bML.y) * 0.5 }, bML),
   // left side of bowl — widest point back to top
   C({ x: bML.x,                                 y: bML.y * 0.6                   },
-     { x: bML.x * 0.75,                         y: bTL.y                         }, bTL),
+     { x: bTL.x + (bML.x - bTL.x) * 0.75,      y: bTL.y                         }, bTL),
   'Z',
 ].join('\n             ');
 ---
