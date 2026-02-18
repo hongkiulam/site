@@ -5,7 +5,7 @@ import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
 //   x: horizontal offset from centre (negative = left, positive = right)
 //   y: vertical distance from top (positive = down)
 //
-//         0,0  ← bowlTop
+//  -0,0 ——— 0,0  ← bowlTopLeft / bowlTopRight (spread apart for a square top)
 //        /    \
 // -60,50        60,50  ← bowlMiddle
 //        \    /
@@ -19,7 +19,8 @@ import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
 
 const SVG_ORIGIN = { x: 150, y: 50 };
 
-const bowlTop = { x: 0, y: 0 };
+const bowlTopLeft  = { x: 0, y: 0 };
+const bowlTopRight = { x: 0, y: 0 };
 
 const bowlMiddleRight = { x: 60, y: 50 };
 const bowlMiddleLeft  = { x: -60, y: 50 };
@@ -47,7 +48,8 @@ function C(
   return `C ${s(cp1)} ${s(cp2)} ${s(end)}`;
 }
 
-const bT  = bowlTop;
+const bTL = bowlTopLeft;
+const bTR = bowlTopRight;
 const bMR = bowlMiddleRight;
 const bML = bowlMiddleLeft;
 const bBR = bowlBaseRight;
@@ -60,9 +62,11 @@ const hBL = handleBottomLeft;
 // Control points are derived from the named anchors so the curve shape
 // scales naturally when you adjust the anchor values.
 const spoonPath = [
-  `M ${s(bT)}`,
+  `M ${s(bTL)}`,
+  // flat top edge (zero-length when bTL === bTR, becomes a flat line when spread apart)
+  `L ${s(bTR)}`,
   // right side of bowl — top to widest point
-  C({ x: bMR.x * 0.75,                         y: bT.y                          },
+  C({ x: bMR.x * 0.75,                         y: bTR.y                         },
      { x: bMR.x,                                y: bMR.y * 0.6                   }, bMR),
   // right side of bowl — widest point to base
   C({ x: bMR.x,                                 y: bMR.y + (bBR.y - bMR.y) * 0.5 },
@@ -85,7 +89,7 @@ const spoonPath = [
      { x: bML.x,                                y: bML.y + (bBL.y - bML.y) * 0.5 }, bML),
   // left side of bowl — widest point back to top
   C({ x: bML.x,                                 y: bML.y * 0.6                   },
-     { x: bML.x * 0.75,                         y: bT.y                          }, bT),
+     { x: bML.x * 0.75,                         y: bTL.y                         }, bTL),
   'Z',
 ].join('\n             ');
 ---
