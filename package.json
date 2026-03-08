@@ -9,6 +9,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/react": "4.2.3",
     "@astrojs/svelte": "7.0.9",
     "@floating-ui/dom": "1.6.13",

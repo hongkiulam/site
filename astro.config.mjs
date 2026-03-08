@@ -7,10 +7,15 @@ import react from '@astrojs/react';
 
 import svelte from '@astrojs/svelte';
 
+import cloudflare from '@astrojs/cloudflare';
+
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
-  // adapter: aws(),
+  adapter: cloudflare({}),
+  experimental: {
+    session: true
+  },
 
   vite: {
     plugins: [tailwindcss()]
