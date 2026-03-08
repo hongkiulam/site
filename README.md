@@ -43,22 +43,6 @@ All commands are run from the root of the project, from a terminal:
 | `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `pnpm astro -- --help` | Get help using the Astro CLI                     |
 
-### SST
-
-Development stage is automatically set to the computer username e.g. `haydonlam`
-
-Can remove resources by removing them from the stack. For astro:
-
-```diff
-async run() {
--    new sst.aws.Astro("site-v2");
-+    // new sst.aws.Astro("site-v2");
-},
-```
-
-`pnpm sst dev`
-`pnpm sst deploy --stage production`
-`pnpm sst remove` removes the personal environment/ stage
 
 ## 👀 Want to learn more?
 
