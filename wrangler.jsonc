@@ -15,5 +15,6 @@
       "pattern": "haydonlam.com",
       "custom_domain": true
     }
-  ]
+  ],
+  "preview_urls": true
 }
