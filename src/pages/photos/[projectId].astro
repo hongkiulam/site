@@ -30,22 +30,34 @@ const { project } = Astro.props;
 
     <section class="photo-grid-section">
       <div class="photo-grid">
-        {project.imageSizes.map((img, i) => (
-          <button
-            class="photo-item"
-            data-index={i}
-            data-full={img.size_fs.url}
-          >
-            <img
-              src={img.size_disp.url}
-              srcset={`${img.size_disp.url} ${img.size_disp.width}w, ${img.size_max_1200.url} ${img.size_max_1200.width}w, ${img.size_1400_opt_1.url} ${img.size_1400_opt_1.width}w`}
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px"
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-          </button>
-        ))}
+        {project.imageSizes.map((img, i) => {
+          const fallback = img.size_disp ?? img.size_max_1200 ?? img.size_1400_opt_1 ?? img.size_fs ?? img.size_2800_opt_1;
+          if (!fallback) return null;
+
+          const full = img.size_fs ?? img.size_2800_opt_1 ?? img.size_1400_opt_1 ?? img.size_max_1200 ?? fallback;
+          const srcsetParts = [
+            img.size_disp && `${img.size_disp.url} ${img.size_disp.width}w`,
+            img.size_max_1200 && `${img.size_max_1200.url} ${img.size_max_1200.width}w`,
+            img.size_1400_opt_1 && `${img.size_1400_opt_1.url} ${img.size_1400_opt_1.width}w`,
+          ].filter(Boolean).join(', ');
+
+          return (
+            <button
+              class="photo-item"
+              data-index={i}
+              data-full={full.url}
+            >
+              <img
+                src={fallback.url}
+                srcset={srcsetParts || undefined}
+                sizes={srcsetParts ? "(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px" : undefined}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          );
+        })}
       </div>
     </section>
   </main>
