@@ -109,9 +109,10 @@ const { project } = Astro.props;
     padding: 0;
     margin: 0;
     cursor: pointer;
-    background: transparent;
+    background: white;
     display: block;
     width: 100%;
+    padding: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -133,10 +134,9 @@ const { project } = Astro.props;
     position: fixed;
     top: -1.5rem;
     right: -1.5rem;
-    width: 100%;
-    height: 110dvh;
-    background: linear-gradient(225deg, rgba(54, 16, 12, 0.2) 33%, transparent 0);
-    filter: blur(12px);
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(ellipse at top right, rgba(54, 16, 12, 0.18) 0%, transparent 70%);
     pointer-events: none;
     z-index: 50;
   }
