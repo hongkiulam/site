@@ -13,11 +13,11 @@ const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsRespo
 ---
 
 <Layout>
-  <main class="w-full min-h-full flex flex-col items-center bg-muted-background">
+  <main class="w-full min-h-full flex flex-col items-center photos-list-bg">
     <Header>
       <h1>Photography</h1>
     </Header>
-    <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
+    <HeaderBackdrop class="photos-list-header-backdrop opacity-80" />
     <HeaderSpacer />
     <section class="pb-12">
       <div class="clamped">
@@ -36,3 +36,13 @@ const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsRespo
     </section>
   </main>
 </Layout>
+
+<style>
+  .photos-list-bg {
+    background-color: oklch(0.91 0.05 66.28 / 1);
+  }
+
+  .photos-list-header-backdrop {
+    background-image: linear-gradient(to bottom, oklch(0.91 0.05 66.28 / 1), transparent);
+  }
+</style>
