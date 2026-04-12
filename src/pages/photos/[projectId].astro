@@ -20,13 +20,13 @@ const { project } = Astro.props;
 ---
 
 <Layout title={project.name}>
-  <main class="w-full min-h-dvh flex flex-col items-center bg-muted-background text-muted-foreground">
+  <main class="w-full min-h-dvh flex flex-col items-center text-muted-foreground photos-detail-bg">
     <Header>
       <a href="/photos">
         <h2>Back to albums</h2>
       </a>
     </Header>
-    <HeaderBackdrop class="bg-gradient-to-b from-muted-background opacity-80" />
+    <HeaderBackdrop class="photos-detail-header-backdrop opacity-80" />
     <div class="corner-shadow"></div>
 
     <section class="photo-grid-section">
@@ -72,6 +72,14 @@ const { project } = Astro.props;
 </Layout>
 
 <style>
+  .photos-detail-bg {
+    background-color: oklch(0.91 0.05 66.28 / 1);
+  }
+
+  .photos-detail-header-backdrop {
+    background-image: linear-gradient(to bottom, oklch(0.91 0.05 66.28 / 1), transparent);
+  }
+
   .photo-grid-section {
     width: 100%;
     max-width: 72rem;
