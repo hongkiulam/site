@@ -27,7 +27,44 @@ const { project } = Astro.props;
       </a>
     </Header>
     <HeaderBackdrop class="photos-detail-header-backdrop opacity-80" />
-    <div class="corner-shadow"></div>
+    <svg
+      class="corner-shadow"
+      viewBox="0 0 500 500"
+      preserveAspectRatio="xMaxYMin slice"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id="leaf-blur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.5" />
+        </filter>
+      </defs>
+      <g fill="#36100c" stroke="#36100c" stroke-linecap="round" opacity="0.35" filter="url(#leaf-blur)">
+        {/* Main branch */}
+        <path d="M 520 -20 C 470 50, 420 80, 370 130 S 250 230, 170 320" stroke-width="5" fill="none" />
+        {/* Secondary branches */}
+        <path d="M 430 50 C 400 110, 340 140, 280 160" stroke-width="3" fill="none" />
+        <path d="M 360 140 C 320 190, 270 215, 230 270" stroke-width="2.5" fill="none" />
+        <path d="M 280 160 C 260 200, 225 230, 190 250" stroke-width="2" fill="none" />
+        {/* Leaves */}
+        <ellipse cx="480" cy="25" rx="18" ry="7" transform="rotate(-35 480 25)" />
+        <ellipse cx="450" cy="55" rx="20" ry="8" transform="rotate(-10 450 55)" />
+        <ellipse cx="435" cy="95" rx="16" ry="6" transform="rotate(-60 435 95)" />
+        <ellipse cx="410" cy="75" rx="22" ry="8" transform="rotate(25 410 75)" />
+        <ellipse cx="395" cy="120" rx="18" ry="7" transform="rotate(-25 395 120)" />
+        <ellipse cx="360" cy="100" rx="16" ry="6" transform="rotate(55 360 100)" />
+        <ellipse cx="345" cy="155" rx="20" ry="8" transform="rotate(-15 345 155)" />
+        <ellipse cx="315" cy="185" rx="18" ry="7" transform="rotate(40 315 185)" />
+        <ellipse cx="285" cy="175" rx="16" ry="6" transform="rotate(-30 285 175)" />
+        <ellipse cx="270" cy="220" rx="20" ry="8" transform="rotate(15 270 220)" />
+        <ellipse cx="240" cy="255" rx="18" ry="7" transform="rotate(-20 240 255)" />
+        <ellipse cx="215" cy="295" rx="16" ry="6" transform="rotate(50 215 295)" />
+        <ellipse cx="190" cy="320" rx="14" ry="5" transform="rotate(-10 190 320)" />
+        <ellipse cx="175" cy="275" rx="15" ry="6" transform="rotate(30 175 275)" />
+        <ellipse cx="255" cy="130" rx="14" ry="5" transform="rotate(70 255 130)" />
+        <ellipse cx="300" cy="65" rx="15" ry="6" transform="rotate(-45 300 65)" />
+      </g>
+    </svg>
 
     <section class="photo-grid-section">
       <div class="photo-grid">
@@ -137,15 +174,15 @@ const { project } = Astro.props;
     display: block;
   }
 
-  /* Corner shadow overlay */
+  /* Corner branch & leaf shadow overlay */
   .corner-shadow {
     position: fixed;
-    top: -1.5rem;
-    right: -1.5rem;
+    top: 0;
+    right: 0;
     width: 50vw;
     height: 50vw;
-    background: linear-gradient(225deg, rgba(54, 16, 12, 0.4) 33%, transparent 0);
-    filter: blur(12px);
+    max-width: 600px;
+    max-height: 600px;
     pointer-events: none;
     z-index: 50;
   }
