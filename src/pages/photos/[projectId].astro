@@ -20,30 +20,13 @@ const { project } = Astro.props;
 ---
 
 <Layout title={project.name}>
-  <main class="w-full min-h-dvh flex flex-col items-center text-muted-foreground photos-detail-bg">
+  <main class="w-full min-h-dvh flex flex-col items-center text-muted-foreground">
     <Header>
       <a href="/photos">
         <h2>Back to albums</h2>
       </a>
     </Header>
-    <HeaderBackdrop class="photos-detail-header-backdrop opacity-80" />
-    <div
-      class="flex fixed top-0 left-0 opacity-30 blur-lg pointer-events-none z-10"
-      style="width: calc(100vw + 96px); height: calc(100vh + 96px); margin-top: -48px; margin-left: -48px;"
-    >
-      <svg
-        height="100%"
-        width="100%"
-        preserveAspectRatio="none"
-        viewBox="0 0 607 532"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M45 360.026L388.965 532H0V0H45V360.026ZM607 129.985L347.016 0H607V129.985Z"
-          fill="black"></path>
-      </svg>
-    </div>
+    <HeaderBackdrop class="opacity-80" />
     <section class="photo-grid-section">
       <div class="photo-grid">
         {
@@ -71,20 +54,22 @@ const { project } = Astro.props;
               .join(', ');
 
             return (
-              <button class="photo-item" data-index={i} data-full={full.url}>
-                <img
-                  src={fallback.url}
-                  srcset={srcsetParts || undefined}
-                  sizes={
-                    srcsetParts
-                      ? '(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px'
-                      : undefined
-                  }
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-              </button>
+              <div class="perspective-distant">
+                <button class="photo-item" data-index={i} data-full={full.url}>
+                  <img
+                    src={fallback.url}
+                    srcset={srcsetParts || undefined}
+                    sizes={
+                      srcsetParts
+                        ? '(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px'
+                        : undefined
+                    }
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
             );
           })
         }
@@ -101,14 +86,6 @@ const { project } = Astro.props;
 </Layout>
 
 <style>
-  .photos-detail-bg {
-    background-color: oklch(0.91 0.05 66.28 / 1);
-  }
-
-  .photos-detail-header-backdrop {
-    background-image: linear-gradient(to bottom, oklch(0.91 0.05 66.28 / 1), transparent);
-  }
-
   .photo-grid-section {
     width: 100%;
     max-width: 72rem;
@@ -133,12 +110,6 @@ const { project } = Astro.props;
     }
   }
 
-  @media (min-width: 1024px) {
-    .photo-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
   .photo-item {
     aspect-ratio: 1 / 1;
     overflow: hidden;
@@ -152,13 +123,14 @@ const { project } = Astro.props;
     padding: 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition:
-      transform 0.6s ease,
-      box-shadow 0.6s ease;
+      transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: center bottom;
   }
 
   .photo-item:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transform: rotateX(-4deg) translateZ(-10px) scale(1.03);
+    box-shadow: 20px 7px 20px rgba(0, 0, 0, 0.4);
   }
 
   .photo-item img {
@@ -166,19 +138,6 @@ const { project } = Astro.props;
     height: 100%;
     object-fit: cover;
     display: block;
-  }
-
-  /* Corner shadow overlay */
-  .corner-shadow {
-    position: fixed;
-    top: -1.5rem;
-    right: -1.5rem;
-    width: 50vw;
-    height: 50vw;
-    background: linear-gradient(225deg, rgba(54, 16, 12, 0.4) 33%, transparent 0);
-    filter: blur(12px);
-    pointer-events: none;
-    z-index: 50;
   }
 
   /* Lightbox */
