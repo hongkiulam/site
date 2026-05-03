@@ -1,7 +1,7 @@
-import { PresentationControls, Edges, Wireframe, Text } from '@react-three/drei';
+import { PresentationControls, Text } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useMemo } from 'react';
-import { Geometry, Base, Subtraction, Addition } from '@react-three/csg';
+import { Geometry, Base, Subtraction } from '@react-three/csg';
 
 // todo create weight plate stack. animate them separating and hover pulsing
 const WeightPlate3D = () => {
@@ -14,7 +14,6 @@ const WeightPlate3D = () => {
       camera={{
         position: cameraPosition,
         zoom: 40
-        // fov: 50
       }}
       gl={{ antialias: true }}
     >
@@ -32,7 +31,6 @@ const WeightPlate3D = () => {
 
       <PresentationControls
         snap={true}
-        // rotation={[-0.6, 0.3, -0.4]}
         polar={[-Math.PI / 3, Math.PI / 3]}
         azimuth={[-Math.PI / 1.4, Math.PI / 2]}
       >

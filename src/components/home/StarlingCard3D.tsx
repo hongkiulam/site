@@ -1,4 +1,4 @@
-import { GradientTexture, useGLTF, PresentationControls, Edges } from '@react-three/drei';
+import { useGLTF, PresentationControls, Edges } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 
@@ -8,7 +8,6 @@ const PulsingEdges = ({ color, maxScale, ...props }) => {
   useFrame((state) => {
     if (ref.current) {
       const pulse = (Math.sin(state.clock.elapsedTime * 5) + 1) * 0.5; // 0 to 1
-      // ref.current.material.opacity = 0.5 + pulse * 0.7; // 0.3 to 1
       ref.current.scale.y = 1.01 + pulse * (maxScale - 1);
       ref.current.scale.x = 1.01 + pulse * (maxScale - 1);
     }
@@ -73,16 +72,12 @@ const StarlingCard3D = () => {
           <mesh {...gltf.nodes.WorldDebit}>{textMaterial}</mesh>
           <mesh {...gltf.nodes.Chip}>
             <meshBasicMaterial color={chipGold} />
-            {/*<Edges color={chipGold} linewidth={3} />*/}
           </mesh>
-          {/*<mesh {...gltf.nodes.ChipOutlineBacking}></mesh>*/}
           <mesh {...gltf.nodes.MastercardLeft}>
             <meshBasicMaterial color={mastercardRed} opacity={0.5} transparent />
-            {/*<Edges color={mastercardRed} linewidth={3} />*/}
           </mesh>
           <mesh {...gltf.nodes.MastercardRight}>
             <meshBasicMaterial color={mastercardYellow} opacity={0.5} transparent />
-            {/*<Edges color={mastercardYellow} linewidth={3} />*/}
           </mesh>
         </group>
       </PresentationControls>

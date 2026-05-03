@@ -59,8 +59,6 @@ const GridCell: React.FC<{
     <group position={position} ref={groupRef}>
       {/* Box that always faces the camera */}
       <mesh>
-        {/* <boxGeometry args={[size * 0.95, size * 0.95, size * 0.1]} /> */}
-        {/* <meshStandardMaterial color="pink" /> */}
         <lineSegments geometry={edgesGeometry} material={lineMaterial} />
 
         {/* Number display */}
@@ -88,7 +86,6 @@ const InfiniteGrid: React.FC = () => {
 
   // State to track camera position
   const cameraPositionRef = useRef({ x: 0, y: 0 });
-  // const [cells, setCells] = useState<React.JSX.Element[]>([]);
   const [cellPositions, setCellPositions] = useState<{ x: number; y: number; itemIndex: number }[]>(
     []
   );
@@ -97,7 +94,6 @@ const InfiniteGrid: React.FC = () => {
   // Render grid cells centered around the camera
   const recomputeCells = () => {
     const cellPositionsToSet = [];
-    // const cells = [];
     const centerX = Math.floor(camera.position.x / cellSize);
     const centerY = Math.floor(camera.position.y / cellSize);
 
@@ -111,18 +107,9 @@ const InfiniteGrid: React.FC = () => {
         const itemIndex = Math.abs(mod(centerX + x, rows) * columns + mod(centerY + y, rows));
 
         cellPositionsToSet.push({ x: posX, y: posY, itemIndex });
-        // cells.push(
-        //   <GridCell
-        //     key={`${x}-${y}`}
-        //     position={new THREE.Vector3(posX, posY, 0)}
-        //     size={cellSize}
-        //     itemIndex={itemIndex}
-        //   />
-        // );
       }
     }
 
-    // setCells(cells);
     setCellPositions(cellPositionsToSet);
   };
 
@@ -163,7 +150,6 @@ const InfiniteGrid: React.FC = () => {
             />
           );
         })}
-      {/* {cells} */}
     </group>
   );
 };
