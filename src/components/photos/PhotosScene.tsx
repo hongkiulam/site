@@ -1,9 +1,6 @@
 import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
-  Grid,
-  Box as BoxDrei,
-  Text,
   useTexture,
   ScrollControls,
   useScroll
@@ -12,47 +9,6 @@ import * as THREE from 'three';
 import { easing } from 'maath';
 import type { ImageSizes, SanitisedBehancePhotographyProject } from '@@types/behance';
 import Lightbox from './Lightbox';
-
-const DebugHelpers: React.FC = () => {
-  return (
-    <>
-      {/* Debug helpers */}
-      <Grid args={[20, 20]} position={[0, -2.01, 0]} />
-
-      {/* Axis helper - red=X, green=Y, blue=Z */}
-      <primitive object={new THREE.AxesHelper(5)} />
-
-      {/* Position markers with labels */}
-      <BoxDrei args={[0.1, 0.1, 0.1]} position={[0, 0, 0]}>
-        <meshBasicMaterial color="red" />
-      </BoxDrei>
-      <Text position={[0.3, 0, 0]} fontSize={0.3} color="red" anchorX="left" anchorY="middle">
-        Origin
-      </Text>
-
-      <BoxDrei args={[0.1, 0.1, 0.1]} position={[1, 0, 0]}>
-        <meshBasicMaterial color="green" />
-      </BoxDrei>
-      <Text position={[1.3, 0, 0]} fontSize={0.3} color="green" anchorX="left" anchorY="middle">
-        X
-      </Text>
-
-      <BoxDrei args={[0.1, 0.1, 0.1]} position={[0, 1, 0]}>
-        <meshBasicMaterial color="blue" />
-      </BoxDrei>
-      <Text position={[0, 1.3, 0]} fontSize={0.3} color="blue" anchorX="center" anchorY="bottom">
-        Y
-      </Text>
-
-      <BoxDrei args={[0.1, 0.1, 0.1]} position={[0, 0, 1]}>
-        <meshBasicMaterial color="purple" />
-      </BoxDrei>
-      <Text position={[0, 0, 1.3]} fontSize={0.3} color="purple" anchorX="center" anchorY="middle">
-        Z
-      </Text>
-    </>
-  );
-};
 
 interface InteractiveImageProps {
   position: [number, number, number];
@@ -273,12 +229,6 @@ const Scene: React.FC<SceneProps & { onImageClick: (imageIndex: number) => void 
       <ScrollControls horizontal={false} pages={pages} damping={0}>
         <ResponsiveGrid project={project} onImageClick={onImageClick} />
       </ScrollControls>
-
-      {/* Debug helpers */}
-      {/*<DebugHelpers />*/}
-
-      {/* Orbit controls for debugging */}
-      {/*<OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />*/}
     </>
   );
 };
@@ -286,9 +236,6 @@ const Scene: React.FC<SceneProps & { onImageClick: (imageIndex: number) => void 
 const Lighting = () => {
   return (
     <>
-      {/* Soft ambient lighting */}
-      {/*<ambientLight intensity={0.4} color="#ffffff" />*/}
-
       {/* A light source positioned directly above the scene, with color fading from the sky color to the ground color.*/}
       <hemisphereLight intensity={2} color={0xdebda4} groundColor={0xffffff} />
 

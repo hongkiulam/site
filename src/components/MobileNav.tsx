@@ -3,38 +3,6 @@ import S from './MobileNav.module.css';
 import MobileNavPageWipe from './MobileNavPageWipe';
 import { X, Menu } from 'lucide-react';
 
-const LabelledIconButton = ({
-  onClick,
-  Icon,
-  label
-}: {
-  onClick: () => void;
-  Icon: React.ComponentType;
-  label: string;
-}) => {
-  return (
-    <div className="group flex items-end flex-col justify-center">
-      <button
-        className="relative text-muted-foreground text-sm cursor-pointer overflow-clip h-auto max-h-0 focus:max-h-6 group-hover:max-h-6 transition-all"
-        onClick={onClick}
-        aria-label={label}
-      >
-        <span className="absolute">{label}</span>
-        &nbsp;
-        {/*<span className="opacity-0">{label}</span>*/}
-      </button>
-      <button
-        tabIndex={-1}
-        onClick={onClick}
-        aria-label="Open Navigation"
-        className="-mr-1 cursor-pointer"
-      >
-        <Icon />
-      </button>
-    </div>
-  );
-};
-
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);

@@ -118,7 +118,6 @@ function Items({ w = 0.7, gap = 0.15, images }: ItemsProps) {
       <Scroll>
         {
           urls.map((url, i) => <Item key={i} index={i} position={[i * xW, 0, 0]} scale={[w, 4, 1]}
-            // url={'https://plus.unsplash.com/premium_photo-1675003662084-f2adbb7ccea7?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
             url={`/api/proxy-image?url=${encodeURIComponent(url)}`}
             />) /* prettier-ignore */
         }
