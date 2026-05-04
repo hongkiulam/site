@@ -1,7 +1,7 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import Header from '@components/_shared/Header.astro';
-import HeaderBackdrop from '@components/_shared/HeaderBackdrop.astro';
+import BorderedContainedSection from '@components/_shared/BorderedContainedSection.astro';
+import MobileNav from '@components/MobileNav';
 
 import { GET } from '../../pages/api/behance/all-graphql';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
@@ -21,13 +21,23 @@ const { project } = Astro.props;
 
 <Layout title={project.name}>
   <main class="w-full min-h-dvh flex flex-col items-center text-muted-foreground">
-    <Header>
-      <a href="/photos">
-        <h2>Back to albums</h2>
-      </a>
-    </Header>
-    <HeaderBackdrop class="opacity-80" />
-    <section class="photo-grid-section">
+    <BorderedContainedSection condensed>
+      <div class="flex flex-row justify-between">
+        <a
+          href="/"
+          class="flex flex-col items-start justify-center max-sm:opacity-0 group no-underline"
+          aria-label="Return to homepage"
+        >
+          <span>Home</span>
+        </a>
+        <MobileNav client:load />
+      </div>
+    </BorderedContainedSection>
+    <BorderedContainedSection>
+      <h1>{project.name}</h1>
+      <a href="/photos">Back to albums</a>
+    </BorderedContainedSection>
+    <BorderedContainedSection>
       <div class="photo-grid">
         {
           project.imageSizes.map((img, i) => {
@@ -74,7 +84,7 @@ const { project } = Astro.props;
           })
         }
       </div>
-    </section>
+    </BorderedContainedSection>
   </main>
 
   <div id="lightbox" class="lightbox" hidden>
@@ -86,13 +96,6 @@ const { project } = Astro.props;
 </Layout>
 
 <style>
-  .photo-grid-section {
-    width: 100%;
-    max-width: 48rem;
-    padding: 8rem 1.5rem 3rem;
-    margin: 0 auto;
-  }
-
   .photo-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -103,10 +106,6 @@ const { project } = Astro.props;
     .photo-grid {
       grid-template-columns: 1fr;
       gap: 2rem;
-    }
-
-    .photo-grid-section {
-      padding: 8rem 1rem 2rem;
     }
   }
 

@@ -1,12 +1,29 @@
 ---
-import ExperimentPageLayout from '@layouts/ExperimentPageLayout.astro';
+import Layout from '@layouts/Layout.astro';
+import BorderedContainedSection from '@components/_shared/BorderedContainedSection.astro';
+import MobileNav from '@components/MobileNav';
 
 const pages: { url: string }[] = Object.values(import.meta.glob('./*.astro', { eager: true }));
 ---
 
-<ExperimentPageLayout>
-  <section class="pb-12">
-    <div class="clamped">
+<Layout>
+  <main class="w-full min-h-full flex flex-col items-center">
+    <BorderedContainedSection condensed>
+      <div class="flex flex-row justify-between">
+        <a
+          href="/"
+          class="flex flex-col items-start justify-center max-sm:opacity-0 group no-underline"
+          aria-label="Return to homepage"
+        >
+          <span>Home</span>
+        </a>
+        <MobileNav client:load />
+      </div>
+    </BorderedContainedSection>
+    <BorderedContainedSection>
+      <h1>Experiments</h1>
+    </BorderedContainedSection>
+    <BorderedContainedSection>
       <ul>
         {
           pages.map((page) => {
@@ -21,6 +38,6 @@ const pages: { url: string }[] = Object.values(import.meta.glob('./*.astro', { e
           })
         }
       </ul>
-    </div>
-  </section>
-</ExperimentPageLayout>
+    </BorderedContainedSection>
+  </main>
+</Layout>
