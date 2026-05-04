@@ -2,11 +2,10 @@
 export const prerender = true;
 
 import Layout from '@layouts/Layout.astro';
-import Header from '@components/_shared/Header.astro';
-import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
+import BorderedContainedSection from '@components/_shared/BorderedContainedSection.astro';
+import MobileNav from '@components/MobileNav';
 import { GET } from '../../pages/api/behance/all-graphql';
 import type { SanitisedBehancePhotographyProject } from '@@types/behance';
-import HeaderBackdrop from '@components/_shared/HeaderBackdrop.astro';
 
 const allProjectsResponse = await GET(Astro);
 const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsResponse.json();
@@ -14,24 +13,33 @@ const allProjects: SanitisedBehancePhotographyProject[] = await allProjectsRespo
 
 <Layout>
   <main class="w-full min-h-full flex flex-col items-center">
-    <Header>
-      <h1>Photography</h1>
-    </Header>
-    <HeaderSpacer />
-    <section class="pb-12">
-      <div class="clamped">
-        <ul>
-          {
-            allProjects.map((project) => (
-              <li>
-                <a href={`/photos/${project.id}`}>
-                  <h2>{project.name}</h2>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+    <BorderedContainedSection condensed>
+      <div class="flex flex-row justify-between">
+        <a
+          href="/"
+          class="flex flex-col items-start justify-center max-sm:opacity-0 group no-underline"
+          aria-label="Return to homepage"
+        >
+          <span>Home</span>
+        </a>
+        <MobileNav client:load />
       </div>
-    </section>
+    </BorderedContainedSection>
+    <BorderedContainedSection>
+      <h1>Photography</h1>
+    </BorderedContainedSection>
+    <BorderedContainedSection>
+      <ul>
+        {
+          allProjects.map((project) => (
+            <li>
+              <a href={`/photos/${project.id}`}>
+                <h2>{project.name}</h2>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </BorderedContainedSection>
   </main>
 </Layout>
