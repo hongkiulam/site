@@ -23,7 +23,8 @@ const MobileNav = () => {
     <>
       <menu className="flex items-center flex-row justify-end pl-20 gap-2">
         <button className="-mr-1 cursor-pointer" onClick={showModal}>
-          <Menu />
+          Menu
+          {/*<Menu />*/}
         </button>
         <dialog
           ref={dialogRef}
