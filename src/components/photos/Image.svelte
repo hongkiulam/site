@@ -96,9 +96,7 @@
   </div>
 {/if}
 
-{#if isActive && fullRes}
-  <Lightbox src={fullRes.url} {onclose} />
-{/if}
+<Lightbox src={fullRes.url} {onclose} open={Boolean(isActive && fullRes)} />
 
 <style>
   .photo-item {

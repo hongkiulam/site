@@ -33,7 +33,7 @@ const MobileNav = () => {
         `}
         >
           <form
-            className="h-[90px] flex flex-col justify-center items-start clamped-header"
+            className="h-[90px] flex flex-col justify-center items-start clamped-condensed"
             method="dialog"
           >
             <menu className="flex items-start flex-col justify-center">

@@ -124,12 +124,35 @@
   }
 
   .clamped {
-    @apply mx-auto max-w-5xl w-full px-12 py-6
+    @apply mx-auto max-w-5xl w-full px-14 py-6
     max-sm:px-6 max-sm:py-6;
   }
 
-  .clamped-header {
-    @apply mx-auto max-w-5xl w-full px-12 py-4
+  .clamped-condensed {
+    @apply mx-auto max-w-5xl w-full px-14 py-4
     max-sm:px-6;
+  }
+
+  .border-contained {
+    @apply flex flex-row border-border border-b px-6 w-full;
+    &::before,
+    &::after {
+      content: '';
+      @apply block border-inherit;
+    }
+    &::before {
+      @apply border-r -mr-px;
+    }
+    &::after {
+      @apply border-r -ml-px;
+    }
+
+    > * {
+      @apply mx-auto max-w-5xl w-full border-inherit border-x;
+      @apply p-8;
+    }
+    > .condensed {
+      @apply p-3;
+    }
   }
 }

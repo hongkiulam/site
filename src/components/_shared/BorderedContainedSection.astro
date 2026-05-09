@@ -2,27 +2,6 @@
 const condensed = Astro.props.condensed ?? false;
 ---
 
-<section class="wrapper">
-  <div class={`clamped ${condensed ? 'p-3' : 'p-8'}`}><slot /></div>
+<section class="border-contained">
+  <div class={`${condensed ? 'condensed' : ''}`}><slot /></div>
 </section>
-
-<style>
-  @reference "../../styles/global.css";
-  .wrapper {
-    @apply flex flex-row border-border border-b px-6 w-full;
-    &::before,
-    &::after {
-      content: '';
-      @apply block border-inherit;
-    }
-    &::before {
-      @apply border-r -mr-px;
-    }
-    &::after {
-      @apply border-r -ml-px;
-    }
-  }
-  .clamped {
-    @apply mx-auto max-w-5xl w-full border-inherit border-x;
-  }
-</style>
