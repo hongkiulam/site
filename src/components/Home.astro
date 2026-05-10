@@ -1,15 +1,8 @@
 ---
 import SocialLinks from './SocialLinks.astro';
-import Tooltip from './home/Tooltip.svelte';
 import { Image } from 'astro:assets';
-import Header from '@components/_shared/Header.astro';
 import MobileNav from '@components/MobileNav.tsx';
-import HeaderSpacer from '@components/_shared/HeaderSpacer.astro';
 import BorderedContainedSection from '@components/_shared/BorderedContainedSection.astro';
-import StarlingCard3D from './home/StarlingCard3D';
-import WeightPlate3D from './home/WeightPlate3D';
-import WeightPlateAnimation from './home/WeightPlateAnimation';
-import PersonalityType from './home/PersonalityType.astro';
 ---
 
 <main class="w-full flex flex-col items-center">
@@ -71,13 +64,7 @@ import PersonalityType from './home/PersonalityType.astro';
           <h4 class="mb-3">Software Engineering</h4>
           <p class="text-base">Currently working at Starling Bank.</p>
         </div>
-        <div
-          class="flex items-center justify-center bg-muted-background/50 lg:border-l border-border"
-        >
-          <div class="w-64 aspect-square">
-            <StarlingCard3D client:only={'react'} />
-          </div>
-        </div>
+        <div class="bg-muted-background/50 lg:border-l border-border"></div>
       </div>
 
       <!-- Fitness -->
@@ -89,14 +76,7 @@ import PersonalityType from './home/PersonalityType.astro';
             weights, recently started running, and try bouldering every now and then.
           </p>
         </div>
-        <div
-          class="flex items-center justify-center bg-muted-background/50 lg:border-l border-border"
-        >
-          <div class="w-64 aspect-square">
-            <!-- <WeightPlate3D client:only={'react'} /> -->
-            <WeightPlateAnimation />
-          </div>
-        </div>
+        <div class="bg-muted-background/50 lg:border-l border-border"></div>
       </div>
 
       <!-- Wood Carving -->
@@ -108,13 +88,7 @@ import PersonalityType from './home/PersonalityType.astro';
             my screen time, even if just a little.
           </p>
         </div>
-        <div
-          class="flex items-center justify-center bg-muted-background/50 lg:border-l border-border"
-        >
-          <div class="w-64 aspect-square">
-            <StarlingCard3D client:only={'react'} />
-          </div>
-        </div>
+        <div class="bg-muted-background/50 lg:border-l border-border"></div>
       </div>
 
       <!-- Photography -->
@@ -123,14 +97,9 @@ import PersonalityType from './home/PersonalityType.astro';
           <h4 class="mb-3">Photography</h4>
           <p class="text-base">I enjoy photography too, especially when I'm travelling.</p>
         </div>
-        <div
-          class="flex items-center justify-center bg-muted-background/50 lg:border-l border-border"
-        >
-          <div class="w-64 aspect-square">
-            <StarlingCard3D client:only={'react'} />
-          </div>
-        </div>
+        <div class="bg-muted-background/50 lg:border-l border-border"></div>
       </div>
+
       <!-- Personality -->
       <div class="grid grid-cols-1 lg:grid-cols-2 border-b border-border last:border-b-0">
         <div class="p-6">
@@ -145,13 +114,7 @@ import PersonalityType from './home/PersonalityType.astro';
             >, which honestly feels pretty accurate.
           </p>
         </div>
-        <div
-          class="flex items-center justify-center bg-muted-background/50 lg:border-l border-border"
-        >
-          <div class="w-64 aspect-square">
-            <PersonalityType />
-          </div>
-        </div>
+        <div class="bg-muted-background/50 lg:border-l border-border"></div>
       </div>
     </div>
   </BorderedContainedSection>
