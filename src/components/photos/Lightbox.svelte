@@ -1,23 +1,19 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { panZoomCanvas } from './panZoomCanvas';
 
   let {
     src,
-    onclose,
-    open = false
-  }: { src: string; onclose: () => void; open: boolean } = $props();
+    onclose
+  }: { src: string; onclose: () => void } = $props();
 
   let isLoading = $state(true);
   let hasError = $state(false);
 
   let dialog = $state<HTMLDialogElement | undefined>(undefined);
 
-  $effect(() => {
-    if (open) {
-      dialog?.showModal();
-    } else {
-      dialog?.close();
-    }
+  onMount(() => {
+    dialog?.showModal();
   });
 </script>
 
@@ -56,11 +52,10 @@
   .lightbox {
     all: unset;
     @apply fixed inset-0 w-screen h-screen max-w-screen max-h-screen overflow-hidden bg-background/90 shadow-2xl;
-    @apply transition-all duration-400 transition-discrete ease-in;
+    @apply transition-all duration-400 ease-out;
 
-    @apply translate-y-full scale-95;
-    @apply open:translate-0 scale-100;
-    @apply starting:open:translate-y-full starting:scale-95;
+    @apply open:translate-y-0 open:scale-100;
+    @apply starting:open:translate-y-full starting:open:scale-95;
   }
 
   .lightbox::backdrop {
